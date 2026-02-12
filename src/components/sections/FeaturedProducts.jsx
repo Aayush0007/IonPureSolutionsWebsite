@@ -3,20 +3,13 @@ import { ShoppingCart, Zap, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function FeaturedProducts({ products, setView }) {
   
-  const handleProductClick = (e, productId) => {
-    // Standard aesthetic: Prevents event bubbling
-    e.stopPropagation();
-
-    // 1. URL FORMATTING: /product/#id
-    const newTabUrl = `${window.location.origin}/product/#${productId}`;
-    
-    // 2. OPEN IN NEW TAB
-    window.open(newTabUrl, '_blank');
-
-    // 3. INTERNAL STATE: Optional, but keeps current tab synced if needed
-    // setView(productId); 
-  };
-
+  // inside FeaturedProducts.jsx handleProductClick
+const handleProductClick = (e, productId) => {
+  e.stopPropagation();
+  // FIX: Using root hash logic /#id
+  const newTabUrl = `${window.location.origin}/#${productId}`;
+  window.open(newTabUrl, '_blank');
+};
   return (
     <section id="products" className="relative py-16 lg:py-24 overflow-hidden bg-white">
       {/* Background Ambience */}

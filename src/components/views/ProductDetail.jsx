@@ -36,9 +36,8 @@ export default function ProductDetail({ product, onBack, setView }) {
   };
 
   const handleRelatedProductClick = (id) => {
-    // 1. Construct the deep link URL
-    const productUrl = `${window.location.origin}/product/#${id}`;
-    // 2. Open in another tab as requested
+    // FIX: Using Root Hash so App.jsx useEffect can catch it in the new tab
+    const productUrl = `${window.location.origin}/#${id}`;
     window.open(productUrl, "_blank");
   };
 
