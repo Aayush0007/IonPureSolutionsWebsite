@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Disallow any admin or internal paths (add more if needed later)
+Disallow: /admin/
+Disallow: /login/
+Disallow: /cart/
+Disallow: /checkout/
+
+# No crawl of temporary or useless files
+Disallow: /*?*sort=*
+Disallow: /*?*page=*
+
+Sitemap: https://www.ionpuresolutions.com/sitemap.xml

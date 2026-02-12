@@ -1,13 +1,135 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ionpuresolutions</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+
+<head>
+  <!-- ==================== Basic Meta ==================== -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+
+  <!-- ==================== Title & Description ==================== -->
+  <title>Ion Pure Solutions – Alkaline Water Ionizers & Hydrogen Water Bottles | Change Your Water, Change Your Life
+  </title>
+  <meta name="description"
+    content="Discover premium alkaline water ionizers (Flow MAX, Flow, Flow PLUS) and portable hydrogen-rich water bottles (IPS-HT, H2 Pro, H2) from Ion Pure Solutions. Medical-grade, certified hydration technology for better health, antioxidant support & wellness. Gurugram, Haryana." />
+  <meta name="keywords"
+    content="alkaline water ionizer, hydrogen water bottle, hydrogen rich water, alkaline ionized water, ORP negative water, pH water machine, portable hydrogen bottle, wellness water, Ion Pure Solutions, Gurugram water purifier" />
+
+  <!-- ==================== Canonical & Robots ==================== -->
+  <link rel="canonical" href="https://www.ionpuresolutions.com/" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+  <!-- ==================== Open Graph (Facebook, LinkedIn, WhatsApp, etc.) ==================== -->
+  <meta property="og:title" content="Ion Pure Solutions – Premium Alkaline & Hydrogen Water Solutions" />
+  <meta property="og:description"
+    content="Transform your daily hydration with medical-grade alkaline water ionizers and high-PPB hydrogen bottles. Certified quality from Gurugram. Change Your Water, Change Your Life." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.ionpuresolutions.com/" />
+  <meta property="og:site_name" content="Ion Pure Solutions" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:image" content="/og-image.jpg" /> <!-- 1200×630 recommended -->
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Ion Pure Solutions alkaline water ionizer and hydrogen bottle products" />
+
+  <!-- ==================== Twitter Cards ==================== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ion Pure Solutions – Alkaline & Hydrogen Water for Wellness" />
+  <meta name="twitter:description"
+    content="Premium alkaline ionizers & portable hydrogen bottles. Certified, medical-grade hydration technology from Gurugram." />
+  <meta name="twitter:image" content="/og-image.jpg" />
+  <meta name="twitter:site" content="@ionpuresolutions" /> <!-- if you have Twitter/X -->
+
+  <!-- ==================== Favicon & App Icons ==================== -->
+  <link rel="icon" type="image/svg+xml" href="/Logo.svg" />
+  <link rel="icon" type="image/png" href="/Logo.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/Logo-192.png" sizes="192x192" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#3b82f6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1e40af" media="(prefers-color-scheme: dark)" />
+  <meta name="msapplication-TileColor" content="#3b82f6" />
+
+  <!-- ==================== Preconnect & Performance ==================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+  <!-- ==================== Structured Data (JSON-LD) ==================== -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ion Pure Solutions",
+      "url": "https://www.ionpuresolutions.com",
+      "logo": "https://www.ionpuresolutions.com/Logo.jpg",
+      "description": "Premium alkaline water ionizers and hydrogen-rich water bottles for better hydration and wellness.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91-8130855487",
+        "contactType": "customer service",
+        "areaServed": "IN",
+        "availableLanguage": ["English", "Hindi"]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "First Floor, Block CB1, Shop No.-FF-03, Signature Global Proxima, Sector 89",
+        "addressLocality": "Gurugram",
+        "addressRegion": "Haryana",
+        "postalCode": "122505",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://www.instagram.com/ionpuresolutions"
+      ]
+    }
+    </script>
+
+  <!-- Optional: Product structured data (you can move this to product pages later) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Ion Pure Solutions",
+      "url": "https://www.ionpuresolutions.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.ionpuresolutions.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+
+  <!-- Google tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-XXXXXXX');</script>
+  <!-- End Google Tag Manager -->
+</head>
+
+<body class="antialiased">
+  <div id="root"></div>
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>

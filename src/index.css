@@ -1,5 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lexend:wght@600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Add any custom CSS below if needed */
+
+:root {
+  --ion-midnight: #1A365D;
+  --ion-blue: #2C5DA7;
+  --ion-green: #7CB35B;
+  --ion-mint: #F1F8E1;
+  --cursor-x: -100px;
+  --cursor-y: -100px;
+}
+/* index.css */
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    cursor: auto !important; /* Restore standard cursor */
+  }
+  
+  a, button, [role="button"] {
+    cursor: pointer !important; /* Standard pointer for buttons */
+  }
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--ion-mint);
+  color: var(--ion-midnight);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  overflow-x: hidden; 
+}
+
+/* --- ULTRA-SMOOTH GPU OPTIMIZATIONS --- */
+
+.liquid-container {
+  /* This creates a separate compositor layer */
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10000;
+  filter: url("#gooey-fluid"); /* Apply filter here, not on individual drops */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.liquid-drop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Use translate3d for full GPU acceleration */
+  will-change: transform;
+  transform: translate3d(var(--cursor-x), var(--cursor-y), 0) translate(-50%, -50%);
+  /* Add a very slight transition for the "smooth follow" feel */
+  transition: transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
+}
+
+/* Data Attribute Responses */
+body[data-hovering="true"] .liquid-drop {
+  transform: translate3d(var(--cursor-x), var(--cursor-y), 0) translate(-50%, -50%) scale(1.4);
+  opacity: 0.5;
+}
+
+body[data-pressed="true"] .liquid-drop {
+  transform: translate3d(var(--cursor-x), var(--cursor-y), 0) translate(-50%, -50%) scale(0.7);
+}
+
+/* --- UI ELEMENTS --- */
+
+.display-font {
+  font-family: 'Lexend', sans-serif;
+}
+
+.gradient-heading {
+  background: linear-gradient(90deg, var(--ion-blue) 0%, #7399C6 50%, var(--ion-green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block; 
+}
+
+.btn-primary {
+  background-color: var(--ion-blue);
+  @apply text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-xl active:scale-[0.98];
+  position: relative;
+  z-index: 20;
+}
