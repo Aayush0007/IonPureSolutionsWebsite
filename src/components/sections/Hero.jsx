@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Droplets, ShieldCheck, Zap, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 import { COMPANY } from "../../data/company";
+import { usePWA } from "../../hooks/usePWA"; // Import the hook
 
 // Refined Product Array based on Documentation
 const heroProducts = [
@@ -12,7 +13,7 @@ const heroProducts = [
 
 export default function Hero({ scrollToProducts }) {
   const [index, setIndex] = useState(0);
-
+  const { isInstallable, installApp } = usePWA();
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % heroProducts.length);
@@ -37,6 +38,25 @@ export default function Hero({ scrollToProducts }) {
       <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
         {/* LEFT SIDE: DOCUMENTATION-ALIGNED CONTENT */}
         <div className="text-left order-2 lg:order-1">
+          <AnimatePresence>
+            {isInstallable && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                onClick={installApp}
+                className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-gradient-to-r from-[#2C5DA7] to-[#1A365D] text-white shadow-lg cursor-pointer mb-6 hover:shadow-blue-900/20 transition-all group"
+              >
+                <div className="p-1.5 bg-white/20 rounded-lg">
+                  <Download size={14} className="group-hover:bounce" />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-widest">
+                  Install IonPure App
+                </span>
+                <div className="w-1.5 h-1.5 rounded-full bg-[#7CB35B] animate-ping" />
+              </motion.div>
+            )}
+          </AnimatePresence>
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
