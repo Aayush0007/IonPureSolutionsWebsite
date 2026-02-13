@@ -183,7 +183,7 @@ function App() {
             : "opacity-100 translate-y-0"
         }`}
       >
-        <ChatBot />
+        {/* <ChatBot /> */}
       </div>
 
       <Footer ref={footerRef} scrollTo={scrollTo} setView={setView} />
