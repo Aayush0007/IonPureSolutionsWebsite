@@ -13,6 +13,7 @@ import {
   MessageCircle,
   Sparkles,
   LayoutGrid,
+  Share2,
 } from "lucide-react";
 import { PRODUCTS } from "../../data/products";
 
@@ -29,6 +30,24 @@ export default function ProductDetail({ product, onBack, setView }) {
     0,
     3,
   );
+  const handleShareProduct = async () => {
+    const shareData = {
+      title: product.name,
+      text: `Check out the ${product.name} from Ion Pure Solutions: ${product.tagline}`,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert("Product link copied to clipboard!");
+      }
+    } catch (err) {
+      console.error("Error sharing product:", err);
+    }
+  };
 
   const handleBackNavigation = () => {
     window.history.pushState({}, "", window.location.origin + "/");
@@ -208,141 +227,137 @@ export default function ProductDetail({ product, onBack, setView }) {
             </div>
 
             {/* ACTION SECTION */}
-            <div className="pt-6 md:pt-10">
-              <button
-                onClick={() => handleWhatsAppQuote(product.name)}
-                className="group relative w-full py-5 md:py-6 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-2xl shadow-blue-900/10 active:scale-95 transition-all"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#2C5DA7] via-[#1A365D] to-[#2C5DA7] bg-[length:200%_auto] animate-gradient-text" />
-                <span className="relative z-10 flex items-center justify-center gap-3 md:gap-4 text-white text-[10px] md:text-[12px] font-black uppercase tracking-[0.3em]">
-                  <Globe size={18} className="animate-spin-slow" />
-                  Secure Instant Quote
-                  <ArrowRight
-                    size={18}
-                    className="group-hover:translate-x-2 transition-transform"
+            {/* REDESIGNED ACTION SECTION */}
+            <div className="pt-8 md:pt-12">
+              <div className="flex flex-row items-stretch gap-3 md:gap-4 h-16 md:h-20">
+                {/* Main Quote CTA - Takes up most space */}
+                <button
+                  onClick={() => handleWhatsAppQuote(product.name)}
+                  className="group relative flex-[4] md:flex-[5] rounded-2xl md:rounded-[2rem] overflow-hidden shadow-2xl shadow-blue-900/20 active:scale-[0.98] transition-all duration-300"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#1A365D] via-[#2C5DA7] to-[#1A365D] bg-[length:200%_auto] group-hover:bg-right transition-all duration-700" />
+                  <span className="relative z-10 flex items-center justify-center gap-2 md:gap-4 text-white text-[9px] md:text-[12px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em]">
+                    <Globe
+                      size={18}
+                      className="hidden sm:block animate-spin-slow opacity-70"
+                    />
+                    Secure Instant Quote
+                    <ArrowRight
+                      size={18}
+                      className="group-hover:translate-x-2 transition-transform duration-300"
+                    />
+                  </span>
+                </button>
+
+                {/* Universal Share Button - Premium Square Style */}
+                <button
+                  onClick={handleShareProduct}
+                  className="flex-1 rounded-2xl md:rounded-[2rem] bg-gray-50 text-[#1A365D] border border-gray-100 flex flex-col items-center justify-center gap-1 hover:bg-white hover:border-[#2C5DA7]/30 hover:text-[#2C5DA7] hover:shadow-xl transition-all duration-300 group"
+                  title="Share Product"
+                >
+                  <Share2
+                    size={20}
+                    className="group-hover:scale-110 transition-transform"
                   />
-                </span>
-              </button>
+                  <span className="text-[7px] md:text-[8px] font-black uppercase tracking-tighter opacity-60 group-hover:opacity-100">
+                    Share
+                  </span>
+                </button>
+              </div>
+
+              {/* Subtle Trust Caption */}
+              <p className="mt-4 text-center lg:text-left text-[9px] font-bold uppercase tracking-widest text-[#1A365D]/30">
+                ✦ Authorized Ion-Pure technical dispatch
+              </p>
             </div>
           </div>
         </div>
 
-        {/* --- COMPACT SECTION: RELATED DISCOVERY --- */}
-        <div className="mt-16 md:mt-24 pt-12 md:pt-16 border-t border-gray-100">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 md:mb-10 gap-4">
-            <div>
-              <div className="flex items-center gap-2 text-[#7CB35B] mb-2">
-                <LayoutGrid size={14} />
-                <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em]">
+        {/* --- COMPACT SECTION: RELATED DISCOVERY (AESTHETIC UPGRADE) --- */}
+        <div className="mt-16 md:mt-24 pt-12 border-t border-gray-100">
+          <div className="flex items-center justify-between mb-10 md:mb-12">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-[#7CB35B]">
+                <Sparkles size={14} className="animate-pulse" />
+                <span className="text-[9px] font-black uppercase tracking-[0.3em]">
                   Related Discovery
                 </span>
               </div>
-              <h2 className="text-2xl md:text-4xl font-black text-[#1A365D] tracking-tighter leading-none">
-                Explore the{" "}
-                <span className="italic font-light opacity-50">
+              <h2 className="text-3xl md:text-4xl font-black text-[#1A365D] tracking-tighter">
+                Curated{" "}
+                <span className="italic font-light opacity-50 text-2xl md:text-3xl">
                   Collection.
                 </span>
               </h2>
             </div>
+
             <button
               onClick={handleBackNavigation}
-              className="px-5 py-2.5 rounded-xl bg-gray-50 text-[8px] md:text-[9px] font-black uppercase tracking-widest text-[#1A365D] hover:bg-[#1A365D] hover:text-white transition-all flex items-center gap-2 w-fit"
+              className="hidden sm:flex items-center gap-3 px-6 py-3 rounded-full bg-gray-50 text-[10px] font-black uppercase tracking-widest text-[#1A365D] hover:bg-[#1A365D] hover:text-white transition-all duration-500 shadow-sm"
             >
-              View All <ArrowRight size={12} />
+              View All <ArrowRight size={14} />
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {relatedProducts.map((p, idx) => (
               <motion.div
                 key={p.id}
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.08 }}
+                transition={{ delay: idx * 0.1 }}
                 onClick={() => handleRelatedProductClick(p.id)}
-                className="group cursor-pointer"
+                className="group cursor-pointer flex flex-col"
               >
-                <div className="relative aspect-square bg-gray-50 rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-6 mb-3 overflow-hidden border border-transparent group-hover:border-[#2C5DA7]/10 transition-all shadow-sm group-hover:shadow-lg">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#2C5DA7]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                {/* Shorter, Wider Image Container */}
+                <div className="relative aspect-[16/10] bg-[#F8FAFC] rounded-[2rem] overflow-hidden border border-gray-100 group-hover:border-[#2C5DA7]/20 transition-all duration-700 shadow-sm group-hover:shadow-xl group-hover:-translate-y-1">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-[#2C5DA7]/5 via-transparent to-transparent" />
+
                   <img
                     src={p.image || "/SampleProductImage.jpg"}
                     alt={p.name}
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 z-10 relative"
+                    className="w-full h-full object-contain p-6 group-hover:scale-110 transition-transform duration-1000 z-10 relative"
                   />
-                  <div className="absolute top-4 right-4 w-8 h-8 rounded-xl bg-white/80 backdrop-blur-md flex items-center justify-center text-[#2C5DA7] opacity-0 group-hover:opacity-100 transition-all translate-y-1 group-hover:translate-y-0 shadow-md z-20">
+
+                  {/* Minimalist Floating Tag */}
+                  <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 bg-white/60 backdrop-blur-md rounded-full border border-white/40 shadow-sm z-20">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#7CB35B]" />
+                    <span className="text-[8px] font-black uppercase tracking-tighter text-[#1A365D]">
+                      {p.category}
+                    </span>
+                  </div>
+
+                  <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-[#2C5DA7] opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0 shadow-lg z-20">
                     <ArrowRight size={16} />
                   </div>
                 </div>
-                <h4 className="text-[7px] md:text-[8px] font-black uppercase tracking-widest text-[#2C5DA7] mb-1">
-                  {p.category}
-                </h4>
-                <h3 className="text-base md:text-lg font-black text-[#1A365D] tracking-tighter uppercase italic leading-tight group-hover:text-[#2C5DA7] transition-colors">
-                  {p.name}
-                </h3>
+
+                {/* Content Section below image */}
+                <div className="mt-5 px-2">
+                  <h3 className="text-lg font-black text-[#1A365D] tracking-tighter uppercase italic leading-tight group-hover:text-[#2C5DA7] transition-colors">
+                    {p.name}
+                  </h3>
+                  <p className="mt-2 text-[11px] text-[#1A365D]/50 font-medium leading-relaxed line-clamp-2">
+                    {p.tagline ||
+                      "Advanced ionization technology for premium cellular hydration and pH balance."}
+                  </p>
+                  <div className="mt-4 flex items-center gap-1.5 text-[9px] font-black uppercase text-[#2C5DA7] tracking-widest group-hover:gap-3 transition-all">
+                    Explore Details <ArrowRight size={10} />
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
-        </div>{/* --- GRAND SECTION: THE EXTENDED COLLECTION --- */}
-<div className="mt-24 md:mt-40 pt-16 md:pt-24 border-t border-gray-100">
-  <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-8">
-    <div>
-      <div className="flex items-center gap-3 text-[#7CB35B] mb-4">
-        <LayoutGrid size={18} />
-        <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em]">Boutique Discovery</span>
-      </div>
-      <h2 className="text-4xl md:text-6xl font-black text-[#1A365D] tracking-tighter leading-[0.9]">
-        The Ion Pure <br />
-        <span className="italic font-light opacity-40">Master-Collection.</span>
-      </h2>
-    </div>
-    <button 
-      onClick={handleBackNavigation}
-      className="px-10 py-5 rounded-2xl bg-[#1A365D] text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-white hover:bg-[#2C5DA7] transition-all flex items-center gap-4 w-fit shadow-xl shadow-blue-900/10 active:scale-95"
-    >
-      Explore All Systems <ArrowRight size={16} />
-    </button>
-  </div>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
-    {relatedProducts.map((p, idx) => (
-      <motion.div
-        key={p.id}
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: idx * 0.1, duration: 0.8 }}
-        onClick={() => handleRelatedProductClick(p.id)}
-        className="group cursor-pointer"
-      >
-        {/* Card uses Grand Scale Radii */}
-        <div className="relative aspect-square bg-gray-50 rounded-[3rem] md:rounded-[4rem] p-10 md:p-12 mb-8 overflow-hidden border border-transparent group-hover:border-[#2C5DA7]/10 transition-all duration-700 shadow-sm group-hover:shadow-[0_40px_80px_rgba(26,54,93,0.12)]">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#2C5DA7]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          
-          <img 
-            src={p.image || "/SampleProductImage.jpg"} 
-            alt={p.name} 
-            className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-1000 z-10 relative drop-shadow-2xl" 
-          />
-          
-          {/* Aesthetic Floating Action Arrow */}
-          <div className="absolute top-8 right-8 w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-md flex items-center justify-center text-[#2C5DA7] opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0 shadow-lg z-20">
-            <ArrowRight size={20} />
-          </div>
+          {/* Mobile View All Button */}
+          <button
+            onClick={handleBackNavigation}
+            className="sm:hidden mt-10 w-full py-4 rounded-2xl bg-gray-50 text-[10px] font-black uppercase tracking-widest text-[#1A365D] flex items-center justify-center gap-2"
+          >
+            View All <ArrowRight size={14} />
+          </button>
         </div>
-
-        <div className="px-4">
-          <h4 className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-[#7CB35B] mb-3">{p.category}</h4>
-          <h3 className="text-2xl md:text-3xl font-black text-[#1A365D] tracking-tighter uppercase italic leading-none group-hover:text-[#2C5DA7] transition-colors">
-            {p.name}
-          </h3>
-          <div className="mt-4 w-12 h-1 bg-gray-100 group-hover:w-24 group-hover:bg-[#2C5DA7] transition-all duration-500 rounded-full" />
-        </div>
-      </motion.div>
-    ))}
-  </div>
-</div>
-
         {/* --- TRUST ANCHORS --- */}
         <div className="mt-20 md:mt-32 p-8 md:p-12 lg:p-20 rounded-[2rem] md:rounded-[3.5rem] bg-[#F8FAFC] border border-gray-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 md:gap-12">
           <div className="space-y-3 md:space-y-4">

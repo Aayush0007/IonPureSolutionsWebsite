@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Components
 import SplashScreen from "./components/layout/SplashScreen";
 import Navbar from "./components/layout/Navbar";
 import MobileMenu from "./components/layout/MobileMenu";
 import Footer from "./components/layout/Footer";
-
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
 import WhyChooseUs from "./components/sections/WhyChooseUs";
@@ -14,69 +14,78 @@ import Certifications from "./components/sections/Certifications";
 import Testimonials from "./components/sections/Testimonials";
 import BlogPreview from "./components/sections/BlogPreview";
 import Contact from "./components/sections/Contact";
-import ConcentricRipple from "./components/effects/ConcentricRipple"; // 1. Import it
+import ConcentricRipple from "./components/effects/ConcentricRipple";
 import ProductDetail from "./components/views/ProductDetail";
 import BlogDetail from "./components/views/BlogDetail";
 import PrivacyPolicy from "./components/views/PrivacyPolicy";
 import TermsConditions from "./components/views/TermsConditions";
-
 import ChatBot from "./components/chatbot/ChatBot";
 import WhatsAppButton from "./components/ui/WhatsAppButton";
+import { MessageCircle } from "lucide-react";
 
+// Data
 import { PRODUCTS } from "./data/products";
 import { BLOGS } from "./data/blogs";
 
 function App() {
+  // --- 1. HOOKS AT THE TOP (Strict) ---
   const [view, setView] = useState("home");
   const [isLoading, setIsLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
+  const footerRef = useRef(null);
 
+  const currentProduct = useMemo(
+    () => PRODUCTS.find((p) => p.id === view),
+    [view],
+  );
+  const currentBlog = useMemo(() => BLOGS.find((b) => b.id === view), [view]);
+
+  // Loading Timer
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1200);
     return () => clearTimeout(timer);
   }, []);
 
+  // View scroll reset
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [view]);
 
-  // Add this inside your App component in App.jsx
-  // Add/Update this inside your App component in App.jsx
+  // Hash Listener
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash && hash.startsWith("#")) {
-        const targetId = hash.substring(1);
-
-        // 1. Check for Legal Pages (NEW)
-        if (targetId === "privacy-policy" || targetId === "terms-conditions") {
-          setView(targetId);
-          return;
-        }
-
-        // 2. Check if it's a valid Product ID
-        const productExists = PRODUCTS.some((p) => p.id === targetId);
-        if (productExists) {
-          setView(targetId);
-          return;
-        }
-
-        // 3. Check if it's a valid Blog ID
-        const blogExists = BLOGS.some((b) => b.id === targetId);
-        if (blogExists) {
-          setView(targetId);
-        }
+      const hash = window.location.hash.replace("#", "");
+      if (!hash) return;
+      if (hash === "privacy-policy" || hash === "terms-conditions") {
+        setView(hash);
+      } else if (
+        PRODUCTS.some((p) => p.id === hash) ||
+        BLOGS.some((b) => b.id === hash)
+      ) {
+        setView(hash);
       }
     };
-
-    handleHashChange();
     window.addEventListener("hashchange", handleHashChange);
+    handleHashChange();
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
-  const currentProduct = PRODUCTS.find((p) => p.id === view);
-  const currentBlog = BLOGS.find((b) => b.id === view);
+  // Footer Observer Logic
+  useEffect(() => {
+    if (isLoading) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsFooterVisible(entry.isIntersecting),
+      { threshold: 0.1 },
+    );
+    if (footerRef.current) observer.observe(footerRef.current);
+    return () => observer.disconnect();
+  }, [isLoading]);
 
+  // --- 2. EARLY RETURN ---
+  if (isLoading) return <SplashScreen />;
+
+  // --- 3. LOGIC ---
   const scrollTo = (sectionId) => {
     setMobileMenuOpen(false);
     if (view !== "home") {
@@ -93,13 +102,11 @@ function App() {
     }
   };
 
-  if (isLoading) return <SplashScreen />;
-
   return (
-    <div className="relative min-h-screen w-full bg-[#FDFDFD]">
+    <div className="relative min-h-screen w-full bg-[#FDFDFD] overflow-x-hidden">
       <ConcentricRipple />
-      {/* 2. UI LAYER */}
-      <div style={{ position: "relative", zIndex: 50 }}>
+
+      <div className="relative z-[100]">
         <Navbar
           scrollTo={scrollTo}
           toggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -113,65 +120,35 @@ function App() {
         />
       </div>
 
-      <ChatBot />
-
-      {/* 3. CONTENT LAYER */}
-      <main className="relative" style={{ zIndex: 10 }}>
-        <AnimatePresence mode="wait" initial={false}>
+      <main className="relative z-10">
+        <AnimatePresence mode="wait">
           {view === "privacy-policy" && (
-            <motion.div
-              key="privacy"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <PrivacyPolicy onBack={() => setView("home")} />
-            </motion.div>
+            <PrivacyPolicy key="privacy" onBack={() => setView("home")} />
           )}
-
           {view === "terms-conditions" && (
-            <motion.div
-              key="terms"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <TermsConditions onBack={() => setView("home")} />
-            </motion.div>
+            <TermsConditions key="terms" onBack={() => setView("home")} />
           )}
-
           {currentProduct && view !== "home" && (
-            <motion.div
-              key={`prod-${currentProduct.id}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <ProductDetail
-                product={currentProduct}
-                onBack={() => setView("home")}
-              />
-            </motion.div>
+            <ProductDetail
+              key={currentProduct.id}
+              product={currentProduct}
+              onBack={() => setView("home")}
+            />
           )}
-
           {currentBlog && view !== "home" && (
-            <motion.div
-              key={`blog-${currentBlog.id}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <BlogDetail blog={currentBlog} onBack={() => setView("home")} />
-            </motion.div>
+            <BlogDetail
+              key={currentBlog.id}
+              blog={currentBlog}
+              onBack={() => setView("home")}
+            />
           )}
 
           {view === "home" && (
             <motion.div
-              key="home-wrapper"
+              key="home"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
             >
               <Hero scrollToProducts={() => scrollTo("products")} />
               <About />
@@ -186,12 +163,30 @@ function App() {
         </AnimatePresence>
       </main>
 
-      {/* 4. FOOTER LAYER */}
-      <div style={{ position: "relative", zIndex: 20 }}>
-        <Footer scrollTo={scrollTo} setView={(v) => setView(v)} />
+      {/* FLOATING ACTION BUTTONS */}
+      {/* LEFT SIDE: WHATSAPP ONLY */}
+      <div
+        className={`fixed bottom-6 left-6 z-[9999] transition-all duration-700 ease-in-out pointer-events-auto ${
+          isFooterVisible
+            ? "opacity-0 translate-y-32 pointer-events-none"
+            : "opacity-100 translate-y-0"
+        }`}
+      >
+        <WhatsAppButton />
       </div>
 
-      <WhatsAppButton />
+      {/* RIGHT SIDE: CHATBOT ONLY */}
+      <div
+        className={`fixed bottom-6 right-6 z-[9999] transition-all duration-700 ease-in-out pointer-events-auto ${
+          isFooterVisible
+            ? "opacity-0 translate-y-32 pointer-events-none"
+            : "opacity-100 translate-y-0"
+        }`}
+      >
+        <ChatBot />
+      </div>
+
+      <Footer ref={footerRef} scrollTo={scrollTo} setView={setView} />
     </div>
   );
 }

@@ -32,12 +32,26 @@ export default function BlogDetail({ blog, onBack }) {
     window.open(`${window.location.origin}/#${id}`, "_blank");
   };
 
-  const handleShare = () => {
-    const text = `Reading "${blog.title}" from Ion Pure Solutions`;
-    window.open(
-      `https://wa.me/9351044351?text=${encodeURIComponent(text + " " + window.location.href)}`,
-      "_blank"
-    );
+  const handleShare = async () => {
+    const shareData = {
+      title: blog.title,
+      text: `Check out this insight from Ion Pure Solutions: ${blog.title}`,
+      url: window.location.href,
+    };
+
+    try {
+      // Check if the browser supports native sharing
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback: Copy to clipboard if Share API is not available
+        await navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard!");
+        // Pro tip: You could replace this alert with a nice toast notification later
+      }
+    } catch (err) {
+      console.error("Error sharing:", err);
+    }
   };
 
   return (
@@ -106,7 +120,7 @@ export default function BlogDetail({ blog, onBack }) {
             <p className="text-lg md:text-2xl font-medium text-[#1A365D] mb-10 leading-relaxed italic border-l-4 border-[#7CB35B] pl-6 py-2 bg-gray-50/50 rounded-r-2xl">
               {blog.excerpt}
             </p>
-            
+
             <div className="whitespace-pre-line text-base md:text-lg space-y-6">
               {blog.content}
             </div>
@@ -118,20 +132,20 @@ export default function BlogDetail({ blog, onBack }) {
               <button
                 onClick={() => setLiked(!liked)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all font-black text-[8px] md:text-[9px] uppercase tracking-widest shadow-sm ${
-                  liked 
-                    ? "bg-red-50 text-red-500 border border-red-100" 
+                  liked
+                    ? "bg-red-50 text-red-500 border border-red-100"
                     : "bg-gray-50 text-[#1A365D]/40 hover:bg-gray-100 border border-transparent"
                 }`}
               >
                 <Heart size={16} fill={liked ? "currentColor" : "none"} />
                 {liked ? "Saved to Library" : "Like Insight"}
               </button>
-              
+
               <button
                 onClick={handleShare}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#E2EBF5] text-[#2C5DA7] font-black text-[8px] md:text-[9px] uppercase tracking-widest hover:bg-[#D0E0F0] transition-all shadow-sm"
               >
-                <Share2 size={16} /> WhatsApp Share
+                <Share2 size={16} /> Share Insight
               </button>
             </div>
 
@@ -153,7 +167,10 @@ export default function BlogDetail({ blog, onBack }) {
             </span>
           </div>
           <h2 className="text-2xl md:text-4xl font-black text-[#1A365D] tracking-tighter mb-10 md:mb-12">
-            Continue Your <span className="italic font-light opacity-50">Purity Journey.</span>
+            Continue Your{" "}
+            <span className="italic font-light opacity-50">
+              Purity Journey.
+            </span>
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
@@ -169,9 +186,9 @@ export default function BlogDetail({ blog, onBack }) {
               >
                 <div className="relative aspect-square bg-gray-50 rounded-[1.5rem] md:rounded-[2.5rem] p-0 mb-4 md:mb-6 overflow-hidden border border-transparent group-hover:border-[#2C5DA7]/10 transition-all shadow-sm group-hover:shadow-xl">
                   {b.image ? (
-                    <img 
-                      src={b.image} 
-                      alt={b.title} 
+                    <img
+                      src={b.image}
+                      alt={b.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   ) : (
