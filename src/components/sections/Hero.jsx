@@ -1,10 +1,17 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Droplets, ShieldCheck, Zap, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Droplets,
+  ShieldCheck,
+  Zap,
+  Sparkles,
+  Download,
+  X,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { COMPANY } from "../../data/company";
-import { usePWA } from "../../hooks/usePWA"; // Import the hook
+import { usePWA } from "../../hooks/usePWA";
 
-// Refined Product Array based on Documentation
 const heroProducts = [
   { id: 1, src: "/SampleProductImage.jpg", alt: "ION PURE FLOW MAX" },
   { id: 2, src: "/SampleProductImage.jpg", alt: "IPS H2 PRO SERIES" },
@@ -14,6 +21,8 @@ const heroProducts = [
 export default function Hero({ scrollToProducts }) {
   const [index, setIndex] = useState(0);
   const { isInstallable, installApp } = usePWA();
+  const [dismissed, setDismissed] = useState(false);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % heroProducts.length);
@@ -26,7 +35,6 @@ export default function Hero({ scrollToProducts }) {
       id="home"
       className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-white"
     >
-      {/* 1. BACKGROUND AMBIENCE - Zero Black Shades */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[45%] h-[45%] bg-[#7CB35B]/5 blur-[120px] rounded-full animate-pulse" />
         <div
@@ -36,27 +44,44 @@ export default function Hero({ scrollToProducts }) {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
-        {/* LEFT SIDE: DOCUMENTATION-ALIGNED CONTENT */}
         <div className="text-left order-2 lg:order-1">
+          {/* ENHANCED PWA NOTIFICATION */}
           <AnimatePresence>
-            {isInstallable && (
+            {isInstallable && !dismissed && (
               <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                onClick={installApp}
-                className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-gradient-to-r from-[#2C5DA7] to-[#1A365D] text-white shadow-lg cursor-pointer mb-6 hover:shadow-blue-900/20 transition-all group"
+                className="relative inline-flex items-center gap-4 pl-4 pr-12 py-3 rounded-2xl bg-[#F1F8E1] border border-[#7CB35B]/20 shadow-xl mb-8 group"
               >
-                <div className="p-1.5 bg-white/20 rounded-lg">
-                  <Download size={14} className="group-hover:bounce" />
+                <div
+                  onClick={installApp}
+                  className="flex items-center gap-3 cursor-pointer"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-[#2C5DA7] flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                    <Download size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-[#2C5DA7]">
+                      Experience IonPure
+                    </p>
+                    <p className="text-[9px] font-bold text-[#7CB35B] uppercase tracking-tighter">
+                      Install Official App
+                    </p>
+                  </div>
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-widest">
-                  Install IonPure App
-                </span>
-                <div className="w-1.5 h-1.5 rounded-full bg-[#7CB35B] animate-ping" />
+
+                {/* Close Button */}
+                <button
+                  onClick={() => setDismissed(true)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2C5DA7]/30 hover:text-[#2C5DA7] transition-colors"
+                >
+                  <X size={14} />
+                </button>
               </motion.div>
             )}
           </AnimatePresence>
+
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -76,29 +101,26 @@ export default function Hero({ scrollToProducts }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-5xl md:text-7xl xl:text-8xl font-black leading-[0.9] tracking-tighter mb-6">
-              <span className="text-[#2C5DA7]">CHANGE YOUR</span>
+            <h1 className="text-5xl md:text-7xl xl:text-8xl font-black leading-[0.9] tracking-tighter mb-6 text-[#2C5DA7]">
+              CHANGE YOUR
               <br />
               <span className="animate-gradient-text bg-gradient-to-r from-[#7CB35B] via-[#2C5DA7] to-[#7CB35B] bg-[length:200%_auto] bg-clip-text text-transparent italic font-light pr-4">
                 Water,
               </span>
             </h1>
-            {/* Documentation Tagline - Zero Black Shade */}
             <h2 className="text-3xl md:text-4xl font-black text-[#2C5DA7]/40 mt-[-10px] tracking-tight uppercase">
               Change your life.
             </h2>
           </motion.div>
 
-          {/* Documentation Copy: Section 4 - Who Are We */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
             className="text-base md:text-lg text-[#2C5DA7]/70 max-w-lg mt-8 mb-10 leading-relaxed font-medium italic"
           >
-            Improving everyday hydration through advanced medical-grade
-            ionization. Delivering clean, healthy, and refreshing water for
-            modern lifestyles.
+            {COMPANY.name}: Advanced medical-grade ionization. Delivering
+            healthy water for modern lifestyles.
           </motion.p>
 
           <motion.div
@@ -109,7 +131,7 @@ export default function Hero({ scrollToProducts }) {
           >
             <button
               onClick={scrollToProducts}
-              className="group relative px-8 py-4 bg-[#2C5DA7] text-white rounded-2xl font-black uppercase tracking-widest text-[10px] overflow-hidden transition-all hover:shadow-[0_15px_30px_rgba(44,93,167,0.2)] active:scale-95"
+              className="group relative px-8 py-4 bg-[#2C5DA7] text-white rounded-2xl font-black uppercase tracking-widest text-[10px] overflow-hidden transition-all hover:shadow-[0_15px_30px_rgba(44,93,167,0.2)]"
             >
               <span className="relative z-10 flex items-center gap-3">
                 Explore Systems{" "}
@@ -120,7 +142,6 @@ export default function Hero({ scrollToProducts }) {
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-[#2C5DA7] to-[#7CB35B]/80 opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
-
             <button
               onClick={() =>
                 window.open(
@@ -128,7 +149,7 @@ export default function Hero({ scrollToProducts }) {
                   "_blank",
                 )
               }
-              className="px-8 py-4 bg-white border border-[#2C5DA7]/10 text-[#2C5DA7] rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-[#2C5DA7]/5 transition-all shadow-sm active:scale-95 flex items-center gap-2"
+              className="px-8 py-4 bg-white border border-[#2C5DA7]/10 text-[#2C5DA7] rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-[#2C5DA7]/5 shadow-sm active:scale-95 flex items-center gap-2"
             >
               <ShieldCheck size={14} className="text-[#7CB35B]" /> Consult
               Advisor
@@ -136,7 +157,7 @@ export default function Hero({ scrollToProducts }) {
           </motion.div>
         </div>
 
-        {/* RIGHT SIDE: REFINED WAVY SLIDER */}
+        {/* RIGHT SIDE (Slider Logic Maintained) */}
         <div className="relative order-1 lg:order-2 flex justify-center items-center p-4">
           {/* 1. OUTER LIQUID GLOW - Makes the wavy shape pop from behind */}
           <div
