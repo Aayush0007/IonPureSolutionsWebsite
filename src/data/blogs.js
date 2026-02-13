@@ -26,7 +26,7 @@ Why High-Performers are Switching
 The Ion Pure Advantage
 At Ion Pure Solutions, we utilize advanced Solid Polymer Electrolysis (SPE) technology. This ensures you receive high-concentration H2 without unwanted byproducts like ozone or chlorine. We aren't just drinking water for hydration anymore; we are drinking it for cellular performance.
   `,
-    // author: "Dr. A. Sharma",
+    author: "Ion Pure Research Team",
     date: "February 08, 2026",
     readTime: "3 min read",
     category: "Science",
@@ -92,8 +92,6 @@ The hydration revolution isn't just about what you drink; it's about how you dri
   date: "January 30, 2026",
   readTime: "4 min read",
   category: "Sustainability",
-  // Assuming 'Blog1' is an imported image variable, I'll keep it as is.
-  // If it's a path, please adjust accordingly.
   image: Blog3, 
 },
 ];

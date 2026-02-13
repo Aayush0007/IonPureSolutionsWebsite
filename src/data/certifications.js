@@ -9,4 +9,4 @@ export const CERTIFICATIONS = [
   { code: "RoHS", id: "ROHS/26M0362", name: "Restriction of Hazardous Substances", issuer: "MQA Certification Services (UK)" }
 ];
 
-export const CERTIFICATION_NOTE = "All certifications issued by MQA Certification Services (UK), initial registration 13 January 2026, valid until 2029. Verify at www.mqacertification.com";
+export const CERTIFICATION_NOTE = "All certifications issued by MQA Certification Services (UK) • Initial registration: 13 Jan 2026 • Valid until 2029.";

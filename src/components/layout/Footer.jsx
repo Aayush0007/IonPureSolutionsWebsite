@@ -118,7 +118,7 @@ const Footer = forwardRef(({ scrollTo, setView }, ref) => {
                     href={`tel:${COMPANY.phone}`}
                     className="text-[#1A365D] font-bold hover:text-[#2C5DA7]"
                   >
-                    {COMPANY.phone}
+                    {COMPANY.phone} 
                   </a>
                   <span className="text-[10px] font-black text-[#1A365D]/40 uppercase">
                     Support Line
