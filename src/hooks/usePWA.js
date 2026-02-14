@@ -5,6 +5,7 @@ export function usePWA() {
 
   useEffect(() => {
     const handler = (e) => {
+      console.log("PWA Install Prompt Event Fired!"); // Debug line
       e.preventDefault();
       setInstallPrompt(e);
     };
@@ -16,7 +17,10 @@ export function usePWA() {
     if (!installPrompt) return;
     installPrompt.prompt();
     const { outcome } = await installPrompt.userChoice;
-    if (outcome === 'accepted') setInstallPrompt(null);
+    if (outcome === 'accepted') {
+       console.log("User accepted the install");
+       setInstallPrompt(null);
+    }
   };
 
   return { isInstallable: !!installPrompt, installApp };
