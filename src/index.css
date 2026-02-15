@@ -90,3 +90,20 @@ body[data-pressed="true"] .liquid-drop {
   position: relative;
   z-index: 20;
 }
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+/* In your ChatBot component or global styles */
+.bot-message {  /* or whatever class you use for bot text div */
+  white-space: pre-line;     /* Best: preserves newlines, collapses extra spaces */
+  /* OR */
+  /* white-space: pre-wrap; */   /* Preserves spaces AND wraps long lines */
+  line-height: 1.5;
+  font-family: system-ui, -apple-system, sans-serif; /* or keep your font */
+}
