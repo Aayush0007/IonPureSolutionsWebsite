@@ -132,7 +132,7 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-50 flex flex-col items-end">
+    <div className="relative flex flex-col items-end">
       {/* Floating label */}
       <AnimatePresence>
         {!isOpen && showLabel && (
