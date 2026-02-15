@@ -176,16 +176,16 @@ function App() {
       </div>
 
       {/* RIGHT SIDE: CHATBOT ONLY */}
-      <div
+<div
         className={`fixed bottom-6 right-6 z-[9999] transition-all duration-700 ease-in-out pointer-events-auto ${
           isFooterVisible
             ? "opacity-0 translate-y-32 pointer-events-none"
             : "opacity-100 translate-y-0"
         }`}
       >
-        {/* <ChatBot /> */}
+        <ChatBot />
       </div>
-
+      
       <Footer ref={footerRef} scrollTo={scrollTo} setView={setView} />
     </div>
   );
