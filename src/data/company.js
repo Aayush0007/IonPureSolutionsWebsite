@@ -12,5 +12,5 @@ export const COMPANY = {
   udyam: "UDYAM-HR-05-0065513",
   establishmentYear: "2026",
   website: "https://www.ionpuresolutions.com", // placeholder
-  instagram: "ionpuresolutions"
+  instagram: "ionpure.solutions"
 };
