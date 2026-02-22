@@ -15,9 +15,11 @@ import { usePWA } from "../../hooks/usePWA";
 
 import h2_1 from "../../assets/Products/H2/1H2.png";
 import h2Pro1 from "../../assets/Products/H2 Pro/1H2Pro.jpeg"; 
-import ipFlow1 from "../../assets/Products/IP FLOW/1IPflow.jpg";
-import flowPlus1 from "../../assets/Products/IP FLOW PLUS/1FlowPlus.jpg";
-import flowMax1 from "../../assets/Products/IP FLOW MAX/1FlowMax.jpg";
+import ipFlow1 from "../../assets/Products/IP FLOW/1IPflow.png";
+import flowPlus1 from "../../assets/Products/IP FLOW PLUS/1FlowPlus.png";
+import flowMax1 from "../../assets/Products/IP FLOW MAX/1FlowMax.png";
+// import softner1 from "../assets/Products/Electric Water Softner/1WaterSoftner.png";
+
 // 2. CONFIGURE HERO SLIDER DATA
 const heroProducts = [
   { id: 1, src: flowMax1, alt: "ION PURE FLOW MAX" },
@@ -25,6 +27,7 @@ const heroProducts = [
   { id: 3, src: flowPlus1, alt: "ION PURE FLOW PLUS" },
   { id: 4, src: h2_1, alt: "IPS H2 SMART BOTTLE" },
   { id: 5, src: ipFlow1, alt: "ION PURE FLOW CLASSIC" },
+  // { id: 6, src: softner1, alt: "Electric Water Softner" },
 ];
 
 export default function Hero({ scrollToProducts }) {

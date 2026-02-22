@@ -1,6 +1,6 @@
 // src/data/products.js
 
-import softner1 from "../assets/Products/Electric Water Softner/1WaterSoftner.jpg";
+import softner1 from "../assets/Products/Electric Water Softner/1WaterSoftner.png";
 
 import h2_1 from "../assets/Products/H2/1H2.png";
 import h2_2 from "../assets/Products/H2/2H2.jpg";
@@ -12,11 +12,11 @@ import h2Pro3 from "../assets/Products/H2 Pro/3H2Pro.jpg";
 import h2Pro4 from "../assets/Products/H2 Pro/4H2Pro.jpg";
 import h2Pro5 from "../assets/Products/H2 Pro/5H2Pro.jpg";
 
-import ipFlow1 from "../assets/Products/IP FLOW/1IPflow.jpg";
+import ipFlow1 from "../assets/Products/IP FLOW/1IPflow.png";
 
-import flowPlus1 from "../assets/Products/IP FLOW PLUS/1FlowPlus.jpg";
+import flowPlus1 from "../assets/Products/IP FLOW PLUS/1FlowPlus.png";
 
-import flowMax1 from "../assets/Products/IP FLOW MAX/1FlowMax.jpg";
+import flowMax1 from "../assets/Products/IP FLOW MAX/1FlowMax.png";
 
 export const PRODUCTS = [
   {

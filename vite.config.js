@@ -20,7 +20,7 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: 'SplashScreenLogo.png', // Remove leading slash for PWA consistency
+            src: 'SplashScreenLogo.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any maskable'
@@ -34,7 +34,12 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        // 1. FIX: Increase limit to 20MB to handle large product images during build
+        maximumFileSizeToCacheInBytes: 20971520, 
+        
+        // 2. OPTIMIZE: Added jpg, jpeg, and webp to the cache pattern
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp}'],
+        
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
