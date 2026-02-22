@@ -13,7 +13,10 @@ import {
   Share2,
   Sparkles,
   Info,
-  Plus // ADDED THIS TO FIX THE REFERENCE ERROR
+  Plus,
+  Shield,
+  ZapOff,
+  Copy // Added for fallback UI
 } from "lucide-react";
 import { PRODUCTS } from "../../data/products";
 
@@ -22,6 +25,7 @@ export default function ProductDetail({ product, onBack, setView }) {
   const [activeImg, setActiveImg] = useState(product?.thumbnail || "/SampleProductImage.jpg");
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const [showZoom, setShowZoom] = useState(false);
+  const [shareStatus, setShareStatus] = useState(false); // New state for share feedback
   const imgContainerRef = useRef(null);
 
   // 2. DATA CALCULATION
@@ -36,23 +40,42 @@ export default function ProductDetail({ product, onBack, setView }) {
   const benefits = product.wellnessBenefits || [];
   const gallery = product.gallery || [product.thumbnail];
 
-  // 3. ENHANCED ZOOM LOGIC (Responsive Optimized)
+  // 3. HANDLERS
   const handleMouseMove = (e) => {
     if (!imgContainerRef.current) return;
     const { left, top, width, height } = imgContainerRef.current.getBoundingClientRect();
-    
     const clientX = e.clientX || (e.touches && e.touches[0].clientX);
     const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
     const x = ((clientX - left) / width) * 100;
     const y = ((clientY - top) / height) * 100;
-    
     setZoomPos({ x, y });
   };
 
   const handleWhatsAppQuote = (productName) => {
     const message = `Hello Ion Pure Solutions, I am interested in obtaining a formal quotation for the ${productName}. Please share the technical brochure and pricing details.`;
     window.open(`https://wa.me/918130134145?text=${encodeURIComponent(message)}`, "_blank");
+  };
+
+  // UNIVERSAL SHARE LOGIC
+  const handleShare = async () => {
+    const shareData = {
+      title: `Ion Pure Solutions | ${product.name}`,
+      text: product.tagline || `Check out the ${product.name} at Ion Pure Solutions`,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.log("Error sharing:", err);
+      }
+    } else {
+      // Fallback: Copy to clipboard
+      navigator.clipboard.writeText(window.location.href);
+      setShareStatus(true);
+      setTimeout(() => setShareStatus(false), 2000);
+    }
   };
 
   return (
@@ -74,11 +97,9 @@ export default function ProductDetail({ product, onBack, setView }) {
         {/* MAIN PRODUCT GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start mb-24 md:mb-32">
           
-          {/* LEFT: INTERACTIVE GALLERY (Responsive Switch) */}
+          {/* LEFT: GALLERY */}
           <div className="lg:col-span-6 space-y-6 lg:sticky lg:top-32 order-1">
             <div className="flex flex-col md:flex-row gap-4">
-              
-              {/* Lazy-Loaded Thumbnails */}
               <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto no-scrollbar pb-2 md:pb-0 md:max-h-[500px]">
                 {gallery.map((img, i) => (
                   <button
@@ -93,7 +114,6 @@ export default function ProductDetail({ product, onBack, setView }) {
                 ))}
               </div>
 
-              {/* Main Stage with Functional Amazon Zoom */}
               <div 
                 ref={imgContainerRef}
                 onMouseMove={handleMouseMove}
@@ -103,7 +123,6 @@ export default function ProductDetail({ product, onBack, setView }) {
                 className="relative flex-1 aspect-square rounded-[2rem] md:rounded-[3rem] bg-white border border-gray-100 shadow-xl flex items-center justify-center p-6 md:p-12 overflow-hidden cursor-crosshair group/stage"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-ionBlue/5 to-transparent pointer-events-none" />
-                
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeImg}
@@ -114,7 +133,6 @@ export default function ProductDetail({ product, onBack, setView }) {
                     <img
                       src={activeImg}
                       loading="eager"
-                      decoding="async"
                       className={`w-full h-full object-contain transition-transform duration-200 ease-out z-10
                         ${showZoom ? 'scale-[2.2]' : 'scale-100'}`}
                       style={{ transformOrigin: `${zoomPos.x}% ${zoomPos.y}%` }}
@@ -122,7 +140,6 @@ export default function ProductDetail({ product, onBack, setView }) {
                     />
                   </motion.div>
                 </AnimatePresence>
-
                 {!showZoom && (
                   <div className="absolute top-6 right-6 p-3 rounded-full bg-white/80 backdrop-blur-md border border-gray-100 pointer-events-none md:opacity-0 group-hover/stage:opacity-100 transition-opacity">
                     <Expand size={18} className="text-ionBlue" />
@@ -143,7 +160,7 @@ export default function ProductDetail({ product, onBack, setView }) {
             </div>
           </div>
 
-          {/* RIGHT: DETAILS & SPECS */}
+          {/* RIGHT: DETAILS */}
           <div className="lg:col-span-6 space-y-10 order-2 mt-8 lg:mt-0">
             <header className="space-y-6">
               <div className="flex flex-wrap gap-3">
@@ -159,7 +176,6 @@ export default function ProductDetail({ product, onBack, setView }) {
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-ionMidnight tracking-tighter italic uppercase leading-[0.95] md:leading-[0.9]">
                 {product.name}
               </h1>
-              
               <p className="text-lg sm:text-xl font-medium text-ionBlue/50 italic border-l-4 border-ionGreen pl-6 py-2">
                 {product.tagline}
               </p>
@@ -169,6 +185,7 @@ export default function ProductDetail({ product, onBack, setView }) {
               </div>
             </header>
 
+            {/* ACTION BUTTONS (Share button updated here) */}
             <div className="flex flex-col sm:flex-row gap-4">
               <motion.button
                 whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
@@ -177,10 +194,49 @@ export default function ProductDetail({ product, onBack, setView }) {
               >
                 Claim Launch Offer <ArrowRight size={18} />
               </motion.button>
-              <button className="flex-1 py-5 rounded-full bg-white border border-gray-200 text-ionBlue flex items-center justify-center hover:bg-gray-50 transition-all shadow-sm">
-                <Share2 size={20} />
-              </button>
+              
+              <motion.button 
+                whileTap={{ scale: 0.9 }}
+                onClick={handleShare}
+                className={`flex-1 py-5 rounded-full border transition-all shadow-sm flex items-center justify-center relative overflow-hidden
+                  ${shareStatus ? 'bg-ionGreen border-ionGreen text-white' : 'bg-white border-gray-200 text-ionBlue hover:bg-gray-50'}`}
+              >
+                <AnimatePresence mode="wait">
+                  {shareStatus ? (
+                    <motion.span 
+                      key="copied" 
+                      initial={{ y: 20 }} animate={{ y: 0 }} exit={{ y: -20 }}
+                      className="text-[10px] font-black uppercase"
+                    >
+                      Copied!
+                    </motion.span>
+                  ) : (
+                    <motion.div key="share" initial={{ y: 20 }} animate={{ y: 0 }} exit={{ y: -20 }}>
+                      <Share2 size={20} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.button>
             </div>
+
+            {/* FEATURES, SPECS, BENEFITS (Rendering from data) */}
+            {features.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-ionMidnight/40">
+                  <Zap size={14} /> Core Innovation
+                </h3>
+                <div className="grid grid-cols-1 gap-2">
+                  {features.map((feature, idx) => (
+                    <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-50 shadow-sm">
+                      <div className="mt-1 w-5 h-5 rounded-full bg-ionGreen/10 flex items-center justify-center shrink-0">
+                        <Check size={12} className="text-ionGreen" />
+                      </div>
+                      <p className="text-sm font-bold text-ionMidnight/80">{feature}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="space-y-6">
               <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-ionMidnight/40">
@@ -195,11 +251,28 @@ export default function ProductDetail({ product, onBack, setView }) {
                 ))}
               </div>
             </div>
+
+            {benefits.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-ionMidnight/40">
+                  <Heart size={14} /> Clinical Advantages
+                </h3>
+                <div className="p-6 rounded-[2rem] bg-ionGreen/5 border border-ionGreen/10 grid grid-cols-1 gap-4">
+                  {benefits.map((benefit, idx) => (
+                    <div key={idx} className="flex items-center gap-4">
+                       <Droplets size={18} className="text-ionBlue opacity-40" />
+                       <p className="text-sm font-black text-ionBlue italic">{benefit}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* EXTENDED TECHNICAL TRUST BLOCK */}
+        {/* TECHNICAL TRUST BLOCK */}
         <div className="p-8 sm:p-12 md:p-20 rounded-[2.5rem] md:rounded-[4rem] bg-ionMidnight text-white relative overflow-hidden mb-24 md:mb-32">
+           {/* ... (Trust block content remains same) */}
            <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-ionBlue/10 blur-[120px] rounded-full" />
            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
@@ -233,7 +306,7 @@ export default function ProductDetail({ product, onBack, setView }) {
            </div>
         </div>
 
-        {/* CURATED COLLECTION (Fixed ReferenceError) */}
+        {/* CURATED COLLECTION */}
         <div className="pt-12 border-t border-gray-100">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
             <h2 className="text-3xl sm:text-4xl font-black text-ionMidnight tracking-tighter italic uppercase">Curated <span className="opacity-30 font-light">Collection.</span></h2>
