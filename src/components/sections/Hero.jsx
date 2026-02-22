@@ -7,15 +7,24 @@ import {
   Sparkles,
   Download,
   X,
+  Waves,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { COMPANY } from "../../data/company";
 import { usePWA } from "../../hooks/usePWA";
 
+import h2_1 from "../../assets/Products/H2/1H2.png";
+import h2Pro1 from "../../assets/Products/H2 Pro/1H2Pro.jpeg"; 
+import ipFlow1 from "../../assets/Products/IP FLOW/1IPflow.jpg";
+import flowPlus1 from "../../assets/Products/IP FLOW PLUS/1FlowPlus.jpg";
+import flowMax1 from "../../assets/Products/IP FLOW MAX/1FlowMax.jpg";
+// 2. CONFIGURE HERO SLIDER DATA
 const heroProducts = [
-  { id: 1, src: "/SampleProductImage.jpg", alt: "ION PURE FLOW MAX" },
-  { id: 2, src: "/SampleProductImage.jpg", alt: "IPS H2 PRO SERIES" },
-  { id: 3, src: "/SampleProductImage.jpg", alt: "ALKALINE IONIZER" },
+  { id: 1, src: flowMax1, alt: "ION PURE FLOW MAX" },
+  { id: 2, src: h2Pro1, alt: "IPS H2 PRO SERIES" },
+  { id: 3, src: flowPlus1, alt: "ION PURE FLOW PLUS" },
+  { id: 4, src: h2_1, alt: "IPS H2 SMART BOTTLE" },
+  { id: 5, src: ipFlow1, alt: "ION PURE FLOW CLASSIC" },
 ];
 
 export default function Hero({ scrollToProducts }) {
@@ -26,55 +35,60 @@ export default function Hero({ scrollToProducts }) {
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % heroProducts.length);
-    }, 4000);
+    }, 4500);
     return () => clearInterval(timer);
   }, []);
 
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-white"
+      className="relative min-h-[90vh] lg:min-h-screen flex items-center pt-28 pb-16 overflow-hidden bg-white"
     >
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[45%] h-[45%] bg-[#7CB35B]/5 blur-[120px] rounded-full animate-pulse" />
-        <div
-          className="absolute bottom-[10%] right-[5%] w-[35%] h-[35%] bg-[#2C5DA7]/5 blur-[120px] rounded-full animate-pulse"
-          style={{ animationDelay: "2s" }}
+      {/* BACKGROUND AMBIENCE: Water Molecules */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <motion.div
+          animate={{ y: [0, -40, 0], x: [0, 20, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[15%] left-[5%] w-32 h-32 rounded-full bg-gradient-to-br from-ionBlue/15 to-ionGreen/5 blur-xl"
+        />
+        <motion.div
+          animate={{ y: [0, 60, 0], x: [0, -30, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[20%] left-[10%] w-48 h-48 rounded-full bg-gradient-to-tr from-ionGreen/15 to-ionBlue/5 blur-2xl"
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
+        {/* LEFT CONTENT */}
         <div className="text-left order-2 lg:order-1">
-          {/* ENHANCED PWA NOTIFICATION */}
+          {/* PWA INSTALLER: Glassmorphism without Black */}
           <AnimatePresence>
             {isInstallable && !dismissed && (
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="relative inline-flex items-center gap-4 pl-4 pr-12 py-3 rounded-2xl bg-[#F1F8E1] border border-[#7CB35B]/20 shadow-xl mb-8 group"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="relative inline-flex items-center gap-4 pl-4 pr-12 py-3 rounded-2xl bg-white/70 backdrop-blur-xl border border-ionBlue/20 shadow-[0_10px_30px_rgba(44,93,167,0.1)] mb-8 group"
               >
                 <div
                   onClick={installApp}
                   className="flex items-center gap-3 cursor-pointer"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#2C5DA7] flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ionBlue to-ionBlue/80 flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
                     <Download size={18} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-[#2C5DA7]">
-                      Experience IonPure
+                    <p className="text-[10px] font-black uppercase tracking-widest text-ionBlue">
+                      Digital Access
                     </p>
-                    <p className="text-[9px] font-bold text-[#7CB35B] uppercase tracking-tighter">
-                      Install Official App
+                    <p className="text-[9px] font-bold text-ionGreen uppercase tracking-tighter">
+                      Install for full experience
                     </p>
                   </div>
                 </div>
-
-                {/* Close Button */}
                 <button
                   onClick={() => setDismissed(true)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2C5DA7]/30 hover:text-[#2C5DA7] transition-colors"
+                  className="absolute right-3 text-ionBlue/40 hover:text-ionBlue transition-colors"
                 >
                   <X size={14} />
                 </button>
@@ -82,66 +96,73 @@ export default function Hero({ scrollToProducts }) {
             )}
           </AnimatePresence>
 
+          {/* TECHNOLOGY BADGE */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-[#2C5DA7]/5 border border-[#2C5DA7]/10 mb-8"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-ionBlue/10 to-ionGreen/10 border border-ionBlue/20 mb-8"
           >
-            <div className="flex -space-x-1">
-              <Droplets size={14} className="text-[#7CB35B]" />
-              <Zap size={14} className="text-[#2C5DA7]" />
-            </div>
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#2C5DA7]">
-              Premium Hydration Technology 2026
+            <Sparkles size={14} className="text-ionGreen animate-pulse" />
+            <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-ionBlue">
+              Pure Hydrogen Evolution 2026
             </span>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-7xl xl:text-8xl font-black leading-[0.9] tracking-tighter mb-6 text-[#2C5DA7]">
-              CHANGE YOUR
-              <br />
-              <span className="animate-gradient-text bg-gradient-to-r from-[#7CB35B] via-[#2C5DA7] to-[#7CB35B] bg-[length:200%_auto] bg-clip-text text-transparent italic font-light pr-4">
+          {/* MAIN HEADLINE: Bold Blue & Italic Green Gradients */}
+          <div className="space-y-2">
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-5xl md:text-7xl xl:text-8xl font-black leading-[0.85] tracking-tighter text-ionBlue uppercase"
+            >
+              Change Your <br />
+              <span className="bg-gradient-to-r from-ionBlue via-ionSlate to-ionBlue bg-[length:200%_auto] animate-gradient-text bg-clip-text text-transparent italic font-extrabold pr-4">
                 Water,
               </span>
-            </h1>
-            <h2 className="text-3xl md:text-4xl font-black text-[#2C5DA7]/40 mt-[-10px] tracking-tight uppercase">
-              Change your life.
-            </h2>
-          </motion.div>
+            </motion.h1>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-4xl md:text-6xl font-black text-ionGreen tracking-tight uppercase italic"
+            >
+              Change Your Life.
+            </motion.h2>
+          </div>
 
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-base md:text-lg text-[#2C5DA7]/70 max-w-lg mt-8 mb-10 leading-relaxed font-medium italic"
+            className="text-sm md:text-lg text-ionBlue/70 max-w-md mt-8 mb-10 leading-relaxed font-medium"
           >
-            {COMPANY.name}: Advanced medical-grade ionization. Delivering
-            healthy water for modern lifestyles.
+            Experience the absolute purity of 99.99% Molecular Hydrogen.{" "}
+            {COMPANY.name} delivers medical-grade ionization for a healthier,
+            modern lifestyle.
           </motion.p>
 
+          {/* CTA GROUP: No Black Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="flex flex-wrap gap-4"
+            className="flex flex-col sm:flex-row gap-4"
           >
             <button
               onClick={scrollToProducts}
-              className="group relative px-8 py-4 bg-[#2C5DA7] text-white rounded-2xl font-black uppercase tracking-widest text-[10px] overflow-hidden transition-all hover:shadow-[0_15px_30px_rgba(44,93,167,0.2)]"
+              className="group relative px-10 py-5 text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] overflow-hidden transition-all hover:shadow-[0_20px_40px_rgba(44,93,167,0.2)] active:scale-95"
             >
-              <span className="relative z-10 flex items-center gap-3">
+              <span className="relative z-10 flex items-center justify-center gap-3">
                 Explore Systems{" "}
                 <ArrowRight
                   size={16}
-                  className="group-hover:translate-x-1 transition-transform"
+                  className="group-hover:translate-x-2 transition-transform"
                 />
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-[#2C5DA7] to-[#7CB35B]/80 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-r from-ionBlue via-[#3d7edb] to-ionBlue bg-[length:200%_auto] group-hover:animate-gradient-text" />
             </button>
+
             <button
               onClick={() =>
                 window.open(
@@ -149,96 +170,109 @@ export default function Hero({ scrollToProducts }) {
                   "_blank",
                 )
               }
-              className="px-8 py-4 bg-white border border-[#2C5DA7]/10 text-[#2C5DA7] rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-[#2C5DA7]/5 shadow-sm active:scale-95 flex items-center gap-2"
+              className="px-10 py-5 bg-white border-2 border-ionBlue/20 text-ionBlue rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-ionMint/50 transition-all flex items-center justify-center gap-2 group shadow-sm active:scale-95"
             >
-              <ShieldCheck size={14} className="text-[#7CB35B]" /> Consult
-              Advisor
+              <ShieldCheck
+                size={16}
+                className="text-ionGreen group-hover:scale-125 transition-transform"
+              />
+              Consult Advisor
             </button>
           </motion.div>
         </div>
 
-        {/* RIGHT SIDE (Slider Logic Maintained) */}
-        <div className="relative order-1 lg:order-2 flex justify-center items-center p-4">
-          {/* 1. OUTER LIQUID GLOW - Makes the wavy shape pop from behind */}
-          <div
-            className="absolute inset-0 bg-[#2C5DA7]/10 blur-[60px] rounded-full animate-pulse"
-            style={{ transform: "scale(0.8)" }}
-          />
+        {/* RIGHT CONTENT: The Fluid Vessel Slider */}
+        <div className="relative order-1 lg:order-2 flex justify-center items-center py-12 lg:py-0">
+          {/* 1. LAYERED AMBIENT GLOW: Increased intensity for better visibility */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-ionBlue/20 via-ionMint/40 to-ionGreen/20 blur-[100px] rounded-full scale-90 animate-pulse" />
+          <div className="absolute w-[120%] h-[120%] bg-[radial-gradient(circle,rgba(44,93,167,0.08)_0%,transparent_70%)] animate-pulse" />
 
-          {/* 2. THE GLOWING GRADIENT BORDER WRAPPER */}
-          <div
-            className="relative p-[5px] bg-gradient-to-br from-[#2C5DA7] via-[#7CB35B] to-[#2C5DA7] shadow-[0_0_50px_rgba(44,93,167,0.3)] transition-all duration-700 hover:shadow-[0_0_80px_rgba(124,179,91,0.4)]"
-            style={{
-              clipPath:
-                "polygon(10% 0%, 90% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 90%, 0% 10%)",
-              borderRadius: "24% 76% 70% 30% / 30% 30% 70% 70%",
-            }}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="relative w-[300px] h-[380px] md:w-[450px] md:h-[580px] flex items-center justify-center"
           >
-            {/* 3. MAIN CONTENT CONTAINER */}
+            {/* 2. THE MORPHING VESSEL: Enhanced with a 'Liquid Border' effect */}
             <div
-              className="relative w-[320px] h-[420px] md:w-[420px] md:h-[520px] bg-white overflow-hidden"
-              style={{ borderRadius: "inherit" }}
+              className="absolute inset-0 transition-all duration-1000 p-[3px] bg-gradient-to-br from-ionBlue/40 via-white to-ionGreen/40 shadow-[0_30px_60px_rgba(44,93,167,0.18)]"
+              style={{
+                borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
+                animation: "morph 10s ease-in-out infinite",
+              }}
             >
-              {/* 4. REFINED GLASS INNER SHADOW & BEZEL */}
+              {/* 3. INNER GLASS CHAMBER: Higher contrast white-to-mint gradient */}
               <div
-                className="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_60px_rgba(44,93,167,0.2)] border-[12px] border-white/60 backdrop-blur-[1px]"
+                className="w-full h-full bg-gradient-to-br from-white via-ionMint/30 to-white/60 overflow-hidden relative shadow-inner"
                 style={{ borderRadius: "inherit" }}
-              />
-
-              {/* 5. LIGHTING STREAK - Adds a premium metallic/water reflection look */}
-              <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/20 to-transparent z-10 pointer-events-none" />
-
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={heroProducts[index].id}
-                  initial={{ opacity: 0, scale: 1.1, x: 30 }}
-                  animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, x: -30 }}
-                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-0 flex items-center justify-center p-14"
-                >
-                  <div className="relative w-full h-full flex flex-col items-center justify-center">
-                    {/* Optimized Product Image Scaling */}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+                    transition={{ duration: 0.8, ease: "circOut" }}
+                    className="absolute inset-0 flex flex-col items-center justify-center p-10 text-center"
+                  >
+                    {/* 4. PRODUCT IMAGE: Enhanced shadow for 'pop' without using black */}
                     <img
                       src={heroProducts[index].src}
                       alt={heroProducts[index].alt}
-                      className="w-[90%] h-[90%] object-contain mix-blend-multiply drop-shadow-[0_20px_40px_rgba(44,93,167,0.25)]"
+                      className="w-full h-[75%] object-contain drop-shadow-[0_25px_45px_rgba(44,93,167,0.3)] hover:scale-105 transition-transform duration-700"
                     />
 
-                    {/* PRESTIGE TAG - Centered with higher contrast */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 }}
-                      className="absolute bottom-4 px-8 py-3 bg-white/80 backdrop-blur-xl rounded-2xl border border-[#2C5DA7]/20 shadow-2xl text-center z-30"
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Sparkles size={14} className="text-[#7CB35B]" />
-                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#2C5DA7]">
-                          {heroProducts[index].alt}
-                        </p>
-                      </div>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+                    {/* 5. FLOATING TAG: Stronger shadow & Glassmorphism */}
+                    <div className="mt-6 px-7 py-2.5 bg-white/80 backdrop-blur-2xl shadow-[0_10px_25px_rgba(44,93,167,0.12)] rounded-full border border-ionBlue/10 flex items-center gap-2 group cursor-default">
+                      <Waves
+                        size={14}
+                        className="text-ionBlue animate-bounce"
+                      />
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-ionBlue">
+                        {heroProducts[index].alt}
+                      </span>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
 
-              {/* LIQUID SHINE OVERLAY */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#2C5DA7]/10 via-transparent to-[#7CB35B]/10 pointer-events-none z-10" />
+                {/* 6. LIQUID SHINE: A moving light streak across the glass */}
+                <motion.div
+                  animate={{ x: ["-100%", "200%"] }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "linear",
+                    repeatDelay: 1,
+                  }}
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 pointer-events-none"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* 6. ENHANCED ORBITAL RINGS - Thicker for visibility */}
-          <div
-            className="absolute -z-10 w-[118%] h-[118%] border-[3px] border-[#2C5DA7]/15 rounded-full animate-[spin_35s_linear_infinite]"
-            style={{ borderDasharray: "30 60" }}
-          />
-          <div
-            className="absolute -z-10 w-[108%] h-[108%] border-[2px] border-[#7CB35B]/25 rounded-full animate-[spin_25s_linear_infinite_reverse]"
-            style={{ borderDasharray: "15 45" }}
-          />
+            {/* 7. ORBITAL SYSTEM: Increased visibility with brand colors */}
+            <div
+              className="absolute inset-[-8%] border-2 border-ionBlue/20 rounded-full animate-spin-slow opacity-60"
+              style={{ borderDasharray: "15 45" }}
+            />
+            <div
+              className="absolute inset-[-18%] border border-ionGreen/20 rounded-full animate-[spin-slow_25s_linear_infinite_reverse] opacity-40"
+              style={{ borderDasharray: "10 40" }}
+            />
+
+            {/* 8. WATER ATOMS: Small floating particles around the vessel */}
+            <div className="absolute -top-4 -right-4 w-6 h-6 bg-ionBlue/20 rounded-full blur-sm animate-bounce" />
+            <div className="absolute bottom-10 -left-6 w-4 h-4 bg-ionGreen/20 rounded-full blur-sm animate-pulse" />
+          </motion.div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes morph {
+          0%, 100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+          33% { border-radius: 70% 30% 46% 54% / 30% 39% 61% 70%; }
+          66% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
+        }
+      `}</style>
     </section>
   );
 }

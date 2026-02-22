@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useMemo } from "react";
 import {
   ArrowLeft,
   ShieldCheck,
@@ -8,387 +9,257 @@ import {
   ArrowRight,
   Check,
   Activity,
-  Globe,
-  Package,
-  MessageCircle,
-  Sparkles,
-  LayoutGrid,
+  Expand,
   Share2,
+  Sparkles,
+  Info,
+  Plus // ADDED THIS TO FIX THE REFERENCE ERROR
 } from "lucide-react";
 import { PRODUCTS } from "../../data/products";
 
 export default function ProductDetail({ product, onBack, setView }) {
-  // Guard clause to prevent errors if product is undefined during transition
+  // 1. STATE & REFS
+  const [activeImg, setActiveImg] = useState(product?.thumbnail || "/SampleProductImage.jpg");
+  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
+  const [showZoom, setShowZoom] = useState(false);
+  const imgContainerRef = useRef(null);
+
+  // 2. DATA CALCULATION
+  const relatedProducts = useMemo(() => {
+    return PRODUCTS.filter((p) => p.id !== product?.id).slice(0, 3);
+  }, [product?.id]);
+
   if (!product) return null;
 
   const specs = product.technicalSpecifications || {};
   const features = product.keyFeatures || [];
   const benefits = product.wellnessBenefits || [];
+  const gallery = product.gallery || [product.thumbnail];
 
-  // Filter 3 related products
-  const relatedProducts = PRODUCTS.filter((p) => p.id !== product.id).slice(
-    0,
-    3,
-  );
-  const handleShareProduct = async () => {
-    const shareData = {
-      title: product.name,
-      text: `Check out the ${product.name} from Ion Pure Solutions: ${product.tagline}`,
-      url: window.location.href,
-    };
+  // 3. ENHANCED ZOOM LOGIC (Responsive Optimized)
+  const handleMouseMove = (e) => {
+    if (!imgContainerRef.current) return;
+    const { left, top, width, height } = imgContainerRef.current.getBoundingClientRect();
+    
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
 
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        alert("Product link copied to clipboard!");
-      }
-    } catch (err) {
-      console.error("Error sharing product:", err);
-    }
-  };
-
-  const handleBackNavigation = () => {
-    window.history.pushState({}, "", window.location.origin + "/");
-    onBack();
-  };
-
-  const handleRelatedProductClick = (id) => {
-    // FIX: Using Root Hash so App.jsx useEffect can catch it in the new tab
-    const productUrl = `${window.location.origin}/#${id}`;
-    window.open(productUrl, "_blank");
+    const x = ((clientX - left) / width) * 100;
+    const y = ((clientY - top) / height) * 100;
+    
+    setZoomPos({ x, y });
   };
 
   const handleWhatsAppQuote = (productName) => {
     const message = `Hello Ion Pure Solutions, I am interested in obtaining a formal quotation for the ${productName}. Please share the technical brochure and pricing details.`;
-    window.open(
-      `https://wa.me/918130134145?text=${encodeURIComponent(message)}`,
-      "_blank",
-    );
+    window.open(`https://wa.me/918130134145?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   return (
     <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="pt-20 md:pt-28 pb-16 md:pb-24 bg-white min-h-screen"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="pt-24 md:pt-32 pb-16 md:pb-24 bg-[#FCFCFC] min-h-screen selection:bg-ionBlue/10"
     >
-      <div className="section-container px-4 md:px-6">
-        {/* Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* TOP NAVIGATION */}
         <button
-          onClick={handleBackNavigation}
-          className="group flex items-center gap-3 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-[#2C5DA7] mb-8 md:mb-16 hover:gap-5 transition-all"
+          onClick={() => { window.history.pushState({}, "", "/"); onBack(); }}
+          className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-ionBlue mb-8 md:mb-12 hover:gap-5 transition-all"
         >
-          <ArrowLeft
-            size={18}
-            className="group-hover:-translate-x-1 transition-transform"
-          />
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
           Back to Collection
         </button>
 
-        {/* MAIN PRODUCT LAYOUT */}
-        <div className="grid lg:grid-cols-12 gap-10 md:gap-16 lg:gap-24 items-start mb-20 md:mb-32">
-          {/* LEFT COLUMN: VISUALS */}
-          <div className="lg:col-span-5 space-y-6 md:space-y-10 lg:sticky lg:top-32">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="relative aspect-square rounded-[2rem] md:rounded-[3.5rem] overflow-hidden bg-gray-50 border border-gray-100 shadow-2xl flex items-center justify-center p-6 md:p-12"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#2C5DA7]/5 to-transparent" />
-              <img
-                src={product.image || "/SampleProductImage.jpg"}
-                alt={product.name}
-                className="w-full h-full object-contain drop-shadow-2xl z-10"
-              />
-              <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 px-4 md:px-6 py-2 md:py-3 bg-white/40 backdrop-blur-xl rounded-2xl border border-white/30 shadow-lg z-20 whitespace-nowrap">
-                <span className="text-[8px] md:text-[10px] font-black text-[#1A365D] uppercase tracking-widest">
-                  Medical Grade Engineering
-                </span>
+        {/* MAIN PRODUCT GRID */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start mb-24 md:mb-32">
+          
+          {/* LEFT: INTERACTIVE GALLERY (Responsive Switch) */}
+          <div className="lg:col-span-6 space-y-6 lg:sticky lg:top-32 order-1">
+            <div className="flex flex-col md:flex-row gap-4">
+              
+              {/* Lazy-Loaded Thumbnails */}
+              <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto no-scrollbar pb-2 md:pb-0 md:max-h-[500px]">
+                {gallery.map((img, i) => (
+                  <button
+                    key={i}
+                    onMouseEnter={() => setActiveImg(img)}
+                    onClick={() => setActiveImg(img)}
+                    className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl md:rounded-2xl overflow-hidden border-2 transition-all shrink-0 p-1.5 bg-white
+                      ${activeImg === img ? 'border-ionBlue shadow-lg scale-95' : 'border-gray-100 opacity-60 hover:opacity-100'}`}
+                  >
+                    <img src={img} loading="lazy" className="w-full h-full object-contain" alt="Thumbnail" />
+                  </button>
+                ))}
               </div>
-            </motion.div>
 
-            {/* Thumbnail Placeholder */}
-            <div className="grid grid-cols-4 gap-2 md:gap-4">
-              {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className="aspect-square rounded-xl md:rounded-3xl bg-gray-50 border border-gray-100 flex items-center justify-center hover:bg-[#F1F8E1] hover:border-[#7CB35B]/30 transition-all cursor-pointer group"
-                >
-                  <Activity
-                    size={20}
-                    className="text-[#2C5DA7]/20 group-hover:text-[#7CB35B] transition-colors"
-                  />
-                </div>
-              ))}
+              {/* Main Stage with Functional Amazon Zoom */}
+              <div 
+                ref={imgContainerRef}
+                onMouseMove={handleMouseMove}
+                onTouchMove={handleMouseMove}
+                onMouseEnter={() => setShowZoom(true)}
+                onMouseLeave={() => setShowZoom(false)}
+                className="relative flex-1 aspect-square rounded-[2rem] md:rounded-[3rem] bg-white border border-gray-100 shadow-xl flex items-center justify-center p-6 md:p-12 overflow-hidden cursor-crosshair group/stage"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-ionBlue/5 to-transparent pointer-events-none" />
+                
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeImg}
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-full h-full relative"
+                  >
+                    <img
+                      src={activeImg}
+                      loading="eager"
+                      decoding="async"
+                      className={`w-full h-full object-contain transition-transform duration-200 ease-out z-10
+                        ${showZoom ? 'scale-[2.2]' : 'scale-100'}`}
+                      style={{ transformOrigin: `${zoomPos.x}% ${zoomPos.y}%` }}
+                      alt={product.name}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {!showZoom && (
+                  <div className="absolute top-6 right-6 p-3 rounded-full bg-white/80 backdrop-blur-md border border-gray-100 pointer-events-none md:opacity-0 group-hover/stage:opacity-100 transition-opacity">
+                    <Expand size={18} className="text-ionBlue" />
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3 p-4 bg-ionBlue/5 rounded-2xl border border-ionBlue/5">
+               <div className="flex items-center gap-2 px-2">
+                 <ShieldCheck size={16} className="text-ionGreen shrink-0" />
+                 <span className="text-[9px] font-black uppercase text-ionBlue/60 leading-tight">5-Year Plate Protection</span>
+               </div>
+               <div className="flex items-center gap-2 px-2 border-l border-ionBlue/10">
+                 <Sparkles size={16} className="text-ionGreen shrink-0" />
+                 <span className="text-[9px] font-black uppercase text-ionBlue/60 leading-tight">Certified Excellence</span>
+               </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: CONTENT */}
-          <div className="lg:col-span-7 space-y-10 md:space-y-16">
-            <header>
-              <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-4 md:mb-6">
-                <span className="px-3 md:px-4 py-1 md:py-1.5 bg-[#F1F8E1] text-[#7CB35B] rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest border border-[#7CB35B]/10">
+          {/* RIGHT: DETAILS & SPECS */}
+          <div className="lg:col-span-6 space-y-10 order-2 mt-8 lg:mt-0">
+            <header className="space-y-6">
+              <div className="flex flex-wrap gap-3">
+                <span className="px-4 py-1.5 bg-ionMint/50 text-ionBlue rounded-full text-[10px] font-black uppercase tracking-widest border border-ionBlue/5">
                   {product.category}
                 </span>
-                <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-gray-300" />
-                <span className="text-[9px] md:text-[10px] font-black text-[#2C5DA7] uppercase tracking-widest">
-                  In Stock 2026
-                </span>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-100 shadow-sm">
+                  <Activity size={12} className="text-ionGreen" />
+                  <span className="text-[10px] font-black text-ionBlue/40 uppercase tracking-widest">Medical Grade</span>
+                </div>
               </div>
 
-              <h1 className="text-4xl md:text-6xl lg:text-8xl font-black text-[#1A365D] leading-[0.95] md:leading-[0.9] tracking-tighter mb-6 md:mb-8 italic uppercase">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-ionMidnight tracking-tighter italic uppercase leading-[0.95] md:leading-[0.9]">
                 {product.name}
               </h1>
-
-              <p className="text-xl md:text-2xl lg:text-3xl font-light text-[#1A365D]/60 italic mb-6 md:mb-10 leading-snug">
+              
+              <p className="text-lg sm:text-xl font-medium text-ionBlue/50 italic border-l-4 border-ionGreen pl-6 py-2">
                 {product.tagline}
               </p>
 
-              <div className="p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] bg-[#FDFDFD] border border-gray-100 text-base md:text-lg text-[#1A365D]/80 leading-relaxed font-medium shadow-sm">
+              <div className="p-6 rounded-[1.5rem] md:rounded-[2rem] bg-white border border-gray-100 text-ionMidnight/80 leading-relaxed shadow-sm font-medium">
                 {product.description}
               </div>
             </header>
 
-            {/* TECHNICAL MATRIX */}
-            <div className="space-y-6 md:space-y-8">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#2C5DA7] flex items-center justify-center text-white">
-                  <Zap size={18} />
-                </div>
-                <h3 className="text-lg md:text-xl font-black uppercase tracking-tighter text-[#1A365D]">
-                  Engineering Matrix
-                </h3>
-              </div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <motion.button
+                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                onClick={() => handleWhatsAppQuote(product.name)}
+                className="flex-[4] py-5 rounded-full bg-ionMidnight text-white font-black uppercase tracking-[0.2em] text-[10px] sm:text-xs shadow-2xl hover:bg-ionBlue transition-all flex items-center justify-center gap-3"
+              >
+                Claim Launch Offer <ArrowRight size={18} />
+              </motion.button>
+              <button className="flex-1 py-5 rounded-full bg-white border border-gray-200 text-ionBlue flex items-center justify-center hover:bg-gray-50 transition-all shadow-sm">
+                <Share2 size={20} />
+              </button>
+            </div>
 
+            <div className="space-y-6">
+              <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-ionMidnight/40">
+                <Info size={14} /> Engineering Matrix
+              </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                 {Object.entries(specs).map(([key, value]) => (
-                  <div
-                    key={key}
-                    className="flex flex-col p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-lg transition-all"
-                  >
-                    <span className="text-[8px] md:text-[9px] font-black text-[#1A365D]/40 uppercase tracking-widest mb-1">
-                      {key}
-                    </span>
-                    <span className="text-sm md:text-base font-bold text-[#1A365D]">
-                      {value}
-                    </span>
+                  <div key={key} className="p-4 md:p-5 rounded-2xl md:rounded-3xl bg-white border border-gray-100 hover:shadow-lg transition-all group">
+                    <span className="text-[8px] md:text-[9px] font-black text-ionBlue/30 uppercase tracking-widest block mb-1 group-hover:text-ionGreen">{key}</span>
+                    <span className="text-xs md:text-sm font-bold text-ionMidnight">{value}</span>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* FEATURES & BENEFITS GRID */}
-            <div className="grid md:grid-cols-2 gap-8 md:gap-12 pt-8 border-t border-gray-100">
-              <div className="space-y-4 md:space-y-6">
-                <h4 className="text-xs md:text-sm font-black uppercase tracking-widest text-[#7CB35B] flex items-center gap-2">
-                  <ShieldCheck size={18} /> Core Tech
-                </h4>
-                <ul className="space-y-3 md:space-y-4">
-                  {features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-3 group">
-                      <div className="mt-1 w-5 h-5 rounded-full border border-[#7CB35B]/30 flex items-center justify-center shrink-0 group-hover:bg-[#7CB35B] transition-colors">
-                        <Check
-                          size={12}
-                          className="text-[#7CB35B] group-hover:text-white"
-                        />
-                      </div>
-                      <span className="text-xs md:text-sm font-bold text-[#1A365D]/70">
-                        {f}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="space-y-4 md:space-y-6">
-                <h4 className="text-xs md:text-sm font-black uppercase tracking-widest text-[#2C5DA7] flex items-center gap-2">
-                  <Heart size={18} /> Wellness
-                </h4>
-                <ul className="space-y-3 md:space-y-4">
-                  {benefits.map((b, i) => (
-                    <li key={i} className="flex items-start gap-3 group">
-                      <div className="mt-1 w-5 h-5 rounded-full border border-[#2C5DA7]/30 flex items-center justify-center shrink-0 group-hover:bg-[#2C5DA7] transition-colors">
-                        <Droplets
-                          size={12}
-                          className="text-[#2C5DA7] group-hover:text-white"
-                        />
-                      </div>
-                      <span className="text-xs md:text-sm font-bold text-[#1A365D]/70">
-                        {b}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* ACTION SECTION */}
-            {/* REDESIGNED ACTION SECTION */}
-            <div className="pt-8 md:pt-12">
-              <div className="flex flex-row items-stretch gap-3 md:gap-4 h-16 md:h-20">
-                {/* Main Quote CTA - Takes up most space */}
-                <button
-                  onClick={() => handleWhatsAppQuote(product.name)}
-                  className="group relative flex-[4] md:flex-[5] rounded-2xl md:rounded-[2rem] overflow-hidden shadow-2xl shadow-blue-900/20 active:scale-[0.98] transition-all duration-300"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#1A365D] via-[#2C5DA7] to-[#1A365D] bg-[length:200%_auto] group-hover:bg-right transition-all duration-700" />
-                  <span className="relative z-10 flex items-center justify-center gap-2 md:gap-4 text-white text-[9px] md:text-[12px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em]">
-                    <Globe
-                      size={18}
-                      className="hidden sm:block animate-spin-slow opacity-70"
-                    />
-                    Secure Instant Quote
-                    <ArrowRight
-                      size={18}
-                      className="group-hover:translate-x-2 transition-transform duration-300"
-                    />
-                  </span>
-                </button>
-
-                {/* Universal Share Button - Premium Square Style */}
-                <button
-                  onClick={handleShareProduct}
-                  className="flex-1 rounded-2xl md:rounded-[2rem] bg-gray-50 text-[#1A365D] border border-gray-100 flex flex-col items-center justify-center gap-1 hover:bg-white hover:border-[#2C5DA7]/30 hover:text-[#2C5DA7] hover:shadow-xl transition-all duration-300 group"
-                  title="Share Product"
-                >
-                  <Share2
-                    size={20}
-                    className="group-hover:scale-110 transition-transform"
-                  />
-                  <span className="text-[7px] md:text-[8px] font-black uppercase tracking-tighter opacity-60 group-hover:opacity-100">
-                    Share
-                  </span>
-                </button>
-              </div>
-
-              {/* Subtle Trust Caption */}
-              <p className="mt-4 text-center lg:text-left text-[9px] font-bold uppercase tracking-widest text-[#1A365D]/30">
-                ✦ Authorized Ion-Pure technical dispatch
-              </p>
-            </div>
           </div>
         </div>
 
-        {/* --- COMPACT SECTION: RELATED DISCOVERY (AESTHETIC UPGRADE) --- */}
-        <div className="mt-16 md:mt-24 pt-12 border-t border-gray-100">
-          <div className="flex items-center justify-between mb-10 md:mb-12">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 text-[#7CB35B]">
-                <Sparkles size={14} className="animate-pulse" />
-                <span className="text-[9px] font-black uppercase tracking-[0.3em]">
-                  Related Discovery
-                </span>
+        {/* EXTENDED TECHNICAL TRUST BLOCK */}
+        <div className="p-8 sm:p-12 md:p-20 rounded-[2.5rem] md:rounded-[4rem] bg-ionMidnight text-white relative overflow-hidden mb-24 md:mb-32">
+           <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-ionBlue/10 blur-[120px] rounded-full" />
+           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ionGreen/10 border border-ionGreen/20">
+                  <Sparkles size={14} className="text-ionGreen animate-pulse" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-ionGreen">Platinum-Titanium Standard</span>
+                </div>
+                <h3 className="text-3xl sm:text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-tight">Technical <br className="hidden md:block"/>Longevity.</h3>
+                <p className="text-white/60 text-sm md:text-base font-medium leading-relaxed">
+                  Every system is engineered to exceed global health standards. Utilizing 99.99% pure platinum-coated titanium electrodes ensures your molecular hydrogen output remains consistent without plate degradation for 5+ years.
+                </p>
               </div>
-              <h2 className="text-3xl md:text-4xl font-black text-[#1A365D] tracking-tighter">
-                Curated{" "}
-                <span className="italic font-light opacity-50 text-2xl md:text-3xl">
-                  Collection.
-                </span>
-              </h2>
-            </div>
+              <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:pl-10">
+                 <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
+                    <h5 className="text-ionGreen font-black text-3xl mb-1">99.9%</h5>
+                    <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">H₂ Purity</p>
+                 </div>
+                 <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
+                    <h5 className="text-ionGreen font-black text-3xl mb-1">0%</h5>
+                    <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">Plate Erosion</p>
+                 </div>
+                 <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
+                    <h5 className="text-ionGreen font-black text-3xl mb-1">100+</h5>
+                    <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">Tests Conducted</p>
+                 </div>
+                 <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
+                    <h5 className="text-ionGreen font-black text-3xl mb-1">5yr</h5>
+                    <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">Plate Assured</p>
+                 </div>
+              </div>
+           </div>
+        </div>
 
-            <button
-              onClick={handleBackNavigation}
-              className="hidden sm:flex items-center gap-3 px-6 py-3 rounded-full bg-gray-50 text-[10px] font-black uppercase tracking-widest text-[#1A365D] hover:bg-[#1A365D] hover:text-white transition-all duration-500 shadow-sm"
-            >
-              View All <ArrowRight size={14} />
-            </button>
+        {/* CURATED COLLECTION (Fixed ReferenceError) */}
+        <div className="pt-12 border-t border-gray-100">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
+            <h2 className="text-3xl sm:text-4xl font-black text-ionMidnight tracking-tighter italic uppercase">Curated <span className="opacity-30 font-light">Collection.</span></h2>
+            <button onClick={() => { window.history.pushState({}, "", "/"); onBack(); }} className="text-[10px] font-black uppercase text-ionBlue tracking-widest flex items-center gap-2 hover:gap-4 transition-all">Explore Full Collection <ArrowRight size={14}/></button>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {relatedProducts.map((p, idx) => (
-              <motion.div
-                key={p.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                onClick={() => handleRelatedProductClick(p.id)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
+            {relatedProducts.map((p) => (
+              <motion.div 
+                key={p.id} 
+                whileHover={{ y: -8 }}
+                onClick={() => window.open(`${window.location.origin}/#${p.id}`, "_blank")} 
                 className="group cursor-pointer flex flex-col"
               >
-                {/* Shorter, Wider Image Container */}
-                <div className="relative aspect-[16/10] bg-[#F8FAFC] rounded-[2rem] overflow-hidden border border-gray-100 group-hover:border-[#2C5DA7]/20 transition-all duration-700 shadow-sm group-hover:shadow-xl group-hover:-translate-y-1">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-[#2C5DA7]/5 via-transparent to-transparent" />
-
-                  <img
-                    src={p.image || "/SampleProductImage.jpg"}
-                    alt={p.name}
-                    className="w-full h-full object-contain p-6 group-hover:scale-110 transition-transform duration-1000 z-10 relative"
-                  />
-
-                  {/* Minimalist Floating Tag */}
-                  <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 bg-white/60 backdrop-blur-md rounded-full border border-white/40 shadow-sm z-20">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#7CB35B]" />
-                    <span className="text-[8px] font-black uppercase tracking-tighter text-[#1A365D]">
-                      {p.category}
-                    </span>
-                  </div>
-
-                  <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-[#2C5DA7] opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0 shadow-lg z-20">
-                    <ArrowRight size={16} />
+                <div className="aspect-[4/3] bg-gray-50 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden border border-gray-100 mb-6 p-6 flex items-center justify-center transition-all group-hover:shadow-2xl group-hover:bg-white group-hover:border-ionBlue/10 relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-ionBlue/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <img src={p.thumbnail} loading="lazy" className="w-[85%] h-[85%] object-contain transition-transform duration-700 z-10" alt={p.name} />
+                  <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center z-20">
+                     <span className="text-[8px] font-black uppercase text-ionBlue/30 tracking-widest">{p.category}</span>
+                     <div className="w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-ionBlue opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
+                        <Plus size={16} />
+                     </div>
                   </div>
                 </div>
-
-                {/* Content Section below image */}
-                <div className="mt-5 px-2">
-                  <h3 className="text-lg font-black text-[#1A365D] tracking-tighter uppercase italic leading-tight group-hover:text-[#2C5DA7] transition-colors">
-                    {p.name}
-                  </h3>
-                  <p className="mt-2 text-[11px] text-[#1A365D]/50 font-medium leading-relaxed line-clamp-2">
-                    {p.tagline ||
-                      "Advanced ionization technology for premium cellular hydration and pH balance."}
-                  </p>
-                  <div className="mt-4 flex items-center gap-1.5 text-[9px] font-black uppercase text-[#2C5DA7] tracking-widest group-hover:gap-3 transition-all">
-                    Explore Details <ArrowRight size={10} />
-                  </div>
-                </div>
+                <h4 className="text-base md:text-lg font-black uppercase italic text-ionMidnight group-hover:text-ionBlue transition-colors px-2 leading-tight">{p.name}</h4>
               </motion.div>
             ))}
-          </div>
-
-          {/* Mobile View All Button */}
-          <button
-            onClick={handleBackNavigation}
-            className="sm:hidden mt-10 w-full py-4 rounded-2xl bg-gray-50 text-[10px] font-black uppercase tracking-widest text-[#1A365D] flex items-center justify-center gap-2"
-          >
-            View All <ArrowRight size={14} />
-          </button>
-        </div>
-        {/* --- TRUST ANCHORS --- */}
-        <div className="mt-20 md:mt-32 p-8 md:p-12 lg:p-20 rounded-[2rem] md:rounded-[3.5rem] bg-[#F8FAFC] border border-gray-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 md:gap-12">
-          <div className="space-y-3 md:space-y-4">
-            <Package className="text-[#2C5DA7]" size={28} md:size={32} />
-            <h4 className="text-base md:text-lg font-black uppercase tracking-tight text-[#1A365D]">
-              Global Shipping
-            </h4>
-            <p className="text-xs md:text-sm text-[#1A365D]/60 font-medium leading-relaxed">
-              Professional installation support and global delivery logistics
-              for every system.
-            </p>
-          </div>
-          <div className="space-y-3 md:space-y-4">
-            <Sparkles className="text-[#7CB35B]" size={28} md:size={32} />
-            <h4 className="text-base md:text-lg font-black uppercase tracking-tight text-[#1A365D]">
-              5-Year Plate Warranty
-            </h4>
-            <p className="text-xs md:text-sm text-[#1A365D]/60 font-medium leading-relaxed">
-              Premium Platinum-Titanium plates backed by half a decade of
-              performance assurance.
-            </p>
-          </div>
-          <div className="space-y-3 md:space-y-4">
-            <MessageCircle className="text-[#1A365D]" size={28} md:size={32} />
-            <h4 className="text-base md:text-lg font-black uppercase tracking-tight text-[#1A365D]">
-              24/7 Expert Support
-            </h4>
-            <p className="text-xs md:text-sm text-[#1A365D]/60 font-medium leading-relaxed">
-              Direct access to wellness advisors via WhatsApp for technical or
-              health inquiries.
-            </p>
           </div>
         </div>
       </div>

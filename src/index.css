@@ -5,6 +5,49 @@
 @tailwind utilities;
 
 
+/* Custom Scrollbar for a Premium Feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ion-mint);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--ion-blue), var(--ion-green));
+  border-radius: 10px;
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/60 backdrop-blur-lg border border-white/20 shadow-elegant;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-ionBlue via-ionSlate to-ionGreen;
+  }
+  
+  .animate-bounce-slow {
+    animation: bounce 8s infinite ease-in-out;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-50px); }
+}
+
+/* Subtle ripple effect for buttons */
+.btn-ripple {
+  @apply relative overflow-hidden;
+}
+.btn-ripple::after {
+  content: "";
+  @apply absolute inset-0 bg-white/20 scale-0 rounded-full transition-transform duration-500 opacity-0;
+}
+.btn-ripple:active::after {
+  @apply scale-150 opacity-100 duration-0;
+}
+
 :root {
   --ion-midnight: #1A365D;
   --ion-blue: #2C5DA7;
