@@ -35,14 +35,14 @@ export const PRODUCTS = [
       "Net Weight": "12 kg",
       "Body Size": "18 x 34 x 36 cm",
       "Screen Type": "4.3 Inch",
-      "Plates": "Available in 7/9/11",
+      "Plates": "Titanium Plates(Size: 50 x 100 mm) with 1-micron Platinum Coating",
       "pH Levels": "7.5 / 8.5 / 9.5 / 10.5",
       "ORP Level": "Up to -600 mV"
     },
     keyFeatures: [
       "Produces ionized, alkaline, antioxidant, hydrogen-rich water",
       "Compact 4.3-inch display",
-      "Available in 7/9/11 plates",
+      "Titanium Plates(Size: 50 x 100 mm) with 1-micron Platinum Coating",
       "Efficient standby power"
     ],
     wellnessBenefits: [
@@ -67,14 +67,14 @@ export const PRODUCTS = [
       "Net Weight": "10 kg",
       "Body Size": "18 x 27 x 33 cm",
       "Screen Type": "Touch Display",
-      "Plates": "Available in 7/9/11",
+      "Plates": "Titanium Plates(Size: 50 x 100 mm) with 1-micron Platinum Coating",
       "pH Levels": "7.5 / 8.5 / 9.5 / 10.5",
       "ORP Level": "Up to -600 mV"
     },
     keyFeatures: [
       "Compact body size for easier placement",
       "Touch Display interface",
-      "Available in 7/9/11 plates",
+      "Titanium Plates(Size: 50 x 100 mm) with 1-micron Platinum Coating",
       "Lower net weight of 10 kg"
     ],
     wellnessBenefits: [
@@ -98,13 +98,13 @@ export const PRODUCTS = [
       "Net Weight": "12 kg",
       "Body Size": "18 x 34 x 36 cm",
       "Screen Type": "10 Inch Touch Display",
-      "Plates": "Available in 7/9/11",
+      "Plates": "Titanium Plates(Size: 70 x 140 mm) with 2-micron Platinum Coating",
       "pH Levels": "7.5 / 8.5 / 9.5 / 10.5 / 11.5",
       "ORP Level": "Up to -800 mV"
     },
     keyFeatures: [
       "10 Inch Touch Display for easy operation",
-      "Available in 7/9/11 plates configuration",
+      "Titanium Plates(Size: 70 x 140 mm) with 2-micron Platinum Coating configuration",
       "Strong negative ORP up to -800 mV",
       "Multiple pH levels up to 11.5",
       "High-performance ionization",
