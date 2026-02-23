@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import {
   ArrowLeft,
   ShieldCheck,
@@ -19,7 +19,6 @@ import {
   Copy // Added for fallback UI
 } from "lucide-react";
 import { PRODUCTS } from "../../data/products";
-
 export default function ProductDetail({ product, onBack, setView }) {
   // 1. STATE & REFS
   const [activeImg, setActiveImg] = useState(product?.thumbnail || "/SampleProductImage.jpg");
@@ -27,19 +26,17 @@ export default function ProductDetail({ product, onBack, setView }) {
   const [showZoom, setShowZoom] = useState(false);
   const [shareStatus, setShareStatus] = useState(false); // New state for share feedback
   const imgContainerRef = useRef(null);
-
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
   // 2. DATA CALCULATION
   const relatedProducts = useMemo(() => {
     return PRODUCTS.filter((p) => p.id !== product?.id).slice(0, 3);
   }, [product?.id]);
-
   if (!product) return null;
-
   const specs = product.technicalSpecifications || {};
   const features = product.keyFeatures || [];
   const benefits = product.wellnessBenefits || [];
   const gallery = product.gallery || [product.thumbnail];
-
   // 3. HANDLERS
   const handleMouseMove = (e) => {
     if (!imgContainerRef.current) return;
@@ -50,12 +47,10 @@ export default function ProductDetail({ product, onBack, setView }) {
     const y = ((clientY - top) / height) * 100;
     setZoomPos({ x, y });
   };
-
   const handleWhatsAppQuote = (productName) => {
     const message = `Hello Ion Pure Solutions, I am interested in obtaining a formal quotation for the ${productName}. Please share the technical brochure and pricing details.`;
     window.open(`https://wa.me/918130134145?text=${encodeURIComponent(message)}`, "_blank");
   };
-
   // UNIVERSAL SHARE LOGIC
   const handleShare = async () => {
     const shareData = {
@@ -63,7 +58,6 @@ export default function ProductDetail({ product, onBack, setView }) {
       text: product.tagline || `Check out the ${product.name} at Ion Pure Solutions`,
       url: window.location.href,
     };
-
     if (navigator.share) {
       try {
         await navigator.share(shareData);
@@ -77,14 +71,26 @@ export default function ProductDetail({ product, onBack, setView }) {
       setTimeout(() => setShareStatus(false), 2000);
     }
   };
-
+  // Set max height for right scrollable on desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024 && leftRef.current && rightRef.current) {
+        rightRef.current.style.maxHeight = `${leftRef.current.clientHeight}px`;
+      } else if (rightRef.current) {
+        rightRef.current.style.maxHeight = '';
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [activeImg]); // Re-run if active image changes, in case it affects height
   return (
     <motion.section
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="pt-24 md:pt-32 pb-16 md:pb-24 bg-[#FCFCFC] min-h-screen selection:bg-ionBlue/10"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+       
         {/* TOP NAVIGATION */}
         <button
           onClick={() => { window.history.pushState({}, "", "/"); onBack(); }}
@@ -93,12 +99,11 @@ export default function ProductDetail({ product, onBack, setView }) {
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
           Back to Collection
         </button>
-
         {/* MAIN PRODUCT GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start mb-24 md:mb-32">
-          
+         
           {/* LEFT: GALLERY */}
-          <div className="lg:col-span-6 space-y-6 lg:sticky lg:top-32 order-1">
+          <div ref={leftRef} className="lg:col-span-6 space-y-6 lg:sticky lg:top-32 order-1">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto no-scrollbar pb-2 md:pb-0 md:max-h-[500px]">
                 {gallery.map((img, i) => (
@@ -113,8 +118,7 @@ export default function ProductDetail({ product, onBack, setView }) {
                   </button>
                 ))}
               </div>
-
-              <div 
+              <div
                 ref={imgContainerRef}
                 onMouseMove={handleMouseMove}
                 onTouchMove={handleMouseMove}
@@ -147,7 +151,7 @@ export default function ProductDetail({ product, onBack, setView }) {
                 )}
               </div>
             </div>
-            
+           
             <div className="grid grid-cols-2 gap-3 p-4 bg-ionBlue/5 rounded-2xl border border-ionBlue/5">
                <div className="flex items-center gap-2 px-2">
                  <ShieldCheck size={16} className="text-ionGreen shrink-0" />
@@ -159,117 +163,111 @@ export default function ProductDetail({ product, onBack, setView }) {
                </div>
             </div>
           </div>
-
           {/* RIGHT: DETAILS */}
-          <div className="lg:col-span-6 space-y-10 order-2 mt-8 lg:mt-0">
-            <header className="space-y-6">
-              <div className="flex flex-wrap gap-3">
-                <span className="px-4 py-1.5 bg-ionMint/50 text-ionBlue rounded-full text-[10px] font-black uppercase tracking-widest border border-ionBlue/5">
-                  {product.category}
-                </span>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-100 shadow-sm">
-                  <Activity size={12} className="text-ionGreen" />
-                  <span className="text-[10px] font-black text-ionBlue/40 uppercase tracking-widest">Medical Grade</span>
-                </div>
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-ionMidnight tracking-tighter italic uppercase leading-[0.95] md:leading-[0.9]">
-                {product.name}
-              </h1>
-              <p className="text-lg sm:text-xl font-medium text-ionBlue/50 italic border-l-4 border-ionGreen pl-6 py-2">
-                {product.tagline}
-              </p>
-
-              <div className="p-6 rounded-[1.5rem] md:rounded-[2rem] bg-white border border-gray-100 text-ionMidnight/80 leading-relaxed shadow-sm font-medium">
-                {product.description}
-              </div>
-            </header>
-
-            {/* ACTION BUTTONS (Share button updated here) */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                onClick={() => handleWhatsAppQuote(product.name)}
-                className="flex-[4] py-5 rounded-full bg-ionMidnight text-white font-black uppercase tracking-[0.2em] text-[10px] sm:text-xs shadow-2xl hover:bg-ionBlue transition-all flex items-center justify-center gap-3"
-              >
-                Claim Launch Offer <ArrowRight size={18} />
-              </motion.button>
-              
-              <motion.button 
-                whileTap={{ scale: 0.9 }}
-                onClick={handleShare}
-                className={`flex-1 py-5 rounded-full border transition-all shadow-sm flex items-center justify-center relative overflow-hidden
-                  ${shareStatus ? 'bg-ionGreen border-ionGreen text-white' : 'bg-white border-gray-200 text-ionBlue hover:bg-gray-50'}`}
-              >
-                <AnimatePresence mode="wait">
-                  {shareStatus ? (
-                    <motion.span 
-                      key="copied" 
-                      initial={{ y: 20 }} animate={{ y: 0 }} exit={{ y: -20 }}
-                      className="text-[10px] font-black uppercase"
-                    >
-                      Copied!
-                    </motion.span>
-                  ) : (
-                    <motion.div key="share" initial={{ y: 20 }} animate={{ y: 0 }} exit={{ y: -20 }}>
-                      <Share2 size={20} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
-            </div>
-
-            {/* FEATURES, SPECS, BENEFITS (Rendering from data) */}
-            {features.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-ionMidnight/40">
-                  <Zap size={14} /> Core Innovation
-                </h3>
-                <div className="grid grid-cols-1 gap-2">
-                  {features.map((feature, idx) => (
-                    <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-50 shadow-sm">
-                      <div className="mt-1 w-5 h-5 rounded-full bg-ionGreen/10 flex items-center justify-center shrink-0">
-                        <Check size={12} className="text-ionGreen" />
-                      </div>
-                      <p className="text-sm font-bold text-ionMidnight/80">{feature}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="space-y-6">
-              <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-ionMidnight/40">
-                <Info size={14} /> Engineering Matrix
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
-                {Object.entries(specs).map(([key, value]) => (
-                  <div key={key} className="p-4 md:p-5 rounded-2xl md:rounded-3xl bg-white border border-gray-100 hover:shadow-lg transition-all group">
-                    <span className="text-[8px] md:text-[9px] font-black text-ionBlue/30 uppercase tracking-widest block mb-1 group-hover:text-ionGreen">{key}</span>
-                    <span className="text-xs md:text-sm font-bold text-ionMidnight">{value}</span>
+          <div className="lg:col-span-6 order-2 mt-8 lg:mt-0">
+            <div ref={rightRef} className="space-y-10 lg:overflow-y-auto">
+              <header className="space-y-6">
+                <div className="flex flex-wrap gap-3">
+                  <span className="px-4 py-1.5 bg-ionMint/50 text-ionBlue rounded-full text-[10px] font-black uppercase tracking-widest border border-ionBlue/5">
+                    {product.category}
+                  </span>
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-100 shadow-sm">
+                    <Activity size={12} className="text-ionGreen" />
+                    <span className="text-[10px] font-black text-ionBlue/40 uppercase tracking-widest">Medical Grade</span>
                   </div>
-                ))}
+                </div>
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-ionMidnight tracking-tighter italic uppercase leading-[0.95] md:leading-[0.9]">
+                  {product.name}
+                </h1>
+                <p className="text-lg sm:text-xl font-medium text-ionBlue/50 italic border-l-4 border-ionGreen pl-6 py-2">
+                  {product.tagline}
+                </p>
+                <div className="p-6 rounded-[1.5rem] md:rounded-[2rem] bg-white border border-gray-100 text-ionMidnight/80 leading-relaxed shadow-sm font-medium">
+                  {product.description}
+                </div>
+              </header>
+              {/* ACTION BUTTONS (Share button updated here) */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <motion.button
+                  whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                  onClick={() => handleWhatsAppQuote(product.name)}
+                  className="flex-[4] py-5 rounded-full bg-ionMidnight text-white font-black uppercase tracking-[0.2em] text-[10px] sm:text-xs shadow-2xl hover:bg-ionBlue transition-all flex items-center justify-center gap-3"
+                >
+                  Claim Launch Offer <ArrowRight size={18} />
+                </motion.button>
+               
+                <motion.button
+                  whileTap={{ scale: 0.9 }}
+                  onClick={handleShare}
+                  className={`flex-1 py-5 rounded-full border transition-all shadow-sm flex items-center justify-center relative overflow-hidden
+                    ${shareStatus ? 'bg-ionGreen border-ionGreen text-white' : 'bg-white border-gray-200 text-ionBlue hover:bg-gray-50'}`}
+                >
+                  <AnimatePresence mode="wait">
+                    {shareStatus ? (
+                      <motion.span
+                        key="copied"
+                        initial={{ y: 20 }} animate={{ y: 0 }} exit={{ y: -20 }}
+                        className="text-[10px] font-black uppercase"
+                      >
+                        Copied!
+                      </motion.span>
+                    ) : (
+                      <motion.div key="share" initial={{ y: 20 }} animate={{ y: 0 }} exit={{ y: -20 }}>
+                        <Share2 size={20} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
               </div>
-            </div>
-
-            {benefits.length > 0 && (
-              <div className="space-y-4">
+              {/* FEATURES, SPECS, BENEFITS (Rendering from data) */}
+              {features.length > 0 && (
+                <div className="space-y-4">
+                  <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-ionMidnight/40">
+                    <Zap size={14} /> Core Innovation
+                  </h3>
+                  <div className="grid grid-cols-1 gap-2">
+                    {features.map((feature, idx) => (
+                      <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-50 shadow-sm">
+                        <div className="mt-1 w-5 h-5 rounded-full bg-ionGreen/10 flex items-center justify-center shrink-0">
+                          <Check size={12} className="text-ionGreen" />
+                        </div>
+                        <p className="text-sm font-bold text-ionMidnight/80">{feature}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div className="space-y-6">
                 <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-ionMidnight/40">
-                  <Heart size={14} /> Clinical Advantages
+                  <Info size={14} /> Engineering Matrix
                 </h3>
-                <div className="p-6 rounded-[2rem] bg-ionGreen/5 border border-ionGreen/10 grid grid-cols-1 gap-4">
-                  {benefits.map((benefit, idx) => (
-                    <div key={idx} className="flex items-center gap-4">
-                       <Droplets size={18} className="text-ionBlue opacity-40" />
-                       <p className="text-sm font-black text-ionBlue italic">{benefit}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                  {Object.entries(specs).map(([key, value]) => (
+                    <div key={key} className="p-4 md:p-5 rounded-2xl md:rounded-3xl bg-white border border-gray-100 hover:shadow-lg transition-all group">
+                      <span className="text-[8px] md:text-[9px] font-black text-ionBlue/30 uppercase tracking-widest block mb-1 group-hover:text-ionGreen">{key}</span>
+                      <span className="text-xs md:text-sm font-bold text-ionMidnight">{value}</span>
                     </div>
                   ))}
                 </div>
               </div>
-            )}
+              {benefits.length > 0 && (
+                <div className="space-y-4">
+                  <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-ionMidnight/40">
+                    <Heart size={14} /> Clinical Advantages
+                  </h3>
+                  <div className="p-6 rounded-[2rem] bg-ionGreen/5 border border-ionGreen/10 grid grid-cols-1 gap-4">
+                    {benefits.map((benefit, idx) => (
+                      <div key={idx} className="flex items-center gap-4">
+                         <Droplets size={18} className="text-ionBlue opacity-40" />
+                         <p className="text-sm font-black text-ionBlue italic">{benefit}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-
         {/* TECHNICAL TRUST BLOCK */}
         <div className="p-8 sm:p-12 md:p-20 rounded-[2.5rem] md:rounded-[4rem] bg-ionMidnight text-white relative overflow-hidden mb-24 md:mb-32">
            {/* ... (Trust block content remains same) */}
@@ -305,7 +303,6 @@ export default function ProductDetail({ product, onBack, setView }) {
               </div>
            </div>
         </div>
-
         {/* CURATED COLLECTION */}
         <div className="pt-12 border-t border-gray-100">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
@@ -314,10 +311,10 @@ export default function ProductDetail({ product, onBack, setView }) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
             {relatedProducts.map((p) => (
-              <motion.div 
-                key={p.id} 
+              <motion.div
+                key={p.id}
                 whileHover={{ y: -8 }}
-                onClick={() => window.open(`${window.location.origin}/#${p.id}`, "_blank")} 
+                onClick={() => window.open(`${window.location.origin}/#${p.id}`, "_blank")}
                 className="group cursor-pointer flex flex-col"
               >
                 <div className="aspect-[4/3] bg-gray-50 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden border border-gray-100 mb-6 p-6 flex items-center justify-center transition-all group-hover:shadow-2xl group-hover:bg-white group-hover:border-ionBlue/10 relative">
