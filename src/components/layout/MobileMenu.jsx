@@ -8,7 +8,7 @@ export default function MobileMenu({ isOpen, onClose, scrollTo, isBannerVisible 
     { label: 'Home', id: 'home' },
     { label: 'About Us', id: 'about' },
     { label: 'Our Products', id: 'products' },
-    { label: 'Why Ion Pure', id: 'why-choose-us' },
+    // { label: 'Why Ion Pure', id: 'why-choose-us' },
     { label: 'Certifications', id: 'certifications' },
     { label: 'Wellness Blog', id: 'blog' },
     { label: 'Contact', id: 'contact' },

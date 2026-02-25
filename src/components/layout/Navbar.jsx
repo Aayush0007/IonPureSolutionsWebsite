@@ -22,7 +22,10 @@ export default function Navbar({
   ...props
 }) {
   const [scrolled, setScrolled] = useState(false);
-
+  const topPosition =
+    isBannerVisible && !scrolled
+      ? "top-[80px] md:top-[100px]" // Matches Holi Banner height
+      : "top-0";
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -38,7 +41,7 @@ export default function Navbar({
       } ${
         /* DYNAMIC TOP POSITION: Shifts down if banner is visible */
         isBannerVisible ? "top-[52px] md:top-[60px]" : "top-0"
-      }`}
+      } ${topPosition}`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
         {/* Logo Section */}
