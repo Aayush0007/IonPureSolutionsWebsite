@@ -38,10 +38,7 @@ export default function Navbar({
         scrolled || isDetailView
           ? "bg-white/70 backdrop-blur-xl shadow-elegant py-3"
           : "bg-transparent py-6"
-      } ${
-        /* DYNAMIC TOP POSITION: Shifts down if banner is visible */
-        isBannerVisible ? "top-[52px] md:top-[60px]" : "top-0"
-      } ${topPosition}`}
+      }  ${topPosition}`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
         {/* Logo Section */}

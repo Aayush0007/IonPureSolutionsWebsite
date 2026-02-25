@@ -2,28 +2,30 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 
+
+import FlowPlusImg from "../../assets/Products/IP FLOW PLUS/1FlowPlus.png";
+import H2BottleImg from "../../assets/Products/H2/1H2.png";
+import FlowMaxImg from "../../assets/Products/IP FLOW MAX/1FlowMax.png";
+
 const HOLI_SLIDES = [
   {
     title: "Colors of Health",
     subtitle: "ION PURE FLOW MAX",
-    image: "src/assets/Products/IP FLOW PLUS/1FlowPlus.png",
-    // Vibrant Holi Red/Orange/Teal
+    image: FlowPlusImg, // Use the imported variable
     gradient: "from-[#FF1E56] via-[#FFAC41] to-[#32E0C4]",
     tag: "Festival Offer"
   },
   {
     title: "Pure Hydration",
     subtitle: "ION PURE H2 BOTTLE",
-    image: "src/assets/Products/H2/1H2.png",
-    // Holi Purple/Pink/Cyan
+    image: H2BottleImg, // Use the imported variable
     gradient: "from-[#7F00FF] via-[#E100FF] to-[#00E5FF]",
     tag: "99.9% Purity"
   },
   {
     title: "Holi Special Sale",
     subtitle: "CHANGE YOUR WATER | LIFE",
-    image: "src/assets/Products/IP FLOW MAX/1FlowMax.png", 
-    // Holi Yellow/Red/Magenta
+    image: FlowMaxImg, // Use the imported variable
     gradient: "from-[#FBD72B] via-[#F9484A] to-[#A6206A]",
     tag: "Limited Time"
   }
