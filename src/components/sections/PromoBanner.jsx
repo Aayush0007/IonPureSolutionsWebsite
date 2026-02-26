@@ -3,9 +3,9 @@ import { X, ArrowRight, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 
 
-import FlowPlusImg from "../../assets/Products/IP FLOW PLUS/1FlowPlus.png";
-import H2BottleImg from "../../assets/Products/H2/1H2.png";
-import FlowMaxImg from "../../assets/Products/IP FLOW MAX/1FlowMax.png";
+import FlowPlusImg from "../../assets/HeroProducts/ION PURE FLOW PLUS.png";
+import H2BottleImg from "../../assets/HeroProducts/ION PURE H2 PRO.png";
+import FlowMaxImg from "../../assets/HeroProducts/ION PURE FLOW MAX.png";
 
 const HOLI_SLIDES = [
   {

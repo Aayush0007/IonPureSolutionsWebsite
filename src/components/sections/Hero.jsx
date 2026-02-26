@@ -13,12 +13,12 @@ import { useState, useEffect } from "react";
 import { COMPANY } from "../../data/company";
 import { usePWA } from "../../hooks/usePWA";
 
-import h2_1 from "../../assets/Products/H2/1H2.png";
-import h2Pro1 from "../../assets/Products/H2 Pro/1H2Pro.jpeg"; 
-import ipFlow1 from "../../assets/Products/IP FLOW/1IPflow.png";
-import flowPlus1 from "../../assets/Products/IP FLOW PLUS/1FlowPlus.png";
-import flowMax1 from "../../assets/Products/IP FLOW MAX/1FlowMax.png";
-// import softner1 from "../assets/Products/Electric Water Softner/1WaterSoftner.png";
+import h2_1 from "../../assets/HeroProducts/ION PURE H2.png";
+import h2Pro1 from "../../assets/HeroProducts/ION PURE H2 PRO.png"; 
+import ipFlow1 from "../../assets/HeroProducts/ION PURE FLOW.png";
+import flowPlus1 from "../../assets/HeroProducts/ION PURE FLOW PLUS.png";
+import flowMax1 from "../../assets/HeroProducts/ION PURE FLOW MAX.png";
+// import softner1 from "../assets/HeroProducts/Water Softner.png";
 
 // 2. CONFIGURE HERO SLIDER DATA
 const heroProducts = [
