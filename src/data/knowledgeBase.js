@@ -40,7 +40,7 @@ export const KNOWLEDGE_BASE = [
   {
     trigger: ["yes", "haan", "yup", "sure", "ha ji"],
     response:
-      "Awesome! 😊 Tell me more—what are you curious about today? Our Flow Max, H2 Pro, or something else?",
+      "Awesome! 😊 Tell me more—what are you curious about today? Our Flow Max, H₂ Pro, or something else?",
   },
   {
     trigger: ["no", "nahi", "nah", "nope"],
@@ -103,13 +103,13 @@ Hydrogen Bottles
    → With inhaler
 
 
-5. IPS H2 Pro
+5. IPS H₂ Pro
    → 2000–8000 PPB
    → 280 ml stainless steel
    → Durable & eco-friendly
 
 
-6. IPS H2
+6. IPS H₂
    → 1500–2000 PPB
    → 460 ml glass + steel
    → Large daily capacity
@@ -121,7 +121,7 @@ Or just type the name for full details 😊`
   {
     trigger: ["compare products", "differences", "which is best", "recommend"],
     response:
-      "It depends on your needs! For high-performance home use, go with ION PURE FLOW MAX (up to -800mV ORP, 11 plates). For portability, IPS H2 Pro offers 8000 PPB hydrogen. For compact setups, ION PURE FLOW PLUS is great. Tell me more about your usage for a better recommendation.",
+      "It depends on your needs! For high-performance home use, go with ION PURE FLOW MAX (up to -800mV ORP, 11 plates). For portability, IPS H₂ Pro offers 8000 PPB hydrogen. For compact setups, ION PURE FLOW PLUS is great. Tell me more about your usage for a better recommendation.",
   },
 
   // --- DETAILED PRODUCT INFO: IONIZERS ---
@@ -150,12 +150,12 @@ Or just type the name for full details 😊`
   {
     trigger: ["h2 pro", "ips h2 pro", "h2pro"],
     response:
-      "The IPS H2 Pro is our elite hydrogen bottle: 2000-8000 PPB, 280ml, stainless steel/BPA-free Tritan/aluminum alloy. Scratch-resistant, eco-friendly, fully automatic. Built for durability and high-performance hydration.",
+      "The IPS H₂ Pro is our elite hydrogen bottle: 2000-8000 PPB, 280ml, stainless steel/BPA-free Tritan/aluminum alloy. Scratch-resistant, eco-friendly, fully automatic. Built for durability and high-performance hydration.",
   },
   {
     trigger: ["h2", "ips h2"],
     response:
-      "The IPS H2 is an everyday hydrogen companion: 1500-2000 PPB, 460ml, stainless steel + high borosilicate glass, fully automatic. Larger capacity for convenient daily use and general wellness.",
+      "The IPS H₂ is an everyday hydrogen companion: 1500-2000 PPB, 460ml, stainless steel + high borosilicate glass, fully automatic. Larger capacity for convenient daily use and general wellness.",
   },
 
   // --- TECHNICAL SPECS & FEATURES ---
@@ -172,7 +172,7 @@ Or just type the name for full details 😊`
   {
     trigger: ["hydrogen", "h2", "ppb", "concentration", "hydrogen output"],
     response:
-      "Hydrogen concentration varies: Ionizers produce hydrogen-rich water via electrolysis. Bottles like H2 Pro reach 8000 PPB for portable boosts. Pure H2 output up to 99.99%, no chlorine or ozone.",
+      "Hydrogen concentration varies: Ionizers produce hydrogen-rich water via electrolysis. Bottles like H₂ Pro reach 8000 PPB for portable boosts. Pure H₂ output up to 99.99%, no chlorine or ozone.",
   },
   {
     trigger: ["plates", "electrodes", "titanium", "platinum", "coating"],
@@ -307,7 +307,7 @@ Or just type the name for full details 😊`
       "you are boring",
     ],
     response:
-      "Ouch! 😅 Am I boring? Let me spice it up—did you know our H2 Pro bottle makes 8000 PPB hydrogen? That's seriously energizing! Want to hear more or switch topics?",
+      "Ouch! 😅 Am I boring? Let me spice it up—did you know our H₂ Pro bottle makes 8000 PPB hydrogen? That's seriously energizing! Want to hear more or switch topics?",
   },
   {
     trigger: ["funny", "mazedaar", "hasi aa rahi", "you are funny"],

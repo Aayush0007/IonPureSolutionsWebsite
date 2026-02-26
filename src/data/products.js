@@ -118,12 +118,12 @@ export const PRODUCTS = [
   },
   {
     id: "ips-h2",
-    name: "H2",
+    name: "H₂",
     category: "Hydrogen Water Bottle",
     thumbnail: h2_1,
     gallery: [h2_1, h2_2, h2_3],
     shortDescription: "Generous capacity stainless steel and glass hydrogen bottle.",
-    description: "IPS H2 is a stainless steel and glass hydrogen-rich water bottle for generating hydrogen-infused water automatically with balanced capacity.",
+    description: "IPS H₂ is a stainless steel and glass hydrogen-rich water bottle for generating hydrogen-infused water automatically with balanced capacity.",
     tagline: "Everyday Hydrogen Companion",
     technicalSpecifications: {
       "Hydrogen Concentration": "1500-2000 PPB",
@@ -143,12 +143,12 @@ export const PRODUCTS = [
   },
   {
     id: "ips-h2-pro",
-    name: "H2 Pro",
+    name: "H₂ Pro",
     category: "Hydrogen Water Bottle",
     thumbnail: h2Pro1,
     gallery: [h2Pro1, h2Pro2, h2Pro3, h2Pro4, h2Pro5],
     shortDescription: "High-concentration durable hydrogen bottle with premium build quality.",
-    description: "IPS H2 Pro is a durable hydrogen-rich water bottle producing high-concentration hydrogen water in a robust, eco-friendly build.",
+    description: "IPS H₂ Pro is a durable hydrogen-rich water bottle producing high-concentration hydrogen water in a robust, eco-friendly build.",
     tagline: "Elite Hydrogen Performance",
     technicalSpecifications: {
       "Hydrogen Concentration": "2000-8000 PPB",

@@ -11,20 +11,20 @@ export const BLOGS = [
       "Why high-performers are switching to hydrogen-rich water for cellular health and recovery.",
     content: `
 The Evolution of Hydration
-In the rapidly evolving landscape of biohacking, 2026 has solidified one molecule as the ultimate recovery tool: Molecular Hydrogen (H2). While alkaline water dominated the previous decade, high-performers are now pivoting toward hydrogen-rich water (HRW) for its unmatched cellular benefits.
+In the rapidly evolving landscape of biohacking, 2026 has solidified one molecule as the ultimate recovery tool: Molecular Hydrogen (H₂). While alkaline water dominated the previous decade, high-performers are now pivoting toward hydrogen-rich water (HRW) for its unmatched cellular benefits.
 
 The Science of Small
-Molecular hydrogen is the smallest molecule in existence. This unique size allows it to effortlessly penetrate the blood-brain barrier and enter the mitochondria—the powerhouse of your cells. Unlike traditional antioxidants, H2 is a selective antioxidant. It specifically targets the harmful hydroxyl radicals, converting them into harmless water (H2O) without disturbing the beneficial free radicals your body needs for signaling.
+Molecular hydrogen is the smallest molecule in existence. This unique size allows it to effortlessly penetrate the blood-brain barrier and enter the mitochondria—the powerhouse of your cells. Unlike traditional antioxidants, H₂ is a selective antioxidant. It specifically targets the harmful hydroxyl radicals, converting them into harmless water (H₂O) without disturbing the beneficial free radicals your body needs for signaling.
 
 
 
 Why High-Performers are Switching
 1. Rapid Recovery: Athletes use HRW to reduce lactic acid buildup and exercise-induced inflammation, allowing for significantly faster "bounce-back" times.
-2. Cognitive Clarity: By reducing oxidative stress in the brain, H2 helps eliminate "brain fog," making it a favorite for executives and creative professionals.
-3. Metabolic Support: Emerging 2026 research suggests H2 influences gene expression that regulates glucose metabolism, aiding in sustained, crash-free energy.
+2. Cognitive Clarity: By reducing oxidative stress in the brain, H₂ helps eliminate "brain fog," making it a favorite for executives and creative professionals.
+3. Metabolic Support: Emerging 2026 research suggests H₂ influences gene expression that regulates glucose metabolism, aiding in sustained, crash-free energy.
 
 The Ion Pure Advantage
-At Ion Pure Solutions, we utilize advanced Solid Polymer Electrolysis (SPE) technology. This ensures you receive high-concentration H2 without unwanted byproducts like ozone or chlorine. We aren't just drinking water for hydration anymore; we are drinking it for cellular performance.
+At Ion Pure Solutions, we utilize advanced Solid Polymer Electrolysis (SPE) technology. This ensures you receive high-concentration H₂ without unwanted byproducts like ozone or chlorine. We aren't just drinking water for hydration anymore; we are drinking it for cellular performance.
   `,
     author: "Ion Pure Research Team",
     date: "February 08, 2026",
@@ -48,9 +48,9 @@ Truly "functional" water is defined by its Oxidation-Reduction Potential (ORP). 
 
 
  How Electrolysis Creates Benefit
-When water passes over the platinum-titanium plates in an Ion Pure system, the H2O molecules are split. This process generates:
+When water passes over the platinum-titanium plates in an Ion Pure system, the H₂O molecules are split. This process generates:
 1. Hydroxyl Ions (OH-): These increase the alkalinity naturally without chemical additives.
-2. Molecular Hydrogen (H2): A potent, selective antioxidant that targets oxidative stress.
+2. Molecular Hydrogen (H₂): A potent, selective antioxidant that targets oxidative stress.
 
 
 
