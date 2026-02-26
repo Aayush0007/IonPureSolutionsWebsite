@@ -61,21 +61,21 @@ export const PRODUCTS = [
     description: "ION PURE FLOW PLUS is a compact alkaline water ionizer providing balanced pH options and efficient design suitable for home or office use.",
     tagline: "Elegant Compact Power",
     technicalSpecifications: {
-      "Input Power": "230 W",
+      "Input Power": "230 W (Advance SMPS)",
       "Standby Power": "24V DC, 3A",
       "Input TDS": "70-150",
-      "Net Weight": "10 kg",
+      "Net Weight": "6 kg",
       "Body Size": "18 x 27 x 33 cm",
-      "Screen Type": "Touch Display",
-      "Plates": "Titanium Plates(Size: 50 x 100 mm) with 1-micron Platinum Coating",
+      "Screen Type": "7 inch Screen Touch Display",
+      "Plates": "Available in 3 plates/5 plates/7 Plates",
       "pH Levels": "7.5 / 8.5 / 9.5 / 10.5",
-      "ORP Level": "Up to -600 mV"
+      "ORP Level": "Up to -700 mV"
     },
     keyFeatures: [
       "Compact body size for easier placement",
       "Touch Display interface",
       "Titanium Plates(Size: 50 x 100 mm) with 1-micron Platinum Coating",
-      "Lower net weight of 10 kg"
+      "Lower net weight of 6 kg"
     ],
     wellnessBenefits: [
       "Aids in better hydration with ionized alkaline water",
@@ -122,19 +122,25 @@ export const PRODUCTS = [
     category: "Hydrogen Water Bottle",
     thumbnail: h2_1,
     gallery: [h2_1, h2_2, h2_3],
-    shortDescription: "Generous capacity stainless steel and glass hydrogen bottle.",
-    description: "IPS H₂ is a stainless steel and glass hydrogen-rich water bottle for generating hydrogen-infused water automatically with balanced capacity.",
+    shortDescription: "Rechargeable hydrogen bottle with Platinum-coated Titanium electrodes.",
+    description: "IPS H₂ is a high-quality hydrogen-rich water bottle featuring a Tritan body and advanced electrolysis plates for consistent antioxidant support.",
     tagline: "Everyday Hydrogen Companion",
     technicalSpecifications: {
-      "Hydrogen Concentration": "1500-2000 PPB",
-      "Capacity": "460 ml",
-      "Material": "Stainless steel + high borosilicate glass",
-      "Operation": "Fully automatic"
+      "Hydrogen Output": "1500-2000 PPB",
+      "ORP": "Up to -350 mV",
+      "Capacity": "400 ml",
+      "Material": "Tritan Body with Platinum Coated Titanium Electrodes",
+      "Input Power": "USB Rechargeable Battery",
+      "Dimensions": "8 cm (L) x 8 cm (W) x 24.1 cm (H)",
+      "Weight": "Approx. 350 g",
+      "Screen Type": "Button"
     },
     keyFeatures: [
-      "Larger 460 ml capacity",
-      "Durable stainless steel + glass construction",
-      "Fully automatic operation"
+      "Larger 400 ml capacity",
+      "Platinum-Coated Titanium Electrolysis Plates",
+      "BPA-Free Tritan body",
+      "USB rechargeable for portability",
+      "High hydrogen concentration"
     ],
     wellnessBenefits: [
       "Supports better hydration",
@@ -147,55 +153,63 @@ export const PRODUCTS = [
     category: "Hydrogen Water Bottle",
     thumbnail: h2Pro1,
     gallery: [h2Pro1, h2Pro2, h2Pro3, h2Pro4, h2Pro5],
-    shortDescription: "High-concentration durable hydrogen bottle with premium build quality.",
-    description: "IPS H₂ Pro is a durable hydrogen-rich water bottle producing high-concentration hydrogen water in a robust, eco-friendly build.",
+    shortDescription: "Professional grade hydrogen bottle with SPE & PEM technology.",
+    description: "The H₂ Pro utilizes advanced SPE & PEM electrolysis technology and a premium platinum carbon catalyst coating to deliver pure 99.99% hydrogen water without residual gases.",
     tagline: "Elite Hydrogen Performance",
     technicalSpecifications: {
-      "Hydrogen Concentration": "2000-8000 PPB",
+      "Hydrogen Concentration": "1500-5000 PPB",
+      "ORP": "Up to -650 mV",
+      "Technology": "Advanced SPE & PEM electrolysis",
       "Capacity": "280 ml",
-      "Material": "Stainless steel + BPA-free TRITAN + Aluminum alloy",
-      "Build": "Scratch-resistant, shatter-safe, eco-friendly"
+      "Electrodes": "Medical grade Titanium",
+      "Purity": "99.99% Pure H2 (No Chlorine/Ozone)",
+      "Screen": "LED Display Screen"
     },
     keyFeatures: [
-      "Highest hydrogen output (up to 8000 PPB)",
-      "Fully automatic",
-      "Scratch-resistant & shatter-safe",
-      "Eco-friendly materials"
+      "No calcification or degradation of plates",
+      "Premium platinum carbon Catalyst coating",
+      "Intelligent Switch & LED Display",
+      "Superior quality membrane",
+      "Zero residual gas (No Ozone/Chlorine)"
     ],
     wellnessBenefits: [
-      "Supports improved hydration",
-      "Offers general antioxidant support"
+      "High-concentration antioxidant support",
+      "Improved cellular hydration",
+      "Medical-grade safety standards"
     ]
   },
   
   {
-    id: "ips-ht",
-    name: "Ion Pure Electric Water Softner",
-    category: "Hydrogen Water Bottle",
+    id: "ips-water-softener",
+    name: "Ion Pure Water Softner",
+    category: "Hydrogen Water Softner",
     thumbnail: softner1,
     gallery: [softner1],
-    shortDescription: "Portable hydrogen-rich water bottle with inhaler feature and fully automatic operation.",
-    description: "IPS-HT is a portable hydrogen-rich water bottle generating hydrogen-infused water for on-the-go use. It includes an inhaler feature and fully automatic operation.",
-    tagline: "Hydrogen Anytime, Anywhere",
+    shortDescription: "High-capacity Cathode-Anode technology water softener.",
+    description: "An efficient industrial-grade water softener featuring Cathode-Anode technology, 5000 LPH capacity, and an intelligent 4.3\" screen display.",
+    tagline: "Advanced Scale Protection",
     technicalSpecifications: {
-      "Hydrogen Concentration": "1400 to 2000 PPB",
-      "Capacity": "380 ml",
-      "Material": "High borosilicate glass + food-grade PC",
-      "Dimensions": "70 x 210 mm",
-      "Colors": "Black or White",
-      "Operation": "Fully automatic",
-      "Accessories": "Lid + body + base + USB power cord + premium packaging"
+      "Capacity": "5000 LPH",
+      "Technology": "Cathode-Anode Technology",
+      "Power Settings": "Low | Medium | High",
+      "Power Consumption": "1 unit per 2 hours",
+      "Input Voltage": "230 V ac",
+      "Rod Size": "30 x 1000 mm",
+      "Pipe Inlet/Outlet": "1.5 inch",
+      "Screen Type": "4.3\" Screen Display",
+      "Weight": "10-12 Kg"
     },
     keyFeatures: [
-      "Fully automatic operation",
-      "Built-in hydrogen inhaler",
-      "USB charging",
-      "Food-grade materials",
-      "Portable design"
+      "Auto-Clean Mode enabled",
+      "High-flow 5000 LPH capacity",
+      "Adjustable power settings",
+      "Real-time display screen",
+      "Compact and efficient design"
     ],
     wellnessBenefits: [
-      "Supports better hydration with hydrogen-rich water",
-      "Provides general antioxidant support"
+      "Reduces scale buildup in plumbing",
+      "Protects appliances from hard water damage",
+      "Provides softened water for skin and hair"
     ]
   }
 ];

@@ -23,10 +23,10 @@ import flowMax1 from "../../assets/HeroProducts/ION PURE FLOW MAX.png";
 // 2. CONFIGURE HERO SLIDER DATA
 const heroProducts = [
   { id: 1, src: flowMax1, alt: "ION PURE FLOW MAX" },
-  { id: 2, src: h2Pro1, alt: "IPS H₂ PRO SERIES" },
+  { id: 2, src: h2Pro1, alt: "IPS H₂ PRO" },
   { id: 3, src: flowPlus1, alt: "ION PURE FLOW PLUS" },
-  { id: 4, src: h2_1, alt: "IPS H₂ SMART BOTTLE" },
-  { id: 5, src: ipFlow1, alt: "ION PURE FLOW CLASSIC" },
+  { id: 4, src: h2_1, alt: "IPS H₂" },
+  { id: 5, src: ipFlow1, alt: "ION PURE FLOW" },
   // { id: 6, src: softner1, alt: "Electric Water Softner" },
 ];
 
