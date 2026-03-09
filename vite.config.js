@@ -35,7 +35,7 @@ export default defineConfig({
       },
       workbox: {
         // 1. FIX: Increase limit to 20MB to handle large product images during build
-        maximumFileSizeToCacheInBytes: 20971520, 
+        maximumFileSizeToCacheInBytes: 26214400, 
         
         // 2. OPTIMIZE: Added jpg, jpeg, and webp to the cache pattern
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp}'],
