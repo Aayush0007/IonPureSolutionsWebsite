@@ -1,6 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Activity, Sparkles } from "lucide-react";
+import {
+  MessageCircle,
+  X,
+  Send,
+  Activity,
+  Sparkles,
+  BrainCircuit,
+} from "lucide-react";
 import { KNOWLEDGE_BASE } from "../../data/knowledgeBase";
 
 export default function ChatBot() {
@@ -9,7 +16,7 @@ export default function ChatBot() {
   const [messages, setMessages] = useState([
     {
       role: "bot",
-      text: "Namaste! I'm your Ion Pure assistant 😊 How can I help you with alkaline water, hydrogen bottles, or wellness today?",
+      text: "Namaste! I'm your Ion Pure AI guide. How can I assist with your hydration journey today?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -29,260 +36,231 @@ export default function ChatBot() {
   }, [messages]);
 
   useEffect(() => {
-    if (isOpen) {
-      inputRef.current?.focus();
-    }
+    if (isOpen) inputRef.current?.focus();
   }, [isOpen]);
 
-  // Levenshtein (unchanged)
+  // Restored: Levenshtein Logic
   const levenshtein = (a, b) => {
     const matrix = Array(b.length + 1)
       .fill(null)
       .map(() => Array(a.length + 1).fill(null));
-
     for (let i = 0; i <= a.length; i++) matrix[0][i] = i;
     for (let j = 0; j <= b.length; j++) matrix[j][0] = j;
-
     for (let j = 1; j <= b.length; j++) {
       for (let i = 1; i <= a.length; i++) {
         const indicator = a[i - 1] === b[j - 1] ? 0 : 1;
         matrix[j][i] = Math.min(
           matrix[j][i - 1] + 1,
           matrix[j - 1][i] + 1,
-          matrix[j - 1][i - 1] + indicator
+          matrix[j - 1][i - 1] + indicator,
         );
       }
     }
     return matrix[b.length][a.length];
   };
 
-  const handleSend = (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  // Restored: Full functionality handleSend
+  const handleSend = (e, suggestionText = null) => {
+    if (e) e.preventDefault();
+    const messageText = suggestionText || input.trim();
+    if (!messageText) return;
 
-    const userMessage = { role: "user", text: input.trim() };
-    setMessages((prev) => [...prev, userMessage]);
-
-    const lowerInput = input.trim().toLowerCase();
+    setMessages((prev) => [...prev, { role: "user", text: messageText }]);
     setInput("");
     setIsLoading(true);
 
+    const lowerInput = messageText.toLowerCase();
+
     setTimeout(() => {
-      let reply = "";
-      let matched = false;
-      let currentTopic = null;
+      let bestMatch = null;
+      let highestScore = 0;
 
-      const entry = KNOWLEDGE_BASE.find((e) =>
-        e.trigger.some((t) => {
-          const cleanedTrigger = t.toLowerCase();
-          const distance = levenshtein(lowerInput, cleanedTrigger);
-          const isCloseEnough = distance <= 3 || lowerInput.includes(cleanedTrigger);
-          if (isCloseEnough) {
-            currentTopic = t;
-            return true;
+      KNOWLEDGE_BASE.forEach((entry) => {
+        entry.trigger.forEach((t) => {
+          const triggerLower = t.toLowerCase();
+
+          // Exact match gets highest priority
+          if (lowerInput === triggerLower) {
+            highestScore = 999;
+            bestMatch = entry;
           }
-          return false;
-        })
-      );
+          // Partial keyword match: calculate "Strength" of match
+          else if (lowerInput.includes(triggerLower)) {
+            const score = triggerLower.length;
+            if (score > highestScore) {
+              highestScore = score;
+              bestMatch = entry;
+            }
+          }
+        });
+      });
 
-      if (entry) {
-        reply = entry.response;
-        if (lastTopic && Math.random() > 0.6) {
-          reply = `Continuing from ${lastTopic}: ${reply}`;
-        }
-        matched = true;
-        setLastTopic(currentTopic);
+      // Fuzzy logic fallback if no strong keyword was found
+      if (highestScore < 3 && lowerInput.length > 3) {
+        const fuzzyEntry = KNOWLEDGE_BASE.find((e) =>
+          e.trigger.some((t) => levenshtein(lowerInput, t.toLowerCase()) <= 2),
+        );
+        if (fuzzyEntry) bestMatch = fuzzyEntry;
       }
 
-      if (!matched && /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}]/u.test(input)) {
-        reply = "Haha, loving the energy! 😂 What's making you smile today — or shall we talk hydrogen water?";
-        matched = true;
-      }
+      if (bestMatch) {
+        const reply = Array.isArray(bestMatch.response)
+          ? bestMatch.response[
+              Math.floor(Math.random() * bestMatch.response.length)
+            ]
+          : bestMatch.response;
 
-      const badWords = ["fuck", "shit", "asshole", "bitch", "idiot", "stupid", "bakwas", "bewakoof"];
-      if (!matched && badWords.some((w) => lowerInput.includes(w))) {
-        reply = "Arre yaar, thoda chill karo 😅 I'm just here to help with better water & wellness. Kya baat hai — batao?";
-        matched = true;
-      }
-
-      if (!matched) {
-        if (lowerInput.includes("talk") || lowerInput.includes("speak") || lowerInput.includes("chat")) {
-          reply = "Haan ji, full-on baat karte hain! 😄 Ask me about pH, ORP, hydrogen PPB, products — ya kuch bhi wellness se related!";
-          matched = true;
-        } else if (fallbackCount === 0) {
-          reply = "Hmm… thoda sa samajh nahi aaya 😅 Kya poochna chahte ho? Products, benefits, price, contact — ya kuch aur?";
+        setMessages((prev) => [...prev, { role: "bot", text: reply }]);
+        setFallbackCount(0);
+      } else {
+        // Fallback logic
+        if (fallbackCount === 0) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: "bot",
+              text: "Hmm… thoda sa samajh nahi aaya 😅 Products, benefits, ya price ke baare mein poocho?",
+            },
+          ]);
           setFallbackCount(1);
-        } else if (fallbackCount === 1) {
-          reply = "Ab bhi nahi pakda? No tension! 😊 Try saying 'products', 'benefits', 'price' ya 'whatsapp' — ya seedha expert se connect kar du?";
-          setFallbackCount(2);
         } else {
-          reply = "Lagta hai aaj mood thoda alag chal raha hai 😂 Chalo reset karte hain — type 'products' for list or 'help' to see what I can do. Ya WhatsApp pe baat karein? +91 8130134145";
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: "bot",
+              text: "Chalo expert se baat karwa deta hoon! 😊 WhatsApp: +91 8130134145",
+            },
+          ]);
           setFallbackCount(0);
         }
-      } else {
-        setFallbackCount(0);
       }
-
-      setMessages((prev) => [
-        ...prev,
-        { role: "bot", text: reply || "I'm still learning — connecting you to a human expert soon!" },
-      ]);
       setIsLoading(false);
-    }, 600 + Math.random() * 800);
+    }, 600);
   };
 
   return (
-    <div className="relative flex flex-col items-end">
-      {/* Floating label */}
+    <div className="relative flex flex-col items-end selection:bg-ionBlue/20">
+      {/* ☁️ AESTHETIC CLOUD LABEL (Integrated Trigger) */}
       <AnimatePresence>
         {!isOpen && showLabel && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.92 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              boxShadow: [
-                "0 6px 20px rgba(44, 93, 167, 0.12)",
-                "0 10px 30px rgba(44, 93, 167, 0.28)",
-                "0 6px 20px rgba(44, 93, 167, 0.12)",
-              ],
-            }}
-            exit={{ opacity: 0, y: 20, scale: 0.92 }}
+            initial={{ opacity: 0, y: 20, scale: 0.8 }}
+            animate={{ opacity: 1, y: [0, -8, 0], scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8, y: 10 }}
             transition={{
-              duration: 0.45,
-              ease: "easeOut",
-              boxShadow: { duration: 3, repeat: Infinity, repeatType: "reverse" },
+              y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
             }}
-            className={`
-              mb-5 relative
-              px-5 py-3
-              bg-white/85 backdrop-blur-xl
-              text-[#1A365D] font-medium text-sm sm:text-base
-              rounded-xl shadow-xl border border-[#2C5DA7]/20
-              flex items-center gap-3
-              max-w-[260px] sm:max-w-none
-            `}
+            className="mb-8 relative z-[1000]"
           >
-            <Sparkles size={16} className="text-[#7CB35B] animate-pulse" />
-            <span className="flex-1">Ask Ion Pure AI anything</span>
-            <button
-              onClick={() => setShowLabel(false)}
-              className="
-                p-1.5 rounded-full 
-                hover:bg-gray-200/60 transition-colors
-                text-gray-600 hover:text-[#1A365D]
-              "
-              aria-label="Hide assistant prompt"
+            <div
+              onClick={() => setIsOpen(true)}
+              className="group cursor-pointer relative px-6 py-4 bg-white/70 backdrop-blur-2xl border border-white/40 shadow-[0_20px_50px_rgba(44,93,167,0.15)] rounded-[2.5rem] rounded-br-none flex items-center gap-4 hover:bg-white/90 transition-all"
             >
-              <X size={16} />
-            </button>
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-ionBlue/10 text-ionBlue group-hover:rotate-[15deg] transition-transform">
+                <BrainCircuit size={18} />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-ionBlue/40 leading-none mb-1">
+                  Ion Pure AI
+                </span>
+                <span className="text-sm font-bold text-ionMidnight">
+                  Ask Ion Pure AI anything
+                </span>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowLabel(false);
+                }}
+                className="ml-2 p-1.5 rounded-full hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
+              >
+                <X size={14} />
+              </button>
+              {/* Cloud Tail */}
+              <div
+                className="absolute -bottom-2 right-0 w-6 h-6 bg-white/70 backdrop-blur-2xl border-r border-b border-white/40 rotate-[15deg]"
+                style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Chat window */}
+      {/* 🤖 MODERN CHAT WINDOW */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.85, y: 40 }}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.85, y: 40 }}
-            transition={{ type: "spring", damping: 22, stiffness: 280 }}
-            className={`
-              mb-4 w-[90vw] max-w-[380px] sm:w-96 
-              h-[80vh] max-h-[85vh] sm:h-[70vh] sm:max-h-[620px]
-              bg-white rounded-3xl shadow-2xl 
-              border border-blue-100/60 overflow-hidden flex flex-col
-            `}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="mb-4 w-[92vw] max-w-[400px] h-[75vh] max-h-[600px] bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 overflow-hidden flex flex-col z-[1001]"
           >
             {/* Header */}
-            <div className="bg-gradient-to-br from-[#2C5DA7] to-[#1A365D] p-4 sm:p-5 text-white flex items-center justify-between">
+            <div className="px-6 py-5 bg-gradient-to-r from-ionMidnight to-ionBlue text-white flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white/12 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20">
-                  <Activity size={18} className="text-[#7CB35B]" />
-                </div>
-                <div>
-                  <h4 className="font-black uppercase tracking-tighter text-sm sm:text-base italic leading-none">
-                    Ion Pure AI
-                  </h4>
-                  <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest opacity-75 mt-0.5">
-                    Your Wellness Buddy
-                  </p>
-                </div>
+                <Activity size={20} className="text-ionGreen" />
+                <h4 className="text-sm font-black uppercase italic tracking-widest">
+                  Ion Pure AI
+                </h4>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
-              >
+              <button onClick={() => setIsOpen(false)}>
                 <X size={20} />
               </button>
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 p-4 sm:p-5 overflow-y-auto bg-gradient-to-b from-[#F8FAFC] to-white space-y-4 sm:space-y-5">
+            <div className="flex-1 p-6 overflow-y-auto bg-slate-50/30 space-y-4">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`
-                      max-w-[82%] px-4 py-3 rounded-2xl text-sm sm:text-base leading-relaxed font-medium shadow-sm
-                      ${msg.role === "user"
-                        ? "bg-[#2C5DA7] text-white rounded-br-none"
-                        : "bg-white text-[#1A365D] rounded-bl-none border border-gray-200/80 whitespace-pre-line"  // ← THIS LINE FIXES IT
-                      }
-                    `}
+                    className={`max-w-[85%] px-5 py-3 rounded-2xl text-sm font-medium shadow-sm ${
+                      msg.role === "user"
+                        ? "bg-ionBlue text-white rounded-br-none"
+                        : "bg-white text-ionMidnight rounded-bl-none border border-gray-100 whitespace-pre-line"
+                    }`}
                   >
                     {msg.text}
                   </div>
                 </div>
               ))}
-
               {isLoading && (
-                <div className="flex justify-start">
-                  <div className="max-w-[82%] px-4 py-3 rounded-2xl text-sm bg-white text-gray-500 rounded-bl-none border border-gray-200 shadow-sm">
-                    Typing...
-                  </div>
+                <div className="animate-pulse text-xs text-ionBlue/40 ml-2">
+                  Ion Pure is thinking...
                 </div>
               )}
-
-              {/* Quick suggestions */}
-              {!isLoading && messages.length > 1 && messages[messages.length - 1].role === "bot" && (
-                <div className="flex flex-wrap gap-2 mt-3 justify-start">
-                  {["products", "benefits", "price", "contact"].map((q) => (
-                    <button
-                      key={q}
-                      onClick={() => setInput(q)}
-                      className="px-4 py-1.5 bg-blue-50/80 hover:bg-blue-100 text-blue-700 text-xs sm:text-sm rounded-full border border-blue-200 transition-colors"
-                    >
-                      {q.charAt(0).toUpperCase() + q.slice(1)}
-                    </button>
-                  ))}
-                </div>
-              )}
-
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
-            <form
-              onSubmit={handleSend}
-              className="p-3 sm:p-4 bg-white border-t border-gray-100 flex gap-2 sm:gap-3"
-            >
+            {/* ✨ NEW: QUICK SUGGESTION BUTTONS */}
+            <div className="px-4 py-3 flex gap-2 overflow-x-auto no-scrollbar bg-white border-t border-gray-50">
+              {["Products", "Benefits", "Price", "WhatsApp"].map((txt) => (
+                <button
+                  key={txt}
+                  onClick={() => handleSend(null, txt)}
+                  className="px-4 py-1.5 rounded-full border border-ionBlue/10 text-[10px] font-black uppercase tracking-wider text-ionBlue hover:bg-ionBlue hover:text-white transition-all whitespace-nowrap"
+                >
+                  {txt}
+                </button>
+              ))}
+            </div>
+
+            {/* Input Form */}
+            <form onSubmit={handleSend} className="p-4 bg-white flex gap-2">
               <input
                 ref={inputRef}
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about pH, hydrogen, products..."
-                className="flex-1 px-4 sm:px-5 py-3 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-[#2C5DA7]/30 transition-all outline-none text-[#1A365D]"
+                placeholder="Ask about pH, hydrogen..."
+                className="flex-1 px-5 py-3 bg-gray-50 rounded-2xl text-sm outline-none focus:ring-1 focus:ring-ionBlue/20"
               />
               <button
                 type="submit"
-                disabled={!input.trim() || isLoading}
-                className="w-11 h-11 sm:w-12 sm:h-12 bg-[#2C5DA7] text-white rounded-2xl flex items-center justify-center hover:bg-[#1A365D] transition-all disabled:opacity-50 active:scale-95 shadow-md"
+                disabled={!input.trim()}
+                className="w-12 h-12 bg-ionBlue text-white rounded-2xl flex items-center justify-center shadow-md active:scale-90"
               >
                 <Send size={18} />
               </button>
@@ -291,25 +269,15 @@ export default function ChatBot() {
         )}
       </AnimatePresence>
 
-      {/* Floating trigger button */}
-      <div className="relative">
-        <motion.button
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.92 }}
-          onClick={() => setIsOpen(!isOpen)}
-          className="relative group"
-          aria-label="Open chat assistant"
-        >
-          <div className="absolute inset-0 bg-[#2C5DA7] blur-xl opacity-0 group-hover:opacity-30 rounded-full transition-opacity duration-700" />
-          <div className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-[#1A365D] to-[#2C5DA7] text-white shadow-2xl border border-white/10 group-hover:border-[#2C5DA7]/60 transition-all duration-300">
-            {isOpen ? <X size={26} /> : <MessageCircle size={26} />}
-            <Sparkles
-              size={14}
-              className="absolute -top-1 -right-1 text-[#7CB35B] opacity-0 group-hover:opacity-100 transition-opacity"
-            />
-          </div>
-        </motion.button>
-      </div>
+      {/* Trigger Button */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-16 h-16 rounded-3xl bg-gradient-to-br from-ionMidnight to-ionBlue text-white shadow-2xl flex items-center justify-center z-[1002]"
+      >
+        {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
+      </motion.button>
     </div>
   );
 }

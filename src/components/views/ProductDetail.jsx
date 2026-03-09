@@ -14,48 +14,70 @@ import {
   Sparkles,
   Info,
   Plus,
+  Play,
+  Quote,
   Shield,
+  X,
+  Maximize2,
   ZapOff,
-  Copy // Added for fallback UI
+  Copy, // Added for fallback UI
 } from "lucide-react";
 import { PRODUCTS } from "../../data/products";
 export default function ProductDetail({ product, onBack, setView }) {
   // 1. STATE & REFS
-  const [activeImg, setActiveImg] = useState(product?.thumbnail || "/SampleProductImage.jpg");
+  const [activeImg, setActiveImg] = useState(
+    product?.thumbnail || "/SampleProductImage.jpg",
+  );
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const [showZoom, setShowZoom] = useState(false);
   const [shareStatus, setShareStatus] = useState(false); // New state for share feedback
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showVideoPopup, setShowVideoPopup] = useState(false);
+
   const imgContainerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
+  const videoRef = useRef(null);
+  const popupVideoRef = useRef(null);
   // 2. DATA CALCULATION
   const relatedProducts = useMemo(() => {
     return PRODUCTS.filter((p) => p.id !== product?.id).slice(0, 3);
   }, [product?.id]);
+
   if (!product) return null;
+
   const specs = product.technicalSpecifications || {};
   const features = product.keyFeatures || [];
   const benefits = product.wellnessBenefits || [];
   const gallery = product.gallery || [product.thumbnail];
+  const review = product.featuredReview;
+
   // 3. HANDLERS
   const handleMouseMove = (e) => {
     if (!imgContainerRef.current) return;
-    const { left, top, width, height } = imgContainerRef.current.getBoundingClientRect();
+    const { left, top, width, height } =
+      imgContainerRef.current.getBoundingClientRect();
     const clientX = e.clientX || (e.touches && e.touches[0].clientX);
     const clientY = e.clientY || (e.touches && e.touches[0].clientY);
     const x = ((clientX - left) / width) * 100;
     const y = ((clientY - top) / height) * 100;
     setZoomPos({ x, y });
   };
+
   const handleWhatsAppQuote = (productName) => {
     const message = `Hello Ion Pure Solutions, I am interested in obtaining a formal quotation for the ${productName}. Please share the technical brochure and pricing details.`;
-    window.open(`https://wa.me/918130134145?text=${encodeURIComponent(message)}`, "_blank");
+    window.open(
+      `https://wa.me/918130134145?text=${encodeURIComponent(message)}`,
+      "_blank",
+    );
   };
   // UNIVERSAL SHARE LOGIC
   const handleShare = async () => {
     const shareData = {
       title: `Ion Pure Solutions | ${product.name}`,
-      text: product.tagline || `Check out the ${product.name} at Ion Pure Solutions`,
+      text:
+        product.tagline ||
+        `Check out the ${product.name} at Ion Pure Solutions`,
       url: window.location.href,
     };
     if (navigator.share) {
@@ -71,39 +93,57 @@ export default function ProductDetail({ product, onBack, setView }) {
       setTimeout(() => setShareStatus(false), 2000);
     }
   };
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) videoRef.current.pause();
+      else videoRef.current.play();
+      setIsPlaying(!isPlaying);
+    }
+  };
   // Set max height for right scrollable on desktop
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024 && leftRef.current && rightRef.current) {
         rightRef.current.style.maxHeight = `${leftRef.current.clientHeight}px`;
       } else if (rightRef.current) {
-        rightRef.current.style.maxHeight = '';
+        rightRef.current.style.maxHeight = "";
       }
     };
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [activeImg]); // Re-run if active image changes, in case it affects height
+
   return (
     <motion.section
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       className="pt-24 md:pt-32 pb-16 md:pb-24 bg-[#FCFCFC] min-h-screen selection:bg-ionBlue/10"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-       
         {/* TOP NAVIGATION */}
         <button
-          onClick={() => { window.history.pushState({}, "", "/"); onBack(); }}
+          onClick={() => {
+            window.history.pushState({}, "", "/");
+            onBack();
+          }}
           className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-ionBlue mb-8 md:mb-12 hover:gap-5 transition-all"
         >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft
+            size={16}
+            className="group-hover:-translate-x-1 transition-transform"
+          />
           Back to Collection
         </button>
         {/* MAIN PRODUCT GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start mb-24 md:mb-32">
-         
           {/* LEFT: GALLERY */}
-          <div ref={leftRef} className="lg:col-span-6 space-y-6 lg:sticky lg:top-32 order-1">
+          <div
+            ref={leftRef}
+            className="lg:col-span-6 space-y-6 lg:sticky lg:top-32 order-1"
+          >
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto no-scrollbar pb-2 md:pb-0 md:max-h-[500px]">
                 {gallery.map((img, i) => (
@@ -112,9 +152,14 @@ export default function ProductDetail({ product, onBack, setView }) {
                     onMouseEnter={() => setActiveImg(img)}
                     onClick={() => setActiveImg(img)}
                     className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl md:rounded-2xl overflow-hidden border-2 transition-all shrink-0 p-1.5 bg-white
-                      ${activeImg === img ? 'border-ionBlue shadow-lg scale-95' : 'border-gray-100 opacity-60 hover:opacity-100'}`}
+                      ${activeImg === img ? "border-ionBlue shadow-lg scale-95" : "border-gray-100 opacity-60 hover:opacity-100"}`}
                   >
-                    <img src={img} loading="lazy" className="w-full h-full object-contain" alt="Thumbnail" />
+                    <img
+                      src={img}
+                      loading="lazy"
+                      className="w-full h-full object-contain"
+                      alt="Thumbnail"
+                    />
                   </button>
                 ))}
               </div>
@@ -130,7 +175,9 @@ export default function ProductDetail({ product, onBack, setView }) {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeImg}
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
                     className="w-full h-full relative"
                   >
@@ -138,7 +185,7 @@ export default function ProductDetail({ product, onBack, setView }) {
                       src={activeImg}
                       loading="eager"
                       className={`w-full h-full object-contain transition-transform duration-200 ease-out z-10
-                        ${showZoom ? 'scale-[2.2]' : 'scale-100'}`}
+                        ${showZoom ? "scale-[2.2]" : "scale-100"}`}
                       style={{ transformOrigin: `${zoomPos.x}% ${zoomPos.y}%` }}
                       alt={product.name}
                     />
@@ -151,16 +198,20 @@ export default function ProductDetail({ product, onBack, setView }) {
                 )}
               </div>
             </div>
-           
+
             <div className="grid grid-cols-2 gap-3 p-4 bg-ionBlue/5 rounded-2xl border border-ionBlue/5">
-               <div className="flex items-center gap-2 px-2">
-                 <ShieldCheck size={16} className="text-ionGreen shrink-0" />
-                 <span className="text-[9px] font-black uppercase text-ionBlue/60 leading-tight">5-Year Plate Protection</span>
-               </div>
-               <div className="flex items-center gap-2 px-2 border-l border-ionBlue/10">
-                 <Sparkles size={16} className="text-ionGreen shrink-0" />
-                 <span className="text-[9px] font-black uppercase text-ionBlue/60 leading-tight">Certified Excellence</span>
-               </div>
+              <div className="flex items-center gap-2 px-2">
+                <ShieldCheck size={16} className="text-ionGreen shrink-0" />
+                <span className="text-[9px] font-black uppercase text-ionBlue/60 leading-tight">
+                  5-Year Plate Protection
+                </span>
+              </div>
+              <div className="flex items-center gap-2 px-2 border-l border-ionBlue/10">
+                <Sparkles size={16} className="text-ionGreen shrink-0" />
+                <span className="text-[9px] font-black uppercase text-ionBlue/60 leading-tight">
+                  Certified Excellence
+                </span>
+              </div>
             </div>
           </div>
           {/* RIGHT: DETAILS */}
@@ -173,7 +224,9 @@ export default function ProductDetail({ product, onBack, setView }) {
                   </span>
                   <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-100 shadow-sm">
                     <Activity size={12} className="text-ionGreen" />
-                    <span className="text-[10px] font-black text-ionBlue/40 uppercase tracking-widest">Medical Grade</span>
+                    <span className="text-[10px] font-black text-ionBlue/40 uppercase tracking-widest">
+                      Medical Grade
+                    </span>
                   </div>
                 </div>
                 <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-ionMidnight tracking-tighter italic uppercase leading-[0.95] md:leading-[0.9]">
@@ -189,30 +242,38 @@ export default function ProductDetail({ product, onBack, setView }) {
               {/* ACTION BUTTONS (Share button updated here) */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <motion.button
-                  whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => handleWhatsAppQuote(product.name)}
                   className="flex-[4] py-5 rounded-full bg-ionMidnight text-white font-black uppercase tracking-[0.2em] text-[10px] sm:text-xs shadow-2xl hover:bg-ionBlue transition-all flex items-center justify-center gap-3"
                 >
                   Claim Launch Offer <ArrowRight size={18} />
                 </motion.button>
-               
+
                 <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={handleShare}
                   className={`flex-1 py-5 rounded-full border transition-all shadow-sm flex items-center justify-center relative overflow-hidden
-                    ${shareStatus ? 'bg-ionGreen border-ionGreen text-white' : 'bg-white border-gray-200 text-ionBlue hover:bg-gray-50'}`}
+                    ${shareStatus ? "bg-ionGreen border-ionGreen text-white" : "bg-white border-gray-200 text-ionBlue hover:bg-gray-50"}`}
                 >
                   <AnimatePresence mode="wait">
                     {shareStatus ? (
                       <motion.span
                         key="copied"
-                        initial={{ y: 20 }} animate={{ y: 0 }} exit={{ y: -20 }}
+                        initial={{ y: 20 }}
+                        animate={{ y: 0 }}
+                        exit={{ y: -20 }}
                         className="text-[10px] font-black uppercase"
                       >
                         Copied!
                       </motion.span>
                     ) : (
-                      <motion.div key="share" initial={{ y: 20 }} animate={{ y: 0 }} exit={{ y: -20 }}>
+                      <motion.div
+                        key="share"
+                        initial={{ y: 20 }}
+                        animate={{ y: 0 }}
+                        exit={{ y: -20 }}
+                      >
                         <Share2 size={20} />
                       </motion.div>
                     )}
@@ -227,11 +288,16 @@ export default function ProductDetail({ product, onBack, setView }) {
                   </h3>
                   <div className="grid grid-cols-1 gap-2">
                     {features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-50 shadow-sm">
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-50 shadow-sm"
+                      >
                         <div className="mt-1 w-5 h-5 rounded-full bg-ionGreen/10 flex items-center justify-center shrink-0">
                           <Check size={12} className="text-ionGreen" />
                         </div>
-                        <p className="text-sm font-bold text-ionMidnight/80">{feature}</p>
+                        <p className="text-sm font-bold text-ionMidnight/80">
+                          {feature}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -243,9 +309,16 @@ export default function ProductDetail({ product, onBack, setView }) {
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                   {Object.entries(specs).map(([key, value]) => (
-                    <div key={key} className="p-4 md:p-5 rounded-2xl md:rounded-3xl bg-white border border-gray-100 hover:shadow-lg transition-all group">
-                      <span className="text-[8px] md:text-[9px] font-black text-ionBlue/30 uppercase tracking-widest block mb-1 group-hover:text-ionGreen">{key}</span>
-                      <span className="text-xs md:text-sm font-bold text-ionMidnight">{value}</span>
+                    <div
+                      key={key}
+                      className="p-4 md:p-5 rounded-2xl md:rounded-3xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+                    >
+                      <span className="text-[8px] md:text-[9px] font-black text-ionBlue/30 uppercase tracking-widest block mb-1 group-hover:text-ionGreen">
+                        {key}
+                      </span>
+                      <span className="text-xs md:text-sm font-bold text-ionMidnight">
+                        {value}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -258,8 +331,13 @@ export default function ProductDetail({ product, onBack, setView }) {
                   <div className="p-6 rounded-[2rem] bg-ionGreen/5 border border-ionGreen/10 grid grid-cols-1 gap-4">
                     {benefits.map((benefit, idx) => (
                       <div key={idx} className="flex items-center gap-4">
-                         <Droplets size={18} className="text-ionBlue opacity-40" />
-                         <p className="text-sm font-black text-ionBlue italic">{benefit}</p>
+                        <Droplets
+                          size={18}
+                          className="text-ionBlue opacity-40"
+                        />
+                        <p className="text-sm font-black text-ionBlue italic">
+                          {benefit}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -268,66 +346,222 @@ export default function ProductDetail({ product, onBack, setView }) {
             </div>
           </div>
         </div>
+
+        {/* DYNAMIC REVIEW SECTION - Condensced & Professional */}
+        {review && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-20 md:mb-24 overflow-hidden rounded-[2rem] md:rounded-[3rem] bg-white border border-gray-100 shadow-xl"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+              {/* Video Preview Side */}
+              <div
+                className="lg:col-span-4 relative bg-black aspect-video lg:aspect-auto group overflow-hidden cursor-pointer"
+                onClick={() => setShowVideoPopup(true)}
+              >
+                <video
+                  ref={videoRef}
+                  src={review.video}
+                  className="w-full h-full object-cover opacity-60"
+                  muted
+                  loop
+                  playsInline
+                />
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/20">
+                  <div className="w-14 h-14 rounded-full bg-white/30 backdrop-blur-md border border-white/40 flex items-center justify-center text-white mb-3">
+                    <Play size={24} className="fill-current ml-1" />
+                  </div>
+                  <span className="text-[10px] font-black text-white uppercase tracking-widest">
+                    Watch Review
+                  </span>
+                </div>
+              </div>
+
+              {/* Text Side */}
+              <div className="lg:col-span-8 p-8 md:p-12 flex flex-col justify-center">
+                <div className="max-w-2xl">
+                  <div className="flex items-center gap-1 mb-6">
+                    {[...Array(5)].map((_, i) => (
+                      <Sparkles
+                        key={i}
+                        size={14}
+                        className="text-ionGreen fill-ionGreen"
+                      />
+                    ))}
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black text-ionBlue italic mb-6">
+                    "I feel much fresher and healthier."
+                  </h3>
+                  <p className="text-sm md:text-base font-medium text-ionMidnight/70 italic mb-8">
+                    "{review.text}"
+                  </p>
+                  <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
+                    <div className="w-10 h-10 rounded-xl bg-ionBlue text-white flex items-center justify-center font-black">
+                      {review.name[0]}
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-ionBlue uppercase">
+                        {review.name}
+                      </p>
+                      <p className="text-[9px] font-bold text-ionGreen uppercase">
+                        {review.location} • {review.role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* 📱 FULL-SCREEN VIDEO POPUP - Professional Enhancements */}
+        <AnimatePresence>
+          {showVideoPopup && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              /* Close when clicking the dark area (backdrop) */
+              onClick={() => setShowVideoPopup(false)}
+              /* Higher z-index to stay above everything else */
+              className="fixed inset-0 z-[999] bg-ionMidnight/95 backdrop-blur-xl flex items-center justify-center p-4 cursor-pointer"
+            >
+              {/* ❌ Close Button - Positioned below a standard Nav Bar height */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowVideoPopup(false);
+                }}
+                className="absolute top-24 right-6 md:top-20 md:right-12 w-12 h-12 rounded-full 
+             bg-white/10 backdrop-blur-md border border-white/20 
+             flex items-center justify-center text-white shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] 
+             hover:bg-white/20 hover:scale-110 active:scale-95 
+             transition-all duration-300 z-[1000]"
+              >
+                <X size={24} strokeWidth={2.5} />
+              </button>
+
+              <motion.div
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 20 }}
+                /* Stop Propagation so clicking the video doesn't close it */
+                onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-[400px] aspect-[9/16] bg-black rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 cursor-default"
+              >
+                <video
+                  ref={popupVideoRef}
+                  src={review.video}
+                  autoPlay
+                  controls
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* TECHNICAL TRUST BLOCK */}
         <div className="p-8 sm:p-12 md:p-20 rounded-[2.5rem] md:rounded-[4rem] bg-ionMidnight text-white relative overflow-hidden mb-24 md:mb-32">
-           {/* ... (Trust block content remains same) */}
-           <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-ionBlue/10 blur-[120px] rounded-full" />
-           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ionGreen/10 border border-ionGreen/20">
-                  <Sparkles size={14} className="text-ionGreen animate-pulse" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-ionGreen">Platinum-Titanium Standard</span>
-                </div>
-                <h3 className="text-3xl sm:text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-tight">Technical <br className="hidden md:block"/>Longevity.</h3>
-                <p className="text-white/60 text-sm md:text-base font-medium leading-relaxed">
-                  Every system is engineered to exceed global health standards. Utilizing 99.99% pure platinum-coated titanium electrodes ensures your molecular hydrogen output remains consistent without plate degradation for 5+ years.
+          {/* ... (Trust block content remains same) */}
+          <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-ionBlue/10 blur-[120px] rounded-full" />
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ionGreen/10 border border-ionGreen/20">
+                <Sparkles size={14} className="text-ionGreen animate-pulse" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-ionGreen">
+                  Platinum-Titanium Standard
+                </span>
+              </div>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-tight">
+                Technical <br className="hidden md:block" />
+                Longevity.
+              </h3>
+              <p className="text-white/60 text-sm md:text-base font-medium leading-relaxed">
+                Every system is engineered to exceed global health standards.
+                Utilizing 99.99% pure platinum-coated titanium electrodes
+                ensures your molecular hydrogen output remains consistent
+                without plate degradation for 5+ years.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:pl-10">
+              <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
+                <h5 className="text-ionGreen font-black text-3xl mb-1">
+                  99.9%
+                </h5>
+                <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">
+                  H₂ Purity
                 </p>
               </div>
-              <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:pl-10">
-                 <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
-                    <h5 className="text-ionGreen font-black text-3xl mb-1">99.9%</h5>
-                    <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">H₂ Purity</p>
-                 </div>
-                 <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
-                    <h5 className="text-ionGreen font-black text-3xl mb-1">0%</h5>
-                    <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">Plate Erosion</p>
-                 </div>
-                 <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
-                    <h5 className="text-ionGreen font-black text-3xl mb-1">100+</h5>
-                    <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">Tests Conducted</p>
-                 </div>
-                 <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
-                    <h5 className="text-ionGreen font-black text-3xl mb-1">5yr</h5>
-                    <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">Plate Assured</p>
-                 </div>
+              <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
+                <h5 className="text-ionGreen font-black text-3xl mb-1">0%</h5>
+                <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">
+                  Plate Erosion
+                </p>
               </div>
-           </div>
+              <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
+                <h5 className="text-ionGreen font-black text-3xl mb-1">100+</h5>
+                <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">
+                  Tests Conducted
+                </p>
+              </div>
+              <div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
+                <h5 className="text-ionGreen font-black text-3xl mb-1">5yr</h5>
+                <p className="text-[8px] text-white/40 uppercase tracking-[0.3em] font-black">
+                  Plate Assured
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
         {/* CURATED COLLECTION */}
         <div className="pt-12 border-t border-gray-100">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
-            <h2 className="text-3xl sm:text-4xl font-black text-ionMidnight tracking-tighter italic uppercase">Curated <span className="opacity-30 font-light">Collection.</span></h2>
-            <button onClick={() => { window.history.pushState({}, "", "/"); onBack(); }} className="text-[10px] font-black uppercase text-ionBlue tracking-widest flex items-center gap-2 hover:gap-4 transition-all">Explore Full Collection <ArrowRight size={14}/></button>
+            <h2 className="text-3xl sm:text-4xl font-black text-ionMidnight tracking-tighter italic uppercase">
+              Curated <span className="opacity-30 font-light">Collection.</span>
+            </h2>
+            <button
+              onClick={() => {
+                window.history.pushState({}, "", "/");
+                onBack();
+              }}
+              className="text-[10px] font-black uppercase text-ionBlue tracking-widest flex items-center gap-2 hover:gap-4 transition-all"
+            >
+              Explore Full Collection <ArrowRight size={14} />
+            </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
             {relatedProducts.map((p) => (
               <motion.div
                 key={p.id}
                 whileHover={{ y: -8 }}
-                onClick={() => window.open(`${window.location.origin}/#${p.id}`, "_blank")}
+                onClick={() =>
+                  window.open(`${window.location.origin}/#${p.id}`, "_blank")
+                }
                 className="group cursor-pointer flex flex-col"
               >
                 <div className="aspect-[4/3] bg-gray-50 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden border border-gray-100 mb-6 p-6 flex items-center justify-center transition-all group-hover:shadow-2xl group-hover:bg-white group-hover:border-ionBlue/10 relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-ionBlue/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <img src={p.thumbnail} loading="lazy" className="w-[85%] h-[85%] object-contain transition-transform duration-700 z-10" alt={p.name} />
+                  <img
+                    src={p.thumbnail}
+                    loading="lazy"
+                    className="w-[85%] h-[85%] object-contain transition-transform duration-700 z-10"
+                    alt={p.name}
+                  />
                   <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center z-20">
-                     <span className="text-[8px] font-black uppercase text-ionBlue/30 tracking-widest">{p.category}</span>
-                     <div className="w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-ionBlue opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
-                        <Plus size={16} />
-                     </div>
+                    <span className="text-[8px] font-black uppercase text-ionBlue/30 tracking-widest">
+                      {p.category}
+                    </span>
+                    <div className="w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-ionBlue opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
+                      <Plus size={16} />
+                    </div>
                   </div>
                 </div>
-                <h4 className="text-base md:text-lg font-black uppercase italic text-ionMidnight group-hover:text-ionBlue transition-colors px-2 leading-tight">{p.name}</h4>
+                <h4 className="text-base md:text-lg font-black uppercase italic text-ionMidnight group-hover:text-ionBlue transition-colors px-2 leading-tight">
+                  {p.name}
+                </h4>
               </motion.div>
             ))}
           </div>

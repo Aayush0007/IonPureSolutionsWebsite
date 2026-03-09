@@ -2,26 +2,10 @@
 export const TESTIMONIALS = [
   {
     id: 1,
-    name: "Priya Mehta",
+    name: "Verified Customer",
     role: "Homemaker",
     location: "Gurugram",
-    text: "Since installing the Flow MAX, my family drinks more water and feels more energetic. The taste is incredibly fresh!",
+    text: "Hello friends, I have been using Ion Pure Water, and my experience has been very good. After drinking this water regularly, I feel much fresher and healthier. Earlier, my hair was greying quite fast, but after using this water for some time, I feel that the greying has slowed down a little. I would definitely recommend everyone to try this water and experience the benefits for yourself.",
     rating: 5
   },
-  {
-    id: 2,
-    name: "Rajesh Kapoor",
-    role: "Fitness Enthusiast",
-    location: "Delhi",
-    text: "The IPS H2 Pro bottle is a game-changer for my workouts. Recovery feels faster and hydration is on another level.",
-    rating: 5
-  },
-  {
-    id: 3,
-    name: "Anita Singh",
-    role: "Wellness Coach",
-    location: "Gurugram",
-    text: "I recommend Ion Pure to all my clients. The quality and certifications give complete peace of mind.",
-    rating: 5
-  }
 ];

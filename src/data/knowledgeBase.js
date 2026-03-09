@@ -2,6 +2,18 @@
 export const KNOWLEDGE_BASE = [
   // --- GREETINGS & INTRO ---
   {
+    trigger: ["hello", "hi", "namaste", "hey", "kaise ho"],
+    response: "Namaste ji! 😊 Feeling fresh & hydrated today? How can your Ion Pure buddy help with alkaline magic or hydrogen power?"
+  },
+  {
+    trigger: ["products", "list", "catalogue"],
+    response: "Our wellness lineup: 1. FLOW MAX (Flagship), 2. FLOW (Reliable), 3. FLOW PLUS (Compact), 4. Hydrogen Bottles (HT, H2 Pro, H2). Type a name for details!"
+  },
+  {
+    trigger: ["price", "cost", "buy"],
+    response: "Pricing varies by model and plate configuration. For a formal quote, chat with us on WhatsApp at +91 8130134145!"
+  },
+  {
     trigger: [
       "hello",
       "hi",
@@ -65,6 +77,10 @@ export const KNOWLEDGE_BASE = [
       "list",
       "sab products",
       "product dikhao",
+      "all product details", // Added this
+      "complete details",
+      "product details", // Added this here
+      "tell me all"
     ],
     response: `Our current wellness lineup:
 

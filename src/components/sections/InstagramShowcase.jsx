@@ -16,9 +16,9 @@ export default function InstagramShowcase() {
   const dragX = useMotionValue(0);
 
   const instagramPosts = [
+    "https://www.instagram.com/p/DVQt0GCj1ju/",
+    "https://www.instagram.com/p/DVLALfzkmIk/",
     "https://www.instagram.com/p/DVA-UPijt3_/",
-    "https://www.instagram.com/p/DTpWx_LkQoc/",
-    "https://www.instagram.com/p/DTYSbgEEgGq/",
   ];
 
   // Auto-slide logic with pause-on-interaction

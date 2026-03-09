@@ -6,7 +6,7 @@ import {
   ExternalLink,
   MapPin,
   Waves,
-  Mail
+  Mail,
 } from "lucide-react";
 // Import original brand icons
 import WhatsAppIcon from "../../assets/icons/whatsapp.png";
@@ -15,6 +15,25 @@ import GmailIcon from "../../assets/icons/gmail.png";
 import { COMPANY } from "../../data/company";
 import { CERTIFICATIONS } from "../../data/certifications";
 import Logo from "../../assets/images/Logo.png";
+
+// 1. Import Certificate Logos
+import ceLogo from "../../assets/certificate/CE.jpg";
+import fcLogo from "../../assets/certificate/FC.jpg";
+import gmpLogo from "../../assets/certificate/GMP.jpg";
+import iso9001Logo from "../../assets/certificate/ISO9001-2015.jpg";
+import iso14001Logo from "../../assets/certificate/ISO14001.jpg";
+import rohsLogo from "../../assets/certificate/RoHS.jpg";
+
+// 2. Map logos to codes
+const footerCertLogos = {
+  CE: ceLogo,
+  FCC: fcLogo,
+  GMP: gmpLogo,
+  "ISO-9001": iso9001Logo,
+  "ISO-13485": iso9001Logo, // Reusing ISO logo
+  "ISO-14001": iso14001Logo,
+  RoHS: rohsLogo,
+};
 
 const Footer = forwardRef(({ scrollTo, setView }, ref) => {
   const currentYear = new Date().getFullYear();
@@ -30,46 +49,75 @@ const Footer = forwardRef(({ scrollTo, setView }, ref) => {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
-          
           {/* 1. Brand Identity & Socials */}
           <div className="lg:col-span-2 space-y-8">
             <div className="flex flex-col items-start gap-4">
-               <div className="flex items-center gap-4">
-                  <img src={Logo} alt={COMPANY.name} className="h-16 w-auto object-contain" />
-                  <div className="flex flex-col">
-                    <h3 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter leading-none flex">
-                      <span className="text-[#2C5DA7]">Ion</span>
-                      <span className="text-[#7CB35B] ml-2">Pure</span>
-                    </h3>
-                    <div className="flex items-center w-full mt-1.5 gap-2">
-                       <div className="h-[1px] w-4 bg-[#7CB35B]/60"></div>
-                       <span className="text-[9px] font-black tracking-[0.5em] text-[#2C5DA7]/60 uppercase">Solutions</span>
-                       <div className="h-[1px] flex-grow bg-gradient-to-l from-transparent to-[#2C5DA7]/20"></div>
-                    </div>
+              <div className="flex items-center gap-4">
+                <img
+                  src={Logo}
+                  alt={COMPANY.name}
+                  className="h-16 w-auto object-contain"
+                />
+                <div className="flex flex-col">
+                  <h3 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter leading-none flex">
+                    <span className="text-[#2C5DA7]">Ion</span>
+                    <span className="text-[#7CB35B] ml-2">Pure</span>
+                  </h3>
+                  <div className="flex items-center w-full mt-1.5 gap-2">
+                    <div className="h-[1px] w-4 bg-[#7CB35B]/60"></div>
+                    <span className="text-[9px] font-black tracking-[0.5em] text-[#2C5DA7]/60 uppercase">
+                      Solutions
+                    </span>
+                    <div className="h-[1px] flex-grow bg-gradient-to-l from-transparent to-[#2C5DA7]/20"></div>
                   </div>
-               </div>
+                </div>
+              </div>
             </div>
 
             <div className="space-y-4">
-               <h4 className="text-[#7CB35B] font-black text-xl tracking-tight uppercase italic drop-shadow-sm">
-                 {COMPANY.tagline}
-               </h4>
-               <p className="text-[#2C5DA7]/70 max-w-md leading-relaxed text-base font-medium italic">
-                 {COMPANY.fullName} specializes in advanced Alkaline Water Ionization and 99.99% Pure Hydrogen technology.
-               </p>
+              <h4 className="text-[#7CB35B] font-black text-xl tracking-tight uppercase italic drop-shadow-sm">
+                {COMPANY.tagline}
+              </h4>
+              <p className="text-[#2C5DA7]/70 max-w-md leading-relaxed text-base font-medium italic">
+                {COMPANY.fullName} specializes in advanced Alkaline Water
+                Ionization and 99.99% Pure Hydrogen technology.
+              </p>
             </div>
 
             <div className="flex gap-5 pt-2">
-              <a href={`https://wa.me/${COMPANY.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noreferrer" 
-                 className="hover:scale-110 transition-transform">
-                <img src={WhatsAppIcon} alt="WhatsApp" className="w-9 h-9 object-contain" />
+              <a
+                href={`https://wa.me/${COMPANY.whatsapp.replace(/\D/g, "")}`}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:scale-110 transition-transform"
+              >
+                <img
+                  src={WhatsAppIcon}
+                  alt="WhatsApp"
+                  className="w-9 h-9 object-contain"
+                />
               </a>
-              <a href={`https://instagram.com/${COMPANY.instagram}`} target="_blank" rel="noreferrer"
-                 className="hover:scale-110 transition-transform">
-                <img src={InstagramIcon} alt="Instagram" className="w-9 h-9 object-contain" />
+              <a
+                href={`https://instagram.com/${COMPANY.instagram}`}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:scale-110 transition-transform"
+              >
+                <img
+                  src={InstagramIcon}
+                  alt="Instagram"
+                  className="w-9 h-9 object-contain"
+                />
               </a>
-              <a href={`mailto:${COMPANY.email}`} className="hover:scale-110 transition-transform">
-                <img src={GmailIcon} alt="Gmail" className="w-9 h-9 object-contain" />
+              <a
+                href={`mailto:${COMPANY.email}`}
+                className="hover:scale-110 transition-transform"
+              >
+                <img
+                  src={GmailIcon}
+                  alt="Gmail"
+                  className="w-9 h-9 object-contain"
+                />
               </a>
             </div>
           </div>
@@ -108,32 +156,61 @@ const Footer = forwardRef(({ scrollTo, setView }, ref) => {
               </div>
               <div className="p-5 bg-white border border-ionBlue/5 rounded-[1.5rem] space-y-3 shadow-sm">
                 <div className="flex items-center gap-2">
-                   <div className="w-1.5 h-1.5 rounded-full bg-[#7CB35B]" />
-                   <p className="text-[10px] font-black text-[#2C5DA7]/80 uppercase tracking-wider">GST: {COMPANY.gst}</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#7CB35B]" />
+                  <p className="text-[10px] font-black text-[#2C5DA7]/80 uppercase tracking-wider">
+                    GST: {COMPANY.gst}
+                  </p>
                 </div>
                 <div className="flex items-center gap-2">
-                   <div className="w-1.5 h-1.5 rounded-full bg-[#2C5DA7]" />
-                   <p className="text-[10px] font-black text-[#2C5DA7]/80 uppercase tracking-tighter truncate">UDYAM: {COMPANY.udyam}</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#2C5DA7]" />
+                  <p className="text-[10px] font-black text-[#2C5DA7]/80 uppercase tracking-tighter truncate">
+                    UDYAM: {COMPANY.udyam}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 4. Trust Ribbon - UPDATED TO SHOW ALL 7 CERTIFICATIONS */}
-        <div className="py-12 border-y border-ionBlue/5 mb-12 bg-white/50">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-6 justify-center opacity-80">
-            {CERTIFICATIONS.map((cert) => (
-              <div key={cert.code} className="flex flex-col items-center text-center gap-1 group cursor-default">
-                <CheckCircle2 size={16} className="text-[#7CB35B]" />
-                <span className="text-[10px] font-black text-[#2C5DA7] uppercase tracking-widest group-hover:text-[#7CB35B] transition-colors">
-                  {cert.code}
-                </span>
-                <span className="text-[7px] font-bold text-[#2C5DA7]/40 uppercase">
-                  Verified Std.
-                </span>
-              </div>
-            ))}
+        {/* 4. Trust Ribbon - UPDATED WITH LOGO IMAGES */}
+        <div className="py-8 md:py-12 border-y border-ionBlue/5 mb-12 bg-white/40">
+          <div className="max-w-7xl mx-auto px-4">
+            <div
+              className="grid 
+      /* 2 columns on tiny phones, 3 on small, 4 on tablets, 7 on desktop */
+      grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-7 
+      gap-y-8 gap-x-4 md:gap-8 
+      justify-items-center items-center"
+            >
+              {CERTIFICATIONS.map((cert) => (
+                <div
+                  key={cert.code}
+                  className="flex flex-col items-center text-center gap-3 group grayscale hover:grayscale-0 transition-all duration-500 w-full max-w-[120px]"
+                >
+                  {/* Responsive Logo Container: Slightly larger on desktop */}
+                  <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center overflow-hidden rounded-xl bg-white p-1.5 shadow-sm border border-gray-100 group-hover:shadow-md group-hover:border-ionBlue/10 transition-all">
+                    {footerCertLogos[cert.code] ? (
+                      <img
+                        src={footerCertLogos[cert.code]}
+                        alt={cert.code}
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <CheckCircle2 size={20} className="text-ionGreen" />
+                    )}
+                  </div>
+
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-[10px] md:text-[11px] font-black text-ionBlue uppercase tracking-tighter sm:tracking-widest group-hover:text-ionGreen transition-colors">
+                      {cert.code}
+                    </span>
+                    <span className="text-[7px] md:text-[8px] font-bold text-ionBlue/30 uppercase tracking-tighter">
+                      Verified Std.
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -144,13 +221,21 @@ const Footer = forwardRef(({ scrollTo, setView }, ref) => {
           </p>
 
           <div className="flex items-center gap-6">
-            <a href="/#privacy-policy" target="_blank" rel="noopener"
-               className="text-[10px] font-black text-[#2C5DA7]/40 hover:text-[#2C5DA7] uppercase tracking-widest transition-all flex items-center gap-1">
+            <a
+              href="/#privacy-policy"
+              target="_blank"
+              rel="noopener"
+              className="text-[10px] font-black text-[#2C5DA7]/40 hover:text-[#2C5DA7] uppercase tracking-widest transition-all flex items-center gap-1"
+            >
               Privacy Policy <ExternalLink size={10} />
             </a>
             <div className="h-4 w-[1px] bg-[#2C5DA7]/10" />
-            <a href="/#terms-conditions" target="_blank" rel="noopener"
-               className="text-[10px] font-black text-[#2C5DA7]/40 hover:text-[#2C5DA7] uppercase tracking-widest transition-all flex items-center gap-1">
+            <a
+              href="/#terms-conditions"
+              target="_blank"
+              rel="noopener"
+              className="text-[10px] font-black text-[#2C5DA7]/40 hover:text-[#2C5DA7] uppercase tracking-widest transition-all flex items-center gap-1"
+            >
               Terms & Conditions <ExternalLink size={10} />
             </a>
           </div>
