@@ -18,21 +18,21 @@ import Logo from "../../assets/images/Logo.png";
 
 // 1. Import Certificate Logos
 import ceLogo from "../../assets/certificate/CE.jpg";
-import fcLogo from "../../assets/certificate/FC.jpg";
+import fcLogo from "../../assets/certificate/FC.jpg"; 
 import gmpLogo from "../../assets/certificate/GMP.jpg";
 import iso9001Logo from "../../assets/certificate/ISO9001-2015.jpg";
 import iso14001Logo from "../../assets/certificate/ISO14001.jpg";
+import iso13485Logo from "../../assets/certificate/ISO13485.jpg"; 
 import rohsLogo from "../../assets/certificate/RoHS.jpg";
 
-// 2. Map logos to codes
 const footerCertLogos = {
-  CE: ceLogo,
-  FCC: fcLogo,
-  GMP: gmpLogo,
+  "CE": ceLogo,
+  "FCC": fcLogo,
+  "GMP": gmpLogo,
   "ISO-9001": iso9001Logo,
-  "ISO-13485": iso9001Logo, // Reusing ISO logo
+  "ISO-13485": iso13485Logo, // Use the correct separate file
   "ISO-14001": iso14001Logo,
-  RoHS: rohsLogo,
+  "RoHS": rohsLogo,
 };
 
 const Footer = forwardRef(({ scrollTo, setView }, ref) => {
