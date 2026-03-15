@@ -18,21 +18,21 @@ import Logo from "../../assets/images/Logo.png";
 
 // 1. Import Certificate Logos
 import ceLogo from "../../assets/certificate/CE.jpg";
-import fcLogo from "../../assets/certificate/FC.jpg"; 
+import fcLogo from "../../assets/certificate/FC.jpg";
 import gmpLogo from "../../assets/certificate/GMP.jpg";
 import iso9001Logo from "../../assets/certificate/ISO9001-2015.jpg";
 import iso14001Logo from "../../assets/certificate/ISO14001.jpg";
-import iso13485Logo from "../../assets/certificate/ISO13485.jpg"; 
+import iso13485Logo from "../../assets/certificate/ISO13485.jpg";
 import rohsLogo from "../../assets/certificate/RoHS.jpg";
 
 const footerCertLogos = {
-  "CE": ceLogo,
-  "FCC": fcLogo,
-  "GMP": gmpLogo,
+  CE: ceLogo,
+  FCC: fcLogo,
+  GMP: gmpLogo,
   "ISO-9001": iso9001Logo,
   "ISO-13485": iso13485Logo, // Use the correct separate file
   "ISO-14001": iso14001Logo,
-  "RoHS": rohsLogo,
+  RoHS: rohsLogo,
 };
 
 const Footer = forwardRef(({ scrollTo, setView }, ref) => {
@@ -110,7 +110,9 @@ const Footer = forwardRef(({ scrollTo, setView }, ref) => {
                 />
               </a>
               <a
-                href={`mailto:${COMPANY.email}`}
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${COMPANY.email}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:scale-110 transition-transform"
               >
                 <img
@@ -215,29 +217,28 @@ const Footer = forwardRef(({ scrollTo, setView }, ref) => {
         </div>
 
         {/* 5. Terminal Bar */}
+        {/* 5. Terminal Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 border-t border-ionBlue/5 pt-10">
           <p className="text-[11px] font-black text-[#2C5DA7]/30 uppercase tracking-[0.3em]">
             © {currentYear} {COMPANY.name} • Certified Excellence
           </p>
 
           <div className="flex items-center gap-6">
-            <a
-              href="/#privacy-policy"
-              target="_blank"
-              rel="noopener"
-              className="text-[10px] font-black text-[#2C5DA7]/40 hover:text-[#2C5DA7] uppercase tracking-widest transition-all flex items-center gap-1"
+            <button
+              onClick={() => setView("privacy-policy")}
+              className="text-[10px] font-black text-[#2C5DA7]/40 hover:text-[#2C5DA7] uppercase tracking-widest transition-all flex items-center gap-1 cursor-pointer"
             >
               Privacy Policy <ExternalLink size={10} />
-            </a>
+            </button>
+
             <div className="h-4 w-[1px] bg-[#2C5DA7]/10" />
-            <a
-              href="/#terms-conditions"
-              target="_blank"
-              rel="noopener"
-              className="text-[10px] font-black text-[#2C5DA7]/40 hover:text-[#2C5DA7] uppercase tracking-widest transition-all flex items-center gap-1"
+
+            <button
+              onClick={() => setView("terms-conditions")}
+              className="text-[10px] font-black text-[#2C5DA7]/40 hover:text-[#2C5DA7] uppercase tracking-widest transition-all flex items-center gap-1 cursor-pointer"
             >
               Terms & Conditions <ExternalLink size={10} />
-            </a>
+            </button>
           </div>
         </div>
       </div>

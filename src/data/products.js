@@ -196,10 +196,12 @@ export const PRODUCTS = [
     category: "Hydrogen Water Bottle",
     thumbnail: h2Pro1,
     gallery: [h2Pro1, h2Pro2, h2Pro3, h2Pro4, h2Pro5, h2Pro6, h2Pro7],
-    featuredReview: {
-      video: h2ProReviewVid,
-      ...TESTIMONIALS.find(t => t.id === 1) 
-    },
+    reviews: [
+      {
+        video: h2ProReviewVid,
+        ...TESTIMONIALS.find(t => t.id === 1) 
+      }
+    ],
     shortDescription: "Professional grade hydrogen bottle with SPE & PEM technology.",
     description: "The H₂ Pro utilizes advanced SPE & PEM electrolysis technology and a premium platinum carbon catalyst coating to deliver pure 99.99% hydrogen water without residual gases.",
     tagline: "Elite Hydrogen Performance",

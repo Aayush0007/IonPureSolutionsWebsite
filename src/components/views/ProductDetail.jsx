@@ -25,20 +25,22 @@ import {
 import { PRODUCTS } from "../../data/products";
 export default function ProductDetail({ product, onBack, setView }) {
   // 1. STATE & REFS
-  const [activeImg, setActiveImg] = useState(
-    product?.thumbnail || "/SampleProductImage.jpg",
-  );
+  const [activeImg, setActiveImg] = useState(product?.thumbnail || "/SampleProductImage.jpg");
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const [showZoom, setShowZoom] = useState(false);
-  const [shareStatus, setShareStatus] = useState(false); // New state for share feedback
+  const [shareStatus, setShareStatus] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showVideoPopup, setShowVideoPopup] = useState(false);
+
+  // Carousel State
+  const [currentReviewIdx, setCurrentReviewIdx] = useState(0);
 
   const imgContainerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
   const videoRef = useRef(null);
   const popupVideoRef = useRef(null);
+
   // 2. DATA CALCULATION
   const relatedProducts = useMemo(() => {
     return PRODUCTS.filter((p) => p.id !== product?.id).slice(0, 3);
@@ -50,8 +52,10 @@ export default function ProductDetail({ product, onBack, setView }) {
   const features = product.keyFeatures || [];
   const benefits = product.wellnessBenefits || [];
   const gallery = product.gallery || [product.thumbnail];
-  const review = product.featuredReview;
 
+  // Logic to handle multiple reviews or single featured review
+  const reviews = product.reviews || (product.featuredReview ? [product.featuredReview] : []);
+  const currentReview = reviews[currentReviewIdx];
   // 3. HANDLERS
   const handleMouseMove = (e) => {
     if (!imgContainerRef.current) return;
@@ -348,116 +352,74 @@ export default function ProductDetail({ product, onBack, setView }) {
         </div>
 
         {/* DYNAMIC REVIEW SECTION - Condensced & Professional */}
-        {review && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-20 md:mb-24 overflow-hidden rounded-[2rem] md:rounded-[3rem] bg-white border border-gray-100 shadow-xl"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-              {/* Video Preview Side */}
-              <div
-                className="lg:col-span-4 relative bg-black aspect-video lg:aspect-auto group overflow-hidden cursor-pointer"
-                onClick={() => setShowVideoPopup(true)}
-              >
-                <video
-                  ref={videoRef}
-                  src={review.video}
-                  className="w-full h-full object-cover opacity-60"
-                  muted
-                  loop
-                  playsInline
-                />
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/20">
-                  <div className="w-14 h-14 rounded-full bg-white/30 backdrop-blur-md border border-white/40 flex items-center justify-center text-white mb-3">
-                    <Play size={24} className="fill-current ml-1" />
-                  </div>
-                  <span className="text-[10px] font-black text-white uppercase tracking-widest">
-                    Watch Review
-                  </span>
+        {reviews.length > 0 && currentReview && (
+          <div className="mb-20 md:mb-24 relative">
+            <div className="flex items-center justify-between mb-6 px-2">
+              <h4 className="text-xs font-black uppercase tracking-[0.3em] text-ionBlue/40 flex items-center gap-2">
+                <Activity size={14} className="text-ionGreen" /> User Experiences
+              </h4>
+              {reviews.length > 1 && (
+                <div className="flex gap-2">
+                  {reviews.map((_, idx) => (
+                    <button key={idx} onClick={() => setCurrentReviewIdx(idx)} className={`h-1.5 transition-all duration-500 rounded-full ${currentReviewIdx === idx ? "w-8 bg-ionBlue" : "w-2 bg-ionBlue/20"}`} />
+                  ))}
                 </div>
-              </div>
-
-              {/* Text Side */}
-              <div className="lg:col-span-8 p-8 md:p-12 flex flex-col justify-center">
-                <div className="max-w-2xl">
-                  <div className="flex items-center gap-1 mb-6">
-                    {[...Array(5)].map((_, i) => (
-                      <Sparkles
-                        key={i}
-                        size={14}
-                        className="text-ionGreen fill-ionGreen"
-                      />
-                    ))}
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-black text-ionBlue italic mb-6">
-                    "I feel much fresher and healthier."
-                  </h3>
-                  <p className="text-sm md:text-base font-medium text-ionMidnight/70 italic mb-8">
-                    "{review.text}"
-                  </p>
-                  <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
-                    <div className="w-10 h-10 rounded-xl bg-ionBlue text-white flex items-center justify-center font-black">
-                      {review.name[0]}
-                    </div>
-                    <div>
-                      <p className="text-xs font-black text-ionBlue uppercase">
-                        {review.name}
-                      </p>
-                      <p className="text-[9px] font-bold text-ionGreen uppercase">
-                        {review.location} • {review.role}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
-          </motion.div>
+
+            <AnimatePresence mode="wait">
+              <motion.div key={currentReviewIdx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="overflow-hidden rounded-[2rem] md:rounded-[3rem] bg-white border border-gray-100 shadow-xl">
+                <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+                  
+                  {/* VIDEO SIDE (Handles auto-thumbnail from video metadata) */}
+                  {currentReview.video ? (
+                    <div className="lg:col-span-4 relative bg-black aspect-video lg:aspect-auto group overflow-hidden cursor-pointer" onClick={() => setShowVideoPopup(true)}>
+                      <video src={currentReview.video} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" muted loop playsInline preload="metadata" poster={product.thumbnail} />
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/20">
+                        <div className="w-14 h-14 rounded-full bg-white/30 backdrop-blur-md border border-white/40 flex items-center justify-center text-white mb-3"><Play size={24} className="fill-current ml-1" /></div>
+                        <span className="text-[10px] font-black text-white uppercase tracking-widest">Watch Experience</span>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {/* TEXT SIDE (Auto-adjusts width) */}
+                  <div className={`${currentReview.video ? "lg:col-span-8" : "lg:col-span-12"} p-8 md:p-16 flex flex-col justify-center bg-gradient-to-br from-white to-gray-50/50`}>
+                    <div className="max-w-2xl">
+                      <div className="flex gap-1 mb-6">
+                        {[...Array(5)].map((_, i) => <Sparkles key={i} size={14} className="text-ionGreen fill-ionGreen" />)}
+                      </div>
+                      <h3 className="text-2xl md:text-4xl font-black text-ionBlue italic tracking-tighter leading-tight mb-6">"Freshness and Health redefined."</h3>
+                      <p className="text-sm md:text-lg font-medium text-ionMidnight/70 italic mb-8 border-l-4 border-ionGreen/20 pl-6">"{currentReview.text}"</p>
+                      <div className="flex items-center justify-between pt-6 border-t border-gray-100">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-ionBlue text-white flex items-center justify-center font-black text-xl shadow-lg shadow-ionBlue/20">{currentReview.name[0]}</div>
+                          <div>
+                            <p className="text-sm font-black text-ionBlue uppercase">{currentReview.name}</p>
+                            <p className="text-[10px] font-bold text-ionGreen uppercase">{currentReview.location} • {currentReview.role}</p>
+                          </div>
+                        </div>
+                        {reviews.length > 1 && (
+                          <div className="flex gap-2">
+                             <button onClick={() => setCurrentReviewIdx(p => p === 0 ? reviews.length-1 : p-1)} className="p-2 rounded-full border border-gray-100 text-ionBlue hover:bg-ionBlue hover:text-white transition-all"><ArrowLeft size={16}/></button>
+                             <button onClick={() => setCurrentReviewIdx(p => p === reviews.length-1 ? 0 : p+1)} className="p-2 rounded-full border border-gray-100 text-ionBlue hover:bg-ionBlue hover:text-white transition-all"><ArrowRight size={16}/></button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         )}
 
-        {/* 📱 FULL-SCREEN VIDEO POPUP - Professional Enhancements */}
+        {/* 📱 FULL-SCREEN POPUP (Same as your aesthetic version) */}
         <AnimatePresence>
           {showVideoPopup && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              /* Close when clicking the dark area (backdrop) */
-              onClick={() => setShowVideoPopup(false)}
-              /* Higher z-index to stay above everything else */
-              className="fixed inset-0 z-[999] bg-ionMidnight/95 backdrop-blur-xl flex items-center justify-center p-4 cursor-pointer"
-            >
-              {/* ❌ Close Button - Positioned below a standard Nav Bar height */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowVideoPopup(false);
-                }}
-                className="absolute top-24 right-6 md:top-20 md:right-12 w-12 h-12 rounded-full 
-             bg-white/10 backdrop-blur-md border border-white/20 
-             flex items-center justify-center text-white shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] 
-             hover:bg-white/20 hover:scale-110 active:scale-95 
-             transition-all duration-300 z-[1000]"
-              >
-                <X size={24} strokeWidth={2.5} />
-              </button>
-
-              <motion.div
-                initial={{ scale: 0.9, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.9, y: 20 }}
-                /* Stop Propagation so clicking the video doesn't close it */
-                onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-[400px] aspect-[9/16] bg-black rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 cursor-default"
-              >
-                <video
-                  ref={popupVideoRef}
-                  src={review.video}
-                  autoPlay
-                  controls
-                  className="w-full h-full object-cover"
-                />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowVideoPopup(false)} className="fixed inset-0 z-[999] bg-ionMidnight/95 backdrop-blur-xl flex items-center justify-center p-4">
+              <button onClick={(e) => { e.stopPropagation(); setShowVideoPopup(false); }} className="absolute top-24 right-6 md:top-20 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white z-[1000]"><X size={24} /></button>
+              <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} onClick={(e) => e.stopPropagation()} className="relative w-full max-w-[400px] aspect-[9/16] bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                <video ref={popupVideoRef} src={currentReview.video} autoPlay controls className="w-full h-full object-cover" />
               </motion.div>
             </motion.div>
           )}
