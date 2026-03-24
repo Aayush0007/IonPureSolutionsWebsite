@@ -143,7 +143,7 @@ function App() {
           scrollTo={handleNavigation}
         />
       </div>
-    {/* <Watermark /> */}
+    <Watermark />
 
       {/* Main Content */}
       <main className="relative z-10">
