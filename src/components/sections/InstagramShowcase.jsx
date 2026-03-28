@@ -22,11 +22,14 @@ export default function InstagramShowcase() {
     "https://www.instagram.com/reel/DVjDfb3Aagh/",
   ];
 
-  const handleIndexChange = useCallback((newIndex) => {
-    const total = instagramPosts.length;
-    const wrappedIndex = (newIndex + total) % total;
-    setActiveIndex(wrappedIndex);
-  }, [instagramPosts.length]);
+  const handleIndexChange = useCallback(
+    (newIndex) => {
+      const total = instagramPosts.length;
+      const wrappedIndex = (newIndex + total) % total;
+      setActiveIndex(wrappedIndex);
+    },
+    [instagramPosts.length],
+  );
 
   const goToNext = () => handleIndexChange(activeIndex + 1);
   const goToPrev = () => handleIndexChange(activeIndex - 1);
@@ -52,7 +55,7 @@ export default function InstagramShowcase() {
         damping: 28,
         stiffness: 150,
         mass: 0.5,
-        restDelta: 0.001
+        restDelta: 0.001,
       },
     });
   }, [activeIndex, controls]);
@@ -98,7 +101,10 @@ export default function InstagramShowcase() {
             className="group flex items-center gap-2.5 px-6 py-3 bg-white border border-ionBlue/12 rounded-xl font-bold uppercase tracking-wider text-[11px] shadow-sm hover:shadow-md hover:border-ionBlue/30 transition-all"
           >
             View Instagram
-            <ExternalLink size={13} className="group-hover:rotate-12 transition-transform" />
+            <ExternalLink
+              size={13}
+              className="group-hover:rotate-12 transition-transform"
+            />
           </a>
         </div>
 
@@ -110,7 +116,11 @@ export default function InstagramShowcase() {
               className="absolute -left-4 md:-left-14 lg:-left-16 top-1/2 -translate-y-1/2 p-2.5 md:p-3 rounded-full bg-white/90 backdrop-blur-sm border border-white/50 shadow-md text-ionBlue hover:bg-white hover:shadow-lg transition-all duration-300 z-30 active:scale-90"
               aria-label="Previous"
             >
-              <ChevronLeft size={20} className="md:w-6 md:h-6" strokeWidth={2.5} />
+              <ChevronLeft
+                size={20}
+                className="md:w-6 md:h-6"
+                strokeWidth={2.5}
+              />
             </button>
 
             <button
@@ -118,7 +128,11 @@ export default function InstagramShowcase() {
               className="absolute -right-4 md:-right-14 lg:-right-16 top-1/2 -translate-y-1/2 p-2.5 md:p-3 rounded-full bg-white/90 backdrop-blur-sm border border-white/50 shadow-md text-ionBlue hover:bg-white hover:shadow-lg transition-all duration-300 z-30 active:scale-90"
               aria-label="Next"
             >
-              <ChevronRight size={20} className="md:w-6 md:h-6" strokeWidth={2.5} />
+              <ChevronRight
+                size={20}
+                className="md:w-6 md:h-6"
+                strokeWidth={2.5}
+              />
             </button>
           </div>
 
@@ -132,26 +146,44 @@ export default function InstagramShowcase() {
               animate={controls}
               onDragEnd={onDragEnd}
             >
-              {instagramPosts.map((postUrl, idx) => (
-                <div key={postUrl} className="min-w-full px-3 relative">
-                  <motion.div
-                    animate={{
-                      scale: activeIndex === idx ? 1 : 0.94,
-                      opacity: activeIndex === idx ? 1 : 0.5,
-                    }}
-                    transition={{ duration: 0.4 }}
-                    className="relative aspect-[9/16] w-full rounded-3xl border-8 border-white shadow-xl overflow-hidden bg-white"
-                  >
-                    <iframe
-                      src={`${postUrl}embed`}
-                      title={`Instagram post ${idx + 1}`}
-                      className="absolute inset-0 w-full h-full border-none"
-                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                      loading="lazy"
-                    />
-                  </motion.div>
-                </div>
-              ))}
+              {instagramPosts.map((postUrl, idx) => {
+                // Logic: Only load the active slide and its neighbors (+/- 1)
+                const isVisible = Math.abs(activeIndex - idx) <= 1;
+
+                return (
+                  <div key={postUrl} className="min-w-full px-3 relative">
+                    <motion.div
+                      animate={{
+                        scale: activeIndex === idx ? 1 : 0.94,
+                        opacity: activeIndex === idx ? 1 : 0.5,
+                      }}
+                      transition={{ duration: 0.4 }}
+                      className="relative aspect-[9/16] w-full rounded-3xl border-8 border-white shadow-xl overflow-hidden bg-white"
+                    >
+                      {isVisible ? (
+                        <iframe
+                          src={`${postUrl}embed`}
+                          title={`Instagram post ${idx + 1}`}
+                          className="absolute inset-0 w-full h-full border-none"
+                          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                          loading="lazy"
+                        />
+                      ) : (
+                        /* Professional Placeholder while slide is not in focus */
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-50">
+                          <Instagram
+                            size={32}
+                            className="text-ionBlue/10 mb-2"
+                          />
+                          <div className="w-24 h-1 bg-ionBlue/5 rounded-full overflow-hidden">
+                            <div className="w-1/2 h-full bg-ionBlue/10 animate-shimmer" />
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  </div>
+                );
+              })}
             </motion.div>
           </div>
 

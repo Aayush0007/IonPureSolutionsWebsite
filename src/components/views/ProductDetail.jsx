@@ -25,6 +25,7 @@ import {
   Clock,
   IndianRupee,
   CalendarDays,
+  Star,
 } from "lucide-react";
 import { PRODUCTS } from "../../data/products";
 
@@ -41,6 +42,7 @@ export default function ProductDetail({ product, onBack, setView }) {
 
   // Carousel State
   const [currentReviewIdx, setCurrentReviewIdx] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const imgContainerRef = useRef(null);
   const leftRef = useRef(null);
@@ -427,36 +429,47 @@ export default function ProductDetail({ product, onBack, setView }) {
           </div>
         </div>
 
-        {/* DYNAMIC REVIEW SECTION - Updated with Auto-Video Thumbnails */}
+        {/* DYNAMIC REVIEW SECTION - Professional Pagination & Read More */}
         {reviews.length > 0 && currentReview && (
           <div className="mb-20 md:mb-24 relative px-2 md:px-12">
-            <div className="flex items-center mb-6 px-2">
-              <h4 className="text-xs font-black uppercase tracking-[0.3em] text-ionBlue/40 flex items-center gap-2">
-                <Activity size={14} className="text-ionGreen" /> User
-                Experiences
-              </h4>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 px-2 gap-4">
+              <div>
+                <h4 className="text-xs font-black uppercase tracking-[0.3em] text-ionBlue/40 flex items-center gap-2 mb-2">
+                  <Activity size={14} className="text-ionGreen" /> User
+                  Experiences
+                </h4>
+                {/* Professional Product-Specific Counter */}
+                <div className="inline-flex items-center gap-2 bg-ionBlue/5 px-3 py-1.5 rounded-xl border border-ionBlue/5">
+                  <Star size={12} fill="#7CB35B" className="text-ionGreen" />
+                  <span className="text-[10px] font-black text-ionBlue/70 uppercase tracking-tight">
+                    {reviews.length} Verified {product.name} Reviews
+                  </span>
+                </div>
+              </div>
             </div>
 
             <div className="relative group">
-              {/* Side Navigation Arrows - Updated for Mobile View */}
+              {/* Side Navigation Arrows */}
               {reviews.length > 1 && (
                 <>
                   <button
-                    onClick={() =>
+                    onClick={() => {
+                      setIsExpanded(false);
                       setCurrentReviewIdx((p) =>
                         p === 0 ? reviews.length - 1 : p - 1,
-                      )
-                    }
+                      );
+                    }}
                     className="absolute left-2 md:-left-12 top-1/2 -translate-y-1/2 z-30 p-2 md:p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-xl border border-gray-100 text-ionBlue hover:bg-ionBlue hover:text-white transition-all flex"
                   >
                     <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                   <button
-                    onClick={() =>
+                    onClick={() => {
+                      setIsExpanded(false);
                       setCurrentReviewIdx((p) =>
                         p === reviews.length - 1 ? 0 : p + 1,
-                      )
-                    }
+                      );
+                    }}
                     className="absolute right-2 md:-right-12 top-1/2 -translate-y-1/2 z-30 p-2 md:p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-xl border border-gray-100 text-ionBlue hover:bg-ionBlue hover:text-white transition-all flex"
                   >
                     <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
@@ -502,7 +515,7 @@ export default function ProductDetail({ product, onBack, setView }) {
                       </div>
                     ) : null}
 
-                    {/* TEXT SIDE */}
+                    {/* TEXT SIDE with Read More */}
                     <div
                       className={`${currentReview.video ? "lg:col-span-8" : "lg:col-span-12"} p-8 md:p-16 flex flex-col justify-center bg-gradient-to-br from-white to-gray-50/50`}
                     >
@@ -517,11 +530,24 @@ export default function ProductDetail({ product, onBack, setView }) {
                           ))}
                         </div>
                         <h3 className="text-2xl md:text-4xl font-black text-ionBlue italic tracking-tighter leading-tight mb-6">
-                          "Freshness and Health redefined."
+                          "Real results, Real impact."
                         </h3>
-                        <p className="text-sm md:text-lg font-medium text-ionMidnight/70 italic mb-8 border-l-4 border-ionGreen/20 pl-6">
-                          "{currentReview.text}"
-                        </p>
+
+                        {/* Updated Review Text with Read More */}
+                        <div className="text-sm md:text-lg font-medium text-ionMidnight/70 italic mb-8 border-l-4 border-ionGreen/20 pl-6">
+                          "
+                          {isExpanded || currentReview.text.length <= 160
+                            ? currentReview.text
+                            : `${currentReview.text.substring(0, 160)}...`}
+                          {currentReview.text.length > 160 && (
+                            <button
+                              onClick={() => setIsExpanded(!isExpanded)}
+                              className="ml-2 text-ionBlue font-black text-xs uppercase tracking-wider hover:text-ionGreen transition-colors italic border-b border-ionBlue/20"
+                            >
+                              {isExpanded ? "Read Less" : "Read Full Review"}
+                            </button>
+                          )}
+                        </div>
 
                         <div className="flex items-center justify-between pt-6 border-t border-gray-100">
                           <div className="flex items-center gap-4">
@@ -545,21 +571,50 @@ export default function ProductDetail({ product, onBack, setView }) {
               </AnimatePresence>
             </div>
 
-            {/* PAGINATION BAR */}
+            {/* PROFESSIONAL PROGRESS PAGINATION */}
             {reviews.length > 1 && (
-              <div className="flex justify-center gap-3 mt-8">
-                {reviews.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentReviewIdx(idx)}
-                    className={`h-2 transition-all duration-500 rounded-full ${currentReviewIdx === idx ? "w-10 bg-ionBlue" : "w-2 bg-ionBlue/20 hover:bg-ionBlue/40"}`}
-                  />
-                ))}
+              <div className="flex flex-col items-center gap-4 mt-12">
+                <div className="flex items-center gap-4">
+                  <div className="w-6 flex justify-end">
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={currentReviewIdx}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        className="text-[10px] font-black text-ionBlue italic"
+                      >
+                        {String(currentReviewIdx + 1).padStart(2, "0")}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
+
+                  <div className="w-48 md:w-64 h-[2px] bg-ionBlue/10 relative overflow-hidden rounded-full">
+                    <motion.div
+                      className="absolute top-0 left-0 h-full bg-ionBlue"
+                      initial={false}
+                      animate={{
+                        width: `${((currentReviewIdx + 1) / reviews.length) * 100}%`,
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 100,
+                        damping: 20,
+                      }}
+                    />
+                  </div>
+
+                  <span className="text-[10px] font-black text-ionBlue/30 italic">
+                    {String(reviews.length).padStart(2, "0")}
+                  </span>
+                </div>
+                <div className="text-[9px] font-black text-ionBlue/40 uppercase tracking-[0.2em]">
+                  Experience {currentReviewIdx + 1} of {reviews.length}
+                </div>
               </div>
             )}
           </div>
         )}
-
         {/* 📱 FULL-SCREEN POPUP (Same as your aesthetic version) */}
         <AnimatePresence>
           {showVideoPopup && (

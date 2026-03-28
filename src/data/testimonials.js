@@ -40,4 +40,28 @@ export const TESTIMONIALS = [
     text: "I am 66 years old and a retired college professor. I have been using the IonPure Alkaline Water Machine for the past three years. After regularly drinking this water, I have noticed significant improvements in my daily life. My sleep quality has improved a lot—I now enjoy deep and restful sleep. I also feel a better appetite and overall improvement in my health. Earlier, I used to experience mild pain in my legs, but now that discomfort is completely gone. I feel lighter, more active, and there is no sense of heaviness in my body. I follow a routine of drinking two glasses of water in the morning, at least four during the day, and two more in the evening. This habit has made a noticeable difference in my sleep and appetite. Based on my experience, I would recommend others to try it and see the benefits for themselves.",
     rating: 5,
   },
+  {
+    id: 6,
+    name: "Verified Customer",
+    role: "User",
+    location: "India",
+    text: "This is a hydrogen water bottle that converts regular drinking water into hydrogen-rich water, which is known to offer various health benefits. I found it very easy to use in my daily routine. Whether I am at home, traveling, or going somewhere outside, this bottle is always helpful and convenient to carry. It ensures that I have access to better quality water wherever I go. Overall, it has been a very useful and supportive addition to my lifestyle, and I would recommend others to try it and experience the benefits for themselves.",
+    rating: 5,
+  },
+  {
+  id: 7,
+  name: "Verified Customer",
+  role: "User",
+  location: "India",
+  text: "Alkaline water is hydrogen-rich water that enhances the quality of regular drinking water and offers multiple health benefits. It is known to help boost the immune system and support the body in reducing acidity. In today’s lifestyle, where we often consume acidic foods such as processed items, packaged products, and preserved milk, maintaining balance in the body becomes essential. Drinking alkaline water helps neutralize this acidity and supports overall well-being. Based on my experience, I would recommend others to include it in their daily routine and experience the benefits for themselves.",
+  rating: 5,
+},
+{
+  id: 8,
+  name: "Prem",
+  role: "Homemaker",
+  location: "India",
+  text: "Hello everyone, I’m Prem. Earlier, the water we used was very hard and had no taste, even after using a regular filter. There was no noticeable improvement. Recently, both my husband and I tried this water for the first time, and the difference was amazing. The taste was very good, and the water felt much lighter and smoother to drink. It gave a refreshing and pleasant feeling. I would definitely suggest everyone consider changing their water source. It’s a great choice for better taste and a healthier lifestyle. Thank you.",
+  rating: 5,
+},
 ];

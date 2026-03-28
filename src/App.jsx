@@ -125,120 +125,120 @@ function App() {
   if (isLoading) return <SplashScreen />;
 
   return (
-    // <div className="relative min-h-screen w-full bg-[#FDFDFD] overflow-x-hidden font-body">
-    //   {/* Navbar + Mobile Menu */}
-    //   <div className="relative z-[100]">
-    //     <Navbar
-    //       scrollTo={handleNavigation}
-    //       toggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
-    //       isDetailView={view !== "home"}
-    //       goHome={() => setView("home")}
-    //       // No more banner prop needed
-    //     />
+    <div className="relative min-h-screen w-full bg-[#FDFDFD] overflow-x-hidden font-body">
+      {/* Navbar + Mobile Menu */}
+      <div className="relative z-[100]">
+        <Navbar
+          scrollTo={handleNavigation}
+          toggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
+          isDetailView={view !== "home"}
+          goHome={() => setView("home")}
+          // No more banner prop needed
+        />
 
-    //     <MobileMenu
-    //       isOpen={mobileMenuOpen}
-    //       onClose={() => setMobileMenuOpen(false)}
-    //       scrollTo={handleNavigation}
-    //     />
-    //   </div>
-    // <Watermark />
+        <MobileMenu
+          isOpen={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+          scrollTo={handleNavigation}
+        />
+      </div>
+    {/* <Watermark /> */}
 
-    //   {/* Main Content */}
-    //   <main className="relative z-10">
-    //     <AnimatePresence mode="wait">
-    //       {view === "about" && (
-    //         <motion.div
-    //           key="about-page"
-    //           initial={{ opacity: 0, y: 20 }}
-    //           animate={{ opacity: 1, y: 0 }}
-    //           exit={{ opacity: 0, y: -20 }}
-    //           className="pt-20"
-    //         >
-    //           <About />
-    //           <div className="flex justify-center pb-20">
-    //             <button
-    //               onClick={() => setView("home")}
-    //               className="px-8 py-3 bg-ionBlue text-white rounded-full font-bold uppercase tracking-widest text-[10px]"
-    //             >
-    //               Back to Home
-    //             </button>
-    //           </div>
-    //         </motion.div>
-    //       )}
+      {/* Main Content */}
+      <main className="relative z-10">
+        <AnimatePresence mode="wait">
+          {view === "about" && (
+            <motion.div
+              key="about-page"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="pt-20"
+            >
+              <About />
+              <div className="flex justify-center pb-20">
+                <button
+                  onClick={() => setView("home")}
+                  className="px-8 py-3 bg-ionBlue text-white rounded-full font-bold uppercase tracking-widest text-[10px]"
+                >
+                  Back to Home
+                </button>
+              </div>
+            </motion.div>
+          )}
 
-    //       {view === "privacy-policy" && (
-    //         <PrivacyPolicy key="privacy" onBack={() => setView("home")} />
-    //       )}
-    //       {view === "terms-conditions" && (
-    //         <TermsConditions key="terms" onBack={() => setView("home")} />
-    //       )}
+          {view === "privacy-policy" && (
+            <PrivacyPolicy key="privacy" onBack={() => setView("home")} />
+          )}
+          {view === "terms-conditions" && (
+            <TermsConditions key="terms" onBack={() => setView("home")} />
+          )}
 
-    //       {currentProduct && !["home", "about"].includes(view) && (
-    //         <ProductDetail
-    //           key={currentProduct.id}
-    //           product={currentProduct}
-    //           onBack={() => setView("home")}
-    //         />
-    //       )}
+          {currentProduct && !["home", "about"].includes(view) && (
+            <ProductDetail
+              key={currentProduct.id}
+              product={currentProduct}
+              onBack={() => setView("home")}
+            />
+          )}
 
-    //       {currentBlog && !["home", "about"].includes(view) && (
-    //         <BlogDetail
-    //           key={currentBlog.id}
-    //           blog={currentBlog}
-    //           onBack={() => setView("home")}
-    //         />
-    //       )}
+          {currentBlog && !["home", "about"].includes(view) && (
+            <BlogDetail
+              key={currentBlog.id}
+              blog={currentBlog}
+              onBack={() => setView("home")}
+            />
+          )}
 
-    //       {view === "home" && (
-    //         <motion.div
-    //           key="home"
-    //           initial={{ opacity: 0 }}
-    //           animate={{ opacity: 1 }}
-    //           exit={{ opacity: 0 }}
-    //         >
-    //           <Hero
-    //             scrollToProducts={() => handleNavigation("products")}
-    //             heroProducts={heroProducts}
-    //           />
-    //           <FeaturedProducts products={PRODUCTS} setView={setView} />
-    //           <Certifications />
-    //           <Testimonials />
-    //           <BlogPreview blogs={BLOGS} setView={setView} />
-    //           <InstagramShowcase />
-    //           <Contact />
-    //         </motion.div>
-    //       )}
-    //     </AnimatePresence>
-    //   </main>
+          {view === "home" && (
+            <motion.div
+              key="home"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <Hero
+                scrollToProducts={() => handleNavigation("products")}
+                heroProducts={heroProducts}
+              />
+              <FeaturedProducts products={PRODUCTS} setView={setView} />
+              <Certifications />
+              <Testimonials />
+              <BlogPreview blogs={BLOGS} setView={setView} />
+              <InstagramShowcase />
+              <Contact />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
 
-    //   <Footer ref={footerRef} scrollTo={handleNavigation} setView={setView} />
+      <Footer ref={footerRef} scrollTo={handleNavigation} setView={setView} />
 
-    //   {/* Floating Buttons */}
-    //   <div
-    //     className={`fixed bottom-6 left-6 z-[9999] transition-all duration-700 ${
-    //       isFooterVisible
-    //         ? "opacity-0 translate-y-32 pointer-events-none"
-    //         : "opacity-100 translate-y-0 pointer-events-auto"
-    //     }`}
-    //   >
-    //     <WhatsAppButton />
-    //   </div>
+      {/* Floating Buttons */}
+      <div
+        className={`fixed bottom-6 left-6 z-[9999] transition-all duration-700 ${
+          isFooterVisible
+            ? "opacity-0 translate-y-32 pointer-events-none"
+            : "opacity-100 translate-y-0 pointer-events-auto"
+        }`}
+      >
+        <WhatsAppButton />
+      </div>
 
-    //   <div
-    //     className={`fixed bottom-6 right-6 z-[9999] transition-all duration-700 ${
-    //       isFooterVisible
-    //         ? "opacity-0 translate-y-32 pointer-events-none"
-    //         : "opacity-100 translate-y-0 pointer-events-auto"
-    //     }`}
-    //   >
-    //     <ChatBot />
-    //   </div>
-    // </div>
-    <>
-      <Watermark />
-      <MaintenanceMode />
-    </>
+      <div
+        className={`fixed bottom-6 right-6 z-[9999] transition-all duration-700 ${
+          isFooterVisible
+            ? "opacity-0 translate-y-32 pointer-events-none"
+            : "opacity-100 translate-y-0 pointer-events-auto"
+        }`}
+      >
+        <ChatBot />
+      </div>
+    </div>
+    // <>
+    //   <Watermark />
+    //   <MaintenanceMode />
+    // </>
   );
 }
 

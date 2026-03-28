@@ -60,15 +60,22 @@ import h2ProReviewVid from "../assets/Products/H2 Pro/H2ProReview.mp4";
 import h2ReviewVid1 from "../assets/Products/H2/ReviewH2.mp4";
 import h2ReviewVid2 from "../assets/Products/H2/ReviewH21.mp4";
 import h2ReviewVid3 from "../assets/Products/H2/ReviewH23.mp4";
+import h2ReviewVid4 from "../assets/Products/H2/ReviewH24.mp4";
 
 import flowReview1 from "../assets/Products/IP FLOW/FlowReview1.mp4";
+import flowReview2 from "../assets/Products/IP FLOW/FlowReview2.mp4";
+import flowReview3 from "../assets/Products/IP FLOW/FlowReview3.mp4";
 
 //Thumbnails
 import h2TR1 from "../assets/Products/H2/TR1.png";
 import h2TR2 from "../assets/Products/H2/TR2.png";
 import h2TR3 from "../assets/Products/H2/TR3.png";
+import h2TR4 from "../assets/Products/H2/TR4.png";
 
 import flowTR1 from "../assets/Products/IP FLOW/TR1.png";
+import flowTR2 from "../assets/Products/IP FLOW/TR2.png";
+import flowTR3 from "../assets/Products/IP FLOW/TR3.png";
+
 import h2ProTR1 from "../assets/Products/H2 Pro/TR1.png";
 
 import { TESTIMONIALS } from "./testimonials";
@@ -85,6 +92,16 @@ export const PRODUCTS = [
         video: flowReview1,
         thumbnail: flowTR1,
         ...TESTIMONIALS.find(t => t.id === 5)
+      },
+      {
+        video: flowReview2,
+        thumbnail: flowTR2,
+        ...TESTIMONIALS.find(t => t.id === 7)
+      },
+      {
+        video: flowReview3,
+        thumbnail: flowTR3,
+        ...TESTIMONIALS.find(t => t.id === 8)
       }
     ],
     shortDescription: "Reliable everyday alkaline water ionizer with 4.3-inch display and flexible plate options.",
@@ -268,6 +285,11 @@ export const PRODUCTS = [
         video: h2ReviewVid3,
         thumbnail: h2TR3,
         ...TESTIMONIALS.find(t => t.id === 4)
+      },
+      {
+        video: h2ReviewVid4,
+        thumbnail: h2TR4,
+        ...TESTIMONIALS.find(t => t.id === 6)
       }
     ],
     shortDescription: "Rechargeable hydrogen bottle with Platinum-coated Titanium electrodes.",
