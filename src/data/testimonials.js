@@ -64,4 +64,12 @@ export const TESTIMONIALS = [
   text: "Hello everyone, I’m Prem. Earlier, the water we used was very hard and had no taste, even after using a regular filter. There was no noticeable improvement. Recently, both my husband and I tried this water for the first time, and the difference was amazing. The taste was very good, and the water felt much lighter and smoother to drink. It gave a refreshing and pleasant feeling. I would definitely suggest everyone consider changing their water source. It’s a great choice for better taste and a healthier lifestyle. Thank you.",
   rating: 5,
 },
+{
+  id: 9,
+  name: "Verified Customer",
+  role: "User",
+  location: "India",
+  text: "We have been using the Ion Pure Solutions water machine for the past three days at home, and we are already noticing positive changes. The main reason for installing this machine was my mother’s health, as she had been experiencing severe knee pain. Since she started using this water regularly, both for drinking and cooking vegetables, we feel there has been gradual improvement in her routine. The machine provides different types of water suitable for drinking, cooking, and washing fruits and vegetables, which makes it very versatile. Overall, our experience so far has been very good, and we are satisfied with the results.",
+  rating: 5,
+}
 ];

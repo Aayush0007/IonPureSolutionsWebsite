@@ -66,6 +66,8 @@ import flowReview1 from "../assets/Products/IP FLOW/FlowReview1.mp4";
 import flowReview2 from "../assets/Products/IP FLOW/FlowReview2.mp4";
 import flowReview3 from "../assets/Products/IP FLOW/FlowReview3.mp4";
 
+import flowMaxReview1 from "../assets/Products/IP FLOW MAX/FlowMaxReview1.mp4";
+
 //Thumbnails
 import h2TR1 from "../assets/Products/H2/TR1.png";
 import h2TR2 from "../assets/Products/H2/TR2.png";
@@ -75,6 +77,8 @@ import h2TR4 from "../assets/Products/H2/TR4.png";
 import flowTR1 from "../assets/Products/IP FLOW/TR1.png";
 import flowTR2 from "../assets/Products/IP FLOW/TR2.png";
 import flowTR3 from "../assets/Products/IP FLOW/TR3.png";
+
+import flowMaxTR1 from "../assets/Products/IP FLOW MAX/TR1.png";
 
 import h2ProTR1 from "../assets/Products/H2 Pro/TR1.png";
 
@@ -91,21 +95,23 @@ export const PRODUCTS = [
       {
         video: flowReview1,
         thumbnail: flowTR1,
-        ...TESTIMONIALS.find(t => t.id === 5)
+        ...TESTIMONIALS.find((t) => t.id === 5),
       },
       {
         video: flowReview2,
         thumbnail: flowTR2,
-        ...TESTIMONIALS.find(t => t.id === 7)
+        ...TESTIMONIALS.find((t) => t.id === 7),
       },
       {
         video: flowReview3,
         thumbnail: flowTR3,
-        ...TESTIMONIALS.find(t => t.id === 8)
-      }
+        ...TESTIMONIALS.find((t) => t.id === 8),
+      },
     ],
-    shortDescription: "Reliable everyday alkaline water ionizer with 4.3-inch display and flexible plate options.",
-    description: "ION PURE FLOW is a reliable alkaline water ionizer delivering ionized, alkaline, antioxidant, hydrogen-rich, and micro-clustered water suitable for daily use.",
+    shortDescription:
+      "Reliable everyday alkaline water ionizer with 4.3-inch display and flexible plate options.",
+    description:
+      "ION PURE FLOW is a reliable alkaline water ionizer delivering ionized, alkaline, antioxidant, hydrogen-rich, and micro-clustered water suitable for daily use.",
     tagline: "Trusted Daily Wellness Companion",
     technicalSpecifications: {
       "Input Power": "230 V",
@@ -114,24 +120,25 @@ export const PRODUCTS = [
       "Net Weight": "12 kg",
       "Body Size": "18 x 34 x 36 cm",
       "Screen Type": "4.3 Inch",
-      "Plates": "Titanium Plates(Size: 50 x 100 mm) with 1-micron Platinum Coating",
+      Plates:
+        "Titanium Plates(Size: 50 x 100 mm) with 1-micron Platinum Coating",
       "pH Levels": "7.5 / 8.5 / 9.5 / 10.5",
-      "ORP Level": "Up to -600 mV"
+      "ORP Level": "Up to -600 mV",
     },
     keyFeatures: [
       "Produces ionized, alkaline, antioxidant, hydrogen-rich water",
       "Compact 4.3-inch display",
       "Titanium Plates(Size: 50 x 100 mm) with 1-micron Platinum Coating",
-      "Efficient standby power"
+      "Efficient standby power",
     ],
     wellnessBenefits: [
       "Supports improved hydration with micro-clustered water",
       "Offers antioxidant support through hydrogen-rich properties",
-      "Contributes to general wellness via alkaline ionization"
+      "Contributes to general wellness via alkaline ionization",
     ],
     // ──────────────── NEW COMMERCIAL & LOGISTICS FIELDS ────────────────
     mrp: 119999,
-    sellingPrice: 85000,              // including item price + shipping
+    sellingPrice: 85000, // including item price + shipping
     deliveryTime: "10-12 days",
     shippingTime: "4-5 days",
     replacementPeriod: "7 days",
@@ -146,12 +153,12 @@ export const PRODUCTS = [
       "Physical damage and misuse not covered",
       "Warranty void if repaired by unauthorised person.",
       "Invoice and warranty card required",
-      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number."
+      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number.",
     ],
     warrantyContact: {
       phone: "8130134145",
-      email: "info@ionpuresolutions.com"
-    }
+      email: "info@ionpuresolutions.com",
+    },
   },
   {
     id: "flow-plus",
@@ -159,8 +166,10 @@ export const PRODUCTS = [
     category: "Alkaline Water Ionizer",
     thumbnail: flowPlus1,
     gallery: [flowPlus1, flowPlus2, flowPlus3, flowPlus4, flowPlus5, flowPlus6],
-    shortDescription: "Compact and efficient ionizer ideal for homes and offices with space constraints.",
-    description: "ION PURE FLOW PLUS is a compact alkaline water ionizer providing balanced pH options and efficient design suitable for home or office use.",
+    shortDescription:
+      "Compact and efficient ionizer ideal for homes and offices with space constraints.",
+    description:
+      "ION PURE FLOW PLUS is a compact alkaline water ionizer providing balanced pH options and efficient design suitable for home or office use.",
     tagline: "Elegant Compact Power",
     technicalSpecifications: {
       "Input Power": "230 W (Advance SMPS)",
@@ -169,19 +178,19 @@ export const PRODUCTS = [
       "Net Weight": "6 kg",
       "Body Size": "18 x 27 x 33 cm",
       "Screen Type": "7 inch Screen Touch Display",
-      "Plates": "Available in 3 plates/5 plates/7 Plates",
+      Plates: "Available in 3 plates/5 plates/7 Plates",
       "pH Levels": "7.5 / 8.5 / 9.5 / 10.5",
-      "ORP Level": "Up to -700 mV"
+      "ORP Level": "Up to -700 mV",
     },
     keyFeatures: [
       "Compact body size for easier placement",
       "Touch Display interface",
       "Titanium Plates(Size: 50 x 100 mm) with 1-micron Platinum Coating",
-      "Lower net weight of 6 kg"
+      "Lower net weight of 6 kg",
     ],
     wellnessBenefits: [
       "Aids in better hydration with ionized alkaline water",
-      "Supports general wellness through balanced pH levels"
+      "Supports general wellness through balanced pH levels",
     ],
     // ──────────────── NEW FIELDS ────────────────
     mrp: 124999,
@@ -200,21 +209,40 @@ export const PRODUCTS = [
       "Physical damage and misuse not covered",
       "Warranty void if repaired by unauthorised person.",
       "Invoice and warranty card required",
-      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number."
+      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number.",
     ],
     warrantyContact: {
       phone: "8130134145",
-      email: "info@ionpuresolutions.com"
-    }
+      email: "info@ionpuresolutions.com",
+    },
   },
   {
     id: "flow-max",
     name: "ION PURE FLOW MAX",
     category: "Alkaline Water Ionizer",
     thumbnail: flowMax1,
-    gallery: [flowMax1, flowMax2, flowMax3, flowMax4, flowMax5, flowMax6, flowMax7, flowMax8, flowMax9],
-    shortDescription: "Advanced flagship alkaline water ionizer with 10-inch touch display and maximum performance for daily wellness.",
-    description: "ION PURE FLOW MAX is an advanced alkaline water ionizer that produces ionized, hydrogen-rich water with strong antioxidant properties through electrolysis. It features a large touch screen and multiple plate options for customizable pH and ORP levels.",
+    gallery: [
+      flowMax1,
+      flowMax2,
+      flowMax3,
+      flowMax4,
+      flowMax5,
+      flowMax6,
+      flowMax7,
+      flowMax8,
+      flowMax9,
+    ],
+    reviews: [
+      {
+        video: flowMaxReview1,
+        thumbnail: flowMaxTR1,
+        ...TESTIMONIALS.find((t) => t.id === 9),
+      }
+    ],
+    shortDescription:
+      "Advanced flagship alkaline water ionizer with 10-inch touch display and maximum performance for daily wellness.",
+    description:
+      "ION PURE FLOW MAX is an advanced alkaline water ionizer that produces ionized, hydrogen-rich water with strong antioxidant properties through electrolysis. It features a large touch screen and multiple plate options for customizable pH and ORP levels.",
     tagline: "The Ultimate Hydration Masterpiece",
     technicalSpecifications: {
       "Input Power": "230 W",
@@ -223,9 +251,10 @@ export const PRODUCTS = [
       "Net Weight": "12 kg",
       "Body Size": "18 x 34 x 36 cm",
       "Screen Type": "10 Inch Touch Display",
-      "Plates": "Titanium Plates(Size: 70 x 140 mm) with 2-micron Platinum Coating",
+      Plates:
+        "Titanium Plates(Size: 70 x 140 mm) with 2-micron Platinum Coating",
       "pH Levels": "7.5 / 8.5 / 9.5 / 10.5 / 11.5",
-      "ORP Level": "Up to -800 mV"
+      "ORP Level": "Up to -800 mV",
     },
     keyFeatures: [
       "10 Inch Touch Display for easy operation",
@@ -233,12 +262,12 @@ export const PRODUCTS = [
       "Strong negative ORP up to -800 mV",
       "Multiple pH levels up to 11.5",
       "High-performance ionization",
-      "Energy-efficient standby mode"
+      "Energy-efficient standby mode",
     ],
     wellnessBenefits: [
       "Supports better hydration through ionized water",
       "Provides antioxidant properties via negative ORP",
-      "Promotes general wellness with micro-clustered water structure"
+      "Promotes general wellness with micro-clustered water structure",
     ],
     // ──────────────── NEW FIELDS ────────────────
     mrp: 199999,
@@ -257,12 +286,12 @@ export const PRODUCTS = [
       "Physical damage and misuse not covered",
       "Warranty void if repaired by unauthorised person.",
       "Invoice and warranty card required",
-      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number."
+      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number.",
     ],
     warrantyContact: {
       phone: "8130134145",
-      email: "info@ionpuresolutions.com"
-    }
+      email: "info@ionpuresolutions.com",
+    },
   },
   {
     id: "ips-h2",
@@ -274,47 +303,49 @@ export const PRODUCTS = [
       {
         video: h2ReviewVid2,
         thumbnail: h2TR2,
-        ...TESTIMONIALS.find(t => t.id === 3)
+        ...TESTIMONIALS.find((t) => t.id === 3),
       },
       {
         video: h2ReviewVid1,
         thumbnail: h2TR1,
-        ...TESTIMONIALS.find(t => t.id === 2)
+        ...TESTIMONIALS.find((t) => t.id === 2),
       },
       {
         video: h2ReviewVid3,
         thumbnail: h2TR3,
-        ...TESTIMONIALS.find(t => t.id === 4)
+        ...TESTIMONIALS.find((t) => t.id === 4),
       },
       {
         video: h2ReviewVid4,
         thumbnail: h2TR4,
-        ...TESTIMONIALS.find(t => t.id === 6)
-      }
+        ...TESTIMONIALS.find((t) => t.id === 6),
+      },
     ],
-    shortDescription: "Rechargeable hydrogen bottle with Platinum-coated Titanium electrodes.",
-    description: "IPS H₂ is a high-quality hydrogen-rich water bottle featuring a Tritan body and advanced electrolysis plates for consistent antioxidant support.",
+    shortDescription:
+      "Rechargeable hydrogen bottle with Platinum-coated Titanium electrodes.",
+    description:
+      "IPS H₂ is a high-quality hydrogen-rich water bottle featuring a Tritan body and advanced electrolysis plates for consistent antioxidant support.",
     tagline: "Everyday Hydrogen Companion",
     technicalSpecifications: {
       "Hydrogen Output": "1500-2000 PPB",
-      "ORP": "Up to -350 mV",
-      "Capacity": "400 ml",
-      "Material": "Tritan Body with Platinum Coated Titanium Electrodes",
+      ORP: "Up to -350 mV",
+      Capacity: "400 ml",
+      Material: "Tritan Body with Platinum Coated Titanium Electrodes",
       "Input Power": "USB Rechargeable Battery",
-      "Dimensions": "8 cm (L) x 8 cm (W) x 24.1 cm (H)",
-      "Weight": "Approx. 350 g",
-      "Screen Type": "Button"
+      Dimensions: "8 cm (L) x 8 cm (W) x 24.1 cm (H)",
+      Weight: "Approx. 350 g",
+      "Screen Type": "Button",
     },
     keyFeatures: [
       "Larger 400 ml capacity",
       "Platinum-Coated Titanium Electrolysis Plates",
       "BPA-Free Tritan body",
       "USB rechargeable for portability",
-      "High hydrogen concentration"
+      "High hydrogen concentration",
     ],
     wellnessBenefits: [
       "Supports better hydration",
-      "Provides general antioxidant support"
+      "Provides general antioxidant support",
     ],
     // ──────────────── NEW FIELDS ────────────────
     mrp: 17999,
@@ -333,12 +364,12 @@ export const PRODUCTS = [
       "Physical damage and misuse not covered",
       "Warranty void if repaired by unauthorised person.",
       "Invoice and warranty card required",
-      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number."
+      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number.",
     ],
     warrantyContact: {
       phone: "8130134145",
-      email: "info@ionpuresolutions.com"
-    }
+      email: "info@ionpuresolutions.com",
+    },
   },
   {
     id: "ips-h2-pro",
@@ -350,32 +381,34 @@ export const PRODUCTS = [
       {
         video: h2ProReviewVid,
         thumbnail: h2ProTR1,
-        ...TESTIMONIALS.find(t => t.id === 1)
-      }
+        ...TESTIMONIALS.find((t) => t.id === 1),
+      },
     ],
-    shortDescription: "Professional grade hydrogen bottle with SPE & PEM technology.",
-    description: "The H₂ Pro utilizes advanced SPE & PEM electrolysis technology and a premium platinum carbon catalyst coating to deliver pure 99.99% hydrogen water without residual gases.",
+    shortDescription:
+      "Professional grade hydrogen bottle with SPE & PEM technology.",
+    description:
+      "The H₂ Pro utilizes advanced SPE & PEM electrolysis technology and a premium platinum carbon catalyst coating to deliver pure 99.99% hydrogen water without residual gases.",
     tagline: "Elite Hydrogen Performance",
     technicalSpecifications: {
       "Hydrogen Concentration": "1500-5000 PPB",
-      "ORP": "Up to -650 mV",
-      "Technology": "Advanced SPE & PEM electrolysis",
-      "Capacity": "280 ml",
-      "Electrodes": "Medical grade Titanium",
-      "Purity": "99.99% Pure H2 (No Chlorine/Ozone)",
-      "Screen": "LED Display Screen"
+      ORP: "Up to -650 mV",
+      Technology: "Advanced SPE & PEM electrolysis",
+      Capacity: "280 ml",
+      Electrodes: "Medical grade Titanium",
+      Purity: "99.99% Pure H2 (No Chlorine/Ozone)",
+      Screen: "LED Display Screen",
     },
     keyFeatures: [
       "No calcification or degradation of plates",
       "Premium platinum carbon Catalyst coating",
       "Intelligent Switch & LED Display",
       "Superior quality membrane",
-      "Zero residual gas (No Ozone/Chlorine)"
+      "Zero residual gas (No Ozone/Chlorine)",
     ],
     wellnessBenefits: [
       "High-concentration antioxidant support",
       "Improved cellular hydration",
-      "Medical-grade safety standards"
+      "Medical-grade safety standards",
     ],
     // ──────────────── NEW FIELDS ────────────────
     mrp: 23999,
@@ -394,48 +427,58 @@ export const PRODUCTS = [
       "Physical damage and misuse not covered",
       "Warranty void if repaired by unauthorised person.",
       "Invoice and warranty card required",
-      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number."
+      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number.",
     ],
     warrantyContact: {
       phone: "8130134145",
-      email: "info@ionpuresolutions.com"
-    }
+      email: "info@ionpuresolutions.com",
+    },
   },
   {
     id: "ips-water-softener",
     name: "Electronic Water Conditioner",
     category: "Electronic Water Conditioner",
     thumbnail: softner1,
-    gallery: [softner1, softner2, softner3, softner4, softner5, softner6, softner7, softner8],
+    gallery: [
+      softner1,
+      softner2,
+      softner3,
+      softner4,
+      softner5,
+      softner6,
+      softner7,
+      softner8,
+    ],
     shortDescription: "High-capacity Cathode-Anode technology water softener.",
-    description: "An efficient industrial-grade water softener featuring Cathode-Anode technology, 5000 LPH capacity, and an intelligent 4.3\" screen display.",
+    description:
+      'An efficient industrial-grade water softener featuring Cathode-Anode technology, 5000 LPH capacity, and an intelligent 4.3" screen display.',
     tagline: "Advanced Scale Protection",
     technicalSpecifications: {
-      "Capacity": "5000 LPH",
-      "Technology": "Cathode-Anode Technology",
+      Capacity: "5000 LPH",
+      Technology: "Cathode-Anode Technology",
       "Power Settings": "Low | Medium | High",
       "Power Consumption": "1 unit per 2 hours",
       "Input Voltage": "230 V ac",
       "Rod Size": "30 x 1000 mm",
       "Pipe Inlet/Outlet": "1.5 inch",
-      "Screen Type": "4.3\" Screen Display",
-      "Weight": "10-12 Kg"
+      "Screen Type": '4.3" Screen Display',
+      Weight: "10-12 Kg",
     },
     keyFeatures: [
       "Auto-Clean Mode enabled",
       "High-flow 5000 LPH capacity",
       "Adjustable power settings",
       "Real-time display screen",
-      "Compact and efficient design"
+      "Compact and efficient design",
     ],
     wellnessBenefits: [
       "Reduces scale buildup in plumbing",
       "Protects appliances from hard water damage",
-      "Provides softened water for skin and hair"
+      "Provides softened water for skin and hair",
     ],
     // ──────────────── NEW FIELDS ────────────────
     mrp: 69999,
-    sellingPrice: 44999,              // Note: you wrote 449999 — corrected to realistic 44999 (assuming typo)
+    sellingPrice: 44999, // Note: you wrote 449999 — corrected to realistic 44999 (assuming typo)
     deliveryTime: "10-12 days",
     shippingTime: "4-5 days",
     replacementPeriod: "7 days",
@@ -450,11 +493,11 @@ export const PRODUCTS = [
       "Physical damage and misuse not covered",
       "Warranty void if repaired by unauthorised person.",
       "Invoice and warranty card required",
-      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number."
+      "Steps to avail warranty: Apply for warranty claim on our website or our customer care number.",
     ],
     warrantyContact: {
       phone: "8130134145",
-      email: "info@ionpuresolutions.com"
-    }
-  }
+      email: "info@ionpuresolutions.com",
+    },
+  },
 ];
