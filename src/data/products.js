@@ -8,12 +8,11 @@ import softner4 from "../assets/Products/Electric Water Softner/4.jpg";
 import softner5 from "../assets/Products/Electric Water Softner/5.jpg";
 import softner6 from "../assets/Products/Electric Water Softner/6.jpg";
 import softner7 from "../assets/Products/Electric Water Softner/7.jpg";
-import softner8 from "../assets/Products/Electric Water Softner/8.jpg";
 
 // H2 Images
 import h2_1 from "../assets/Products/H2/1.jpg";
 import h2_2 from "../assets/Products/H2/2.jpg";
-import h2_3 from "../assets/Products/H2/3.jpg";
+import h2_3 from "../assets/Products/H2/3.png";
 import h2_4 from "../assets/Products/H2/4.jpg";
 import h2_5 from "../assets/Products/H2/5.jpg";
 import h2_6 from "../assets/Products/H2/6.jpg";
@@ -27,28 +26,31 @@ import h2Pro5 from "../assets/Products/H2 Pro/5.jpg";
 import h2Pro6 from "../assets/Products/H2 Pro/6.jpg";
 
 // IP Flow
-import ipFlow1 from "../assets/Products/IP FLOW/1.png";
+import ipFlow1 from "../assets/Products/IP FLOW/1.jpg";
 import ipFlow2 from "../assets/Products/IP FLOW/2.jpg";
-import ipFlow3 from "../assets/Products/IP FLOW/3.jpg";
+import ipFlow3 from "../assets/Products/IP FLOW/3.png";
 import ipFlow4 from "../assets/Products/IP FLOW/4.jpg";
 import ipFlow5 from "../assets/Products/IP FLOW/5.jpg";
 import ipFlow6 from "../assets/Products/IP FLOW/6.jpg";
 import ipFlow7 from "../assets/Products/IP FLOW/7.jpg";
+import ipFlow8 from "../assets/Products/IP FLOW/8.jpg";
 
 // IP Flow Plus
-import flowPlus1 from "../assets/Products/IP FLOW PLUS/25.jpg";
-import flowPlus2 from "../assets/Products/IP FLOW PLUS/4.jpg";
-import flowPlus3 from "../assets/Products/IP FLOW PLUS/5.jpg";
-import flowPlus4 from "../assets/Products/IP FLOW PLUS/3.jpg";
-import flowPlus5 from "../assets/Products/IP FLOW PLUS/26.jpg";
-import flowPlus6 from "../assets/Products/IP FLOW PLUS/28.jpg";
+import flowPlus1 from "../assets/Products/IP FLOW PLUS/1.jpg";
+import flowPlus2 from "../assets/Products/IP FLOW PLUS/2.png";
+import flowPlus3 from "../assets/Products/IP FLOW PLUS/3.png";
+import flowPlus4 from "../assets/Products/IP FLOW PLUS/4.jpg";
+import flowPlus5 from "../assets/Products/IP FLOW PLUS/5.jpg";
+import flowPlus6 from "../assets/Products/IP FLOW PLUS/6.jpg";
+import flowPlus7 from "../assets/Products/IP FLOW PLUS/7.jpg";
+import flowPlus8 from "../assets/Products/IP FLOW PLUS/8.jpg";
 
 // IP Flow Max
 import flowMax1 from "../assets/Products/IP FLOW MAX/1.jpg";
 import flowMax2 from "../assets/Products/IP FLOW MAX/2.jpg";
 import flowMax3 from "../assets/Products/IP FLOW MAX/3.jpg";
-import flowMax4 from "../assets/Products/IP FLOW MAX/4.png";
-import flowMax5 from "../assets/Products/IP FLOW MAX/5.jpg";
+import flowMax4 from "../assets/Products/IP FLOW MAX/4.jpg";
+import flowMax5 from "../assets/Products/IP FLOW MAX/5.png";
 import flowMax6 from "../assets/Products/IP FLOW MAX/6.jpg";
 import flowMax7 from "../assets/Products/IP FLOW MAX/7.jpg";
 import flowMax8 from "../assets/Products/IP FLOW MAX/8.jpg";
@@ -90,7 +92,7 @@ export const PRODUCTS = [
     name: "ION PURE FLOW",
     category: "Alkaline Water Ionizer",
     thumbnail: ipFlow1,
-    gallery: [ipFlow1, ipFlow2, ipFlow3, ipFlow4, ipFlow5, ipFlow6, ipFlow7],
+    gallery: [ipFlow1, ipFlow2, ipFlow3, ipFlow4, ipFlow5, ipFlow6, ipFlow7, ipFlow8],
     reviews: [
       {
         video: flowReview1,
@@ -165,7 +167,7 @@ export const PRODUCTS = [
     name: "ION PURE FLOW PLUS",
     category: "Alkaline Water Ionizer",
     thumbnail: flowPlus1,
-    gallery: [flowPlus1, flowPlus2, flowPlus3, flowPlus4, flowPlus5, flowPlus6],
+    gallery: [flowPlus1, flowPlus2, flowPlus3, flowPlus4, flowPlus5, flowPlus6, flowPlus7, flowPlus8],
     shortDescription:
       "Compact and efficient ionizer ideal for homes and offices with space constraints.",
     description:
@@ -447,7 +449,7 @@ export const PRODUCTS = [
       softner5,
       softner6,
       softner7,
-      softner8,
+      // softner8,
     ],
     shortDescription: "High-capacity Cathode-Anode technology water softener.",
     description:
