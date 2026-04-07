@@ -737,19 +737,19 @@ export default function ProductDetail({ product, onBack, setView }) {
                   <img
                     src={p.thumbnail}
                     loading="lazy"
-                    className="w-[85%] h-[85%] object-contain transition-transform duration-700 z-10"
+                    className="w-[85%] h-[85%] object-contain transition-transform duration-700 z-10 hover:scale-110"
                     alt={p.name}
                   />
                   <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center z-20">
                     <span className="text-[8px] font-black uppercase text-ionBlue/30 tracking-widest">
                       {p.category}
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-ionBlue opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
+                    {/* <div className="w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-ionBlue opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
                       <Plus size={16} />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
-                <h4 className="text-base md:text-lg font-black uppercase italic text-ionMidnight group-hover:text-ionBlue transition-colors px-2 leading-tight">
+                <h4 className="text-base md:text-lg font-black uppercase italic text-ionMidnight group-hover:text-ionBlue transition-colors px-2 leading-tight text-center">
                   {p.name}
                 </h4>
               </motion.div>

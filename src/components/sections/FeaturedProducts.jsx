@@ -125,8 +125,9 @@ export default function FeaturedProducts({ products }) {
 
                   <img
                     src={product.thumbnail}
+                    loading="lazy"
                     alt={product.name}
-                    className="max-w-full max-h-full object-contain drop-shadow-xl"
+                    className="max-w-full max-h-full object-contain drop-shadow-xl transition-transform duration-700 hover:scale-110"
                   />
                 </div>
 

@@ -437,7 +437,7 @@ export const PRODUCTS = [
     },
   },
   {
-    id: "ips-water-softener",
+    id: "ips-water-conditioner",
     name: "Electronic Water Conditioner",
     category: "Electronic Water Conditioner",
     thumbnail: softner1,
